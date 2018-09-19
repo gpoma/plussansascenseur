@@ -53,7 +53,7 @@ class Photo
    protected $base64;
 
    /**
-    * @MongoDB\string
+    * @MongoDB\String
     *
     */
    protected $ext;
@@ -258,7 +258,7 @@ class Photo
     }
 
     public function removeFile(){
-        unlink(realpath('../web/documents/'.$this->getImageName()));
+        unlink(realpath('../data/'.$this->getImageName()));
     }
 
     /**
@@ -306,7 +306,7 @@ class Photo
     }
 
     public function convertBase64AndRemove($resizeWidth = false){
-        $file = '../web/documents/'.$this->getImageName();
+        $file = '../data/'.$this->getImageName();
         $this->setExt(mime_content_type($file));
         if($resizeWidth){
             list($width, $height, $type, $attr) = getimagesize(realpath($file));
