@@ -26,7 +26,7 @@ class Ascenseur {
     {
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *

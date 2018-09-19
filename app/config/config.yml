@@ -50,8 +50,8 @@ vich_uploader:
     db_driver: mongodb
     mappings:
         attachement_image:
-            uri_prefix: /documents
-            upload_destination: '%kernel.root_dir%/../web/documents'
+            uri_prefix: /photos
+            upload_destination: '%kernel.root_dir%/../data'
             namer: vich_uploader.namer_uniqid
             inject_on_load: true
             delete_on_update: false
