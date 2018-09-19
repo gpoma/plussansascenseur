@@ -305,12 +305,12 @@ class Photo
         return $this->ext;
     }
 
-    public function convertBase64AndRemove(){
+    public function convertBase64AndRemove($resizeWidth = false){
         $file = '../web/documents/'.$this->getImageName();
         $this->setExt(mime_content_type($file));
-        if($this->isImage()){
+        if($resizeWidth){
             list($width, $height, $type, $attr) = getimagesize(realpath($file));
-            $attent_width = 1024;
+            $attent_width = $resizeWidth;
             $attent_height = ($attent_width * $height) / $attent_width;
             $dstImg = $this->resize_image(realpath($file), $attent_width, $attent_height);
             $this->setBase64(base64_encode(file_get_contents(realpath($file))));

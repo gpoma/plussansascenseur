@@ -16,21 +16,24 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $dm = $this->get('doctrine_mongodb')->getManager();
         $photo = new Photo();
         $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, array(
             'action' => $this->generateUrl('photo_upload'),
             'method' => 'POST'
         ));
-        return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm));
+        $photos = $dm->getRepository('AppBundle:Photo')->findAll();
+
+        return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView(),"photos" => $photos));
     }
 
     /**
      * @Route("/photo/upload", name="photo_upload")
      */
     public function photoUploadAction(Request $request) {
-       $photo = new Photo();
        $dm = $this->get('doctrine_mongodb')->getManager();
-       $uploadPhotoForm = $this->createForm(new PhotoType($dm), $photo, array(
+       $photo = new Photo();
+       $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, array(
            'action' => $this->generateUrl('photo_upload'),
            'method' => 'POST',
        ));
