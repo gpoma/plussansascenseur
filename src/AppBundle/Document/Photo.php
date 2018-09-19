@@ -368,4 +368,26 @@ class Photo
                 return ($b->getUpdatedAt() > $a->getUpdatedAt())? "+1" : "-1";
             }
     }
+
+    /**
+     * Set ascenseur
+     *
+     * @param AppBundle\Document\Ascenseur $ascenseur
+     * @return self
+     */
+    public function setAscenseur(\AppBundle\Document\Ascenseur $ascenseur)
+    {
+        $this->ascenseur = $ascenseur;
+        return $this;
+    }
+
+    /**
+     * Get ascenseur
+     *
+     * @return AppBundle\Document\Ascenseur $ascenseur
+     */
+    public function getAscenseur()
+    {
+        return $this->ascenseur;
+    }
 }

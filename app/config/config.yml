@@ -68,7 +68,16 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
-
+vich_uploader:
+    db_driver: mongodb
+    mappings:
+        attachement_image:
+            uri_prefix: /documents
+            upload_destination: '%kernel.root_dir%/../web/documents'
+            namer: vich_uploader.namer_uniqid
+            inject_on_load: true
+            delete_on_update: false
+            delete_on_remove: false
 
 # Swiftmailer Configuration
 swiftmailer:
