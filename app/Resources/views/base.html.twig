@@ -2,18 +2,21 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Plus sans Ascenseur{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
-
+        <div class="container">
+            <div class="navbar-header">
+                    <a id="logo" href="/" alt="plus sans ascenseur"><img src="/psa_logo_300x300.png" style="margin-top: 5px;" class="d-md-block d-sm-none" height="150"> <img src="/apple-touch-icon.png" style="margin-top: 5px;" class="d-md-none d-sm-block" height="40"></a>
+            </div>
+            {% block body %}{% endblock %}
+        </div>
         <script src="{{ asset('lib/jquery/jquery-3.3.1.slim.min.js') }}"></script>
         <script src="{{ asset('lib/popper/popper.min.js') }}"></script>
         <script src="{{ asset('lib/bootstrap/css/bootstrap.min.js') }}"></script>
-
         {% block javascripts %}{% endblock %}
     </body>
 </html>

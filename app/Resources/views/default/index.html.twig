@@ -1,28 +1,32 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-        <h2>Signaler un ascenseur en panne</h2>
-        {{ form_start(uploadPhotoForm) }}
-            <div class="row">
-              <div class="form-group">
-                  {{ form_label(uploadPhotoForm.imageFile, "Fichier :", {'label_attr': {'class': 'col-xs-4 control-label'}}) }}
-                  <div class="col-xs-8">
-                      {{ form_widget(uploadPhotoForm.imageFile,{'attr' : {'accept' : "image/*;capture=camera"}}) }}
-                  </div>
-              </div>
-        </div>
-        <hr />
+        <br/><br/><br/>
         <div class="row">
-            <div class="form-group">
-                <button type="submit" class="ajoutImage">Ajouter la photo</button>
+            <div class="col-sm-8 col-offset-xs-2">
+                <h1>Signaler un ascenseur en panne</h1>
             </div>
         </div>
-        {{ form_end(uploadPhotoForm) }}
-    </div>
-    <div id="photos">
-        {% for photo in photos %}
-        <img src="{{ photo.getBase64Src() }}" alt="{{ photo.originalName }}" class="img-thumbnail vignette" style="margin-bottom:0;" />
-        {% endfor %}
-    </div>
+        <div class="row">
+            <div class="col-sm-8 col-offset-xs-2">
+                {{ form_start(uploadPhotoForm) }}
+                    <div class="row">
+                      <div class="form-group">
+                          {{ form_label(uploadPhotoForm.imageFile, "Fichier :", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
+                          <div class="col-sm-8">
+                              {{ form_widget(uploadPhotoForm.imageFile,{'attr' : {'accept' : "image/*;capture=camera"}}) }}
+                          </div>
+                      </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="submit" class="ajoutImage btn btn-success btn-lg">Ajouter la photo</button>
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(uploadPhotoForm) }}
+            </div>
+        </div>
 {% endblock %}
