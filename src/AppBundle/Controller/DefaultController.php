@@ -39,28 +39,24 @@ class DefaultController extends Controller
        if ($request->isMethod('POST')) {
            $uploadPhotoForm->handleRequest($request);
            if($uploadPhotoForm->isValid()){
-           $data = $request->request->get('photo');
-           $lat = floatval($data['lat']);
-           $lon = floatval($data['lon']);
+           $data = $request->request->get('photos');
+           $lat = $data['lat'];
+           $lon = $data['lon'];
              $f = $uploadPhotoForm->getData()->getImageFile();
              if($f){
                  $dm->persist($photo);
                  $dm->flush();
                  $photo->convertBase64AndRemove();
+                 $photo->setLatLon($lat,$lon);
                  $dm->flush();
              }
-             $ascenseur = new Ascenseur();
-             $ascenseur->setLatLon($lat,$lon);
-             $ascenseur->addPhoto($photo);
-             $dm->persist($ascenseur);
-             $dm->flush();
-         }else{
-             var_dump("not valid"); exit;
-         }
-           $urlRetour = $this->generateUrl('signalement',array('ascenseurid' => $ascenseur->getId()));
-           return $this->redirect($urlRetour);
-       }
-   }
+               $urlRetour = $this->generateUrl('listing',array('id' => $photo->getId()));
+               return $this->redirect($urlRetour);
+            }
+        }
+    }
+
+
 
    /**
     * @Route("/signalement/{ascenseurid}", name="signalement")

@@ -219,4 +219,14 @@ class Signalement {
         return $this->telephone;
     }
 
+
+    /**
+     * Get id
+     *
+     * @return id $id
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }
