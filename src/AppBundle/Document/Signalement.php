@@ -6,7 +6,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
  * @MongoDB\Document
- * @MongoDB\Document(repositoryClass="AppBundle\Repository\AscenseurRepository")
+ * @MongoDB\Document(repositoryClass="AppBundle\Repository\SignalementRepository")
  */
 class Signalement {
 
