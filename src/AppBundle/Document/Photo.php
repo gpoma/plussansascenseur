@@ -77,6 +77,10 @@ class Photo
    protected $ascenseur;
 
 
+   /** @MongoDB\EmbedOne(targetDocument="GeoJson") */
+   public $localisation;
+
+
     /**
      * Set updatedAt
      *
@@ -351,5 +355,47 @@ class Photo
     public function getAscenseur()
     {
         return $this->ascenseur;
+    }
+
+    /**
+     * Set localisation
+     *
+     * @param AppBundle\Document\GeoJson $localisation
+     * @return $this
+     */
+    public function setLocalisation(\AppBundle\Document\GeoJson $localisation)
+    {
+        $this->localisation = $localisation;
+        return $this;
+    }
+
+    /**
+     * Get localisation
+     *
+     * @return AppBundle\Document\GeoJson $localisation
+     */
+    public function getLocalisation()
+    {
+        return $this->localisation;
+    }
+
+    public function setLatLon($lat,$lon){
+
+        $localisation = new GeoJson();
+        $localisation->setType("Point");
+
+        $coordinates = new Coordinates();
+        $coordinates->setX($lon);
+        $coordinates->setY($lat);
+        $localisation->setCoordinates($coordinates);
+
+        $this->setLocalisation($localisation);
+    }
+
+    public function getLon(){
+        return $this->getLocalisation()->getCoordinates()->getX();
+    }
+    public function getLat(){
+        return $this->getLocalisation()->getCoordinates()->getY();
     }
 }
