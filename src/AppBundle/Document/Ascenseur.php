@@ -104,4 +104,11 @@ class Ascenseur {
 
         $this->setLocalisation($localisation);
     }
+
+    public function getLon(){
+        return $this->getLocalisation()->getCoordinates()->getX();
+    }
+    public function getLat(){
+        return $this->getLocalisation()->getCoordinates()->getY();
+    }
 }

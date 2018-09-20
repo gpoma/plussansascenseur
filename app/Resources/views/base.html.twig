@@ -4,6 +4,9 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Plus sans Ascenseur{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('lib/leaflet/leaflet.css') }}">
+        <link rel="stylesheet" href="{{ asset('lib/leaflet-extra-markers/css/leaflet.extra-markers.css') }}">
+        <link rel="stylesheet" href="{{ asset('lib/main.css') }}">
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -14,10 +17,12 @@
             </div>
             {% block body %}{% endblock %}
         </div>
-        <script src="{{ asset('lib/jquery/jquery-3.3.1.slim.min.js') }}"></script>
-        <script src="{{ asset('lib/popper/popper.min.js') }}"></script>
-        <script src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('lib/js/main.js') }}"></script>     
+        <script type="text/javascript" src="{{ asset('lib/jquery/jquery-3.3.1.slim.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('lib/popper/popper.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('lib/leaflet/leaflet.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('lib/leaflet-extra-markers/js/leaflet.extra-markers.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('lib/js/main.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
