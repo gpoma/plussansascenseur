@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 class GeoJson {
 
     /**
-      * @MongoDB\String
+      * @MongoDB\Field(type="string")
       */
      protected $type;
 
