@@ -56,7 +56,9 @@ class DefaultController extends Controller
                  $dm->persist($ascenseur);
                  $dm->flush();
              }
-           }
+         }else{
+             var_dump("not valid"); exit;
+         }
            $urlRetour = $this->generateUrl('ascenseurs-liste');
            return $this->redirect($urlRetour);
        }
