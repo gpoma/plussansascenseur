@@ -1,24 +1,30 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "24eme/plussansascenseur",
+    "license": "AGPLV3",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
         "psr-4": {
             "AppBundle\\": "src/AppBundle"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
     },
     "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" },
-        "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "files": [
+            "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php"
+        ]
     },
     "require": {
         "php": ">=5.5.9",
+        "alcaeus/mongo-php-adapter": "^1.1",
         "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/mongodb-odm": "1.0.*@dev",
-        "doctrine/mongodb-odm-bundle": "^3.0",
-        "doctrine/orm": "^2.5",
+        "doctrine/mongodb-odm": "^1.2",
+        "doctrine/mongodb-odm-bundle": "^3.4",
         "incenteev/composer-parameter-handler": "^2.0",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^5.0.0",
@@ -50,10 +56,9 @@
         ]
     },
     "config": {
+        "sort-packages": true,
         "platform": {
-            "php": "5.5.9"
-        },
-        "sort-packages": true
+        }
     },
     "extra": {
         "symfony-app-dir": "app",
@@ -65,8 +70,6 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         },
-        "branch-alias": {
-            "dev-master": "3.4-dev"
-        }
+        "branch-alias": null
     }
 }
