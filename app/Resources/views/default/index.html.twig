@@ -9,7 +9,7 @@
         </div>
         <div class="row">
             <div class="col-sm-8 col-offset-xs-2">
-                {{ form_start(uploadPhotoForm) }}
+                {{ form_start(uploadPhotoForm,{ "enctype" : "multipart/form-data"}) }}
                     <div class="row">
                       <div class="form-group">
                           {{ form_label(uploadPhotoForm.imageFile, "Fichier :", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
@@ -17,7 +17,9 @@
                               {{ form_widget(uploadPhotoForm.imageFile,{'attr' : {'accept' : "image/*;capture=camera"}}) }}
                           </div>
                       </div>
-                </div>
+                  </div>
+                  {{ form_widget(uploadPhotoForm.lat) }}
+                  {{ form_widget(uploadPhotoForm.lon) }}
                 <hr />
                 <div class="row">
                     <div class="form-group">

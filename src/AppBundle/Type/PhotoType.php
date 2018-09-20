@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 
 
@@ -24,6 +24,12 @@ class PhotoType extends AbstractType {
             'required' => false,
             'allow_delete' => false,
             'label' => 'Choisir un document (.jpg, .png, .pdf)',
+        ))->add('lat', HiddenType::class, array(
+            'data' => 0,
+            'mapped' => false
+        ))->add('lon', HiddenType::class, array(
+            'data' => 0,
+            'mapped' => false
         ));
     }
 

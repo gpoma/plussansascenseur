@@ -38,6 +38,9 @@ class DefaultController extends Controller
            'method' => 'POST',
        ));
        if ($request->isMethod('POST')) {
+           $data = $request->request->get('photo');
+           $lat = $data['lat'];
+           $lon = $data['lon'];
            $uploadPhotoForm->handleRequest($request);
            if($uploadPhotoForm->isValid()){
              $f = $uploadPhotoForm->getData()->getImageFile();
@@ -45,6 +48,12 @@ class DefaultController extends Controller
                  $dm->persist($photo);
                  $dm->flush();
                  $photo->convertBase64AndRemove();
+                 $dm->flush();
+             }
+             if(floatval($lat) + floatval($lon)){
+                 $ascenseur = new Ascenseur();
+                 $ascenseur->setLatLon($lat,$lon);
+                 $dm->persist($ascenseur);
                  $dm->flush();
              }
            }

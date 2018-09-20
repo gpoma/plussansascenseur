@@ -3,7 +3,6 @@
 namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Behat\Transliterator\Transliterator;
 
 /**
  * @MongoDB\Document
@@ -16,6 +15,10 @@ class Ascenseur {
       */
      protected $id;
 
+
+     /** @MongoDB\EmbedOne(targetDocument="GeoJson") */
+    public $localisation;
+
      /**
      *  @MongoDB\ReferenceMany(targetDocument="Photo", mappedBy="ascenseur")
      */
@@ -26,7 +29,7 @@ class Ascenseur {
     {
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
@@ -65,5 +68,40 @@ class Ascenseur {
     public function getPhotos()
     {
         return $this->photos;
+    }
+
+    /**
+     * Set localisation
+     *
+     * @param AppBundle\Document\GeoJson $localisation
+     * @return self
+     */
+    public function setLocalisation(\AppBundle\Document\GeoJson $localisation)
+    {
+        $this->localisation = $localisation;
+        return $this;
+    }
+
+    /**
+     * Get localisation
+     *
+     * @return AppBundle\Document\GeoJson $localisation
+     */
+    public function getLocalisation()
+    {
+        return $this->localisation;
+    }
+
+    public function setLatLon($lat,$lon){
+
+        $localisation = new GeoJson();
+        $localisation->setType("Point");
+
+        $coordinates = new Coordinates();
+        $coordinates->setX($lon);
+        $coordinates->setY($lat);
+        $localisation->setCoordinates($coordinates);
+
+        $this->setLocalisation($localisation);
     }
 }
