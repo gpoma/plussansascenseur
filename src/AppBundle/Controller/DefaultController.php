@@ -49,11 +49,12 @@ class DefaultController extends Controller
                  $photo->convertBase64AndRemove();
                  $photo->setLatLon($lat,$lon);
                  $dm->flush();
-             }        
-           $urlRetour = $this->generateUrl('listing',array('id' => $photo->getId()));
-           return $this->redirect($urlRetour);
-       }
-   }
+             }
+               $urlRetour = $this->generateUrl('listing',array('id' => $photo->getId()));
+               return $this->redirect($urlRetour);
+            }
+        }
+    }
 
 
 
