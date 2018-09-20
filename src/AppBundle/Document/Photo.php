@@ -41,43 +41,43 @@ class Photo
    protected $imageFile;
 
    /**
-    * @MongoDB\String
+    * @MongoDB\Field(type="string")
     *
     */
    protected $imageName;
 
    /**
-    * @MongoDB\String
+    * @MongoDB\Field(type="string")
     *
     */
    protected $base64;
 
    /**
-    * @MongoDB\String
+    * @MongoDB\Field(type="string")
     *
     */
    protected $ext;
 
    /**
-    * @MongoDB\Int
+    * @MongoDB\Field(type="int")
     *
     */
    protected $imageSize;
 
    /**
-    * @MongoDB\Date
+    * @MongoDB\Field(type="date")
     *
     */
    protected $updatedAt;
 
    /**
-    * @MongoDB\String
+    * @MongoDB\Field(type="string")
     *
     */
    protected $titre;
 
    /**
-    * @MongoDB\String
+    * @MongoDB\Field(type="string")
     *
     */
    protected $originalName;
