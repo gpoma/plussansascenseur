@@ -22,7 +22,6 @@ class DefaultController extends Controller
             'action' => $this->generateUrl('photo_upload'),
             'method' => 'POST'
         ));
-        $photos = $dm->getRepository('AppBundle:Photo')->findAll();
 
         return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView(),"photos" => $photos));
     }
@@ -38,11 +37,11 @@ class DefaultController extends Controller
            'method' => 'POST',
        ));
        if ($request->isMethod('POST')) {
-           $data = $request->request->get('photo');
-           $lat = $data['lat'];
-           $lon = $data['lon'];
            $uploadPhotoForm->handleRequest($request);
            if($uploadPhotoForm->isValid()){
+           $data = $request->request->get('photo');
+           $lat = floatval($data['lat']);
+           $lon = floatval($data['lon']);
              $f = $uploadPhotoForm->getData()->getImageFile();
              if($f){
                  $dm->persist($photo);
@@ -50,41 +49,28 @@ class DefaultController extends Controller
                  $photo->convertBase64AndRemove();
                  $dm->flush();
              }
-             if(floatval($lat) + floatval($lon)){
-                 $ascenseur = new Ascenseur();
-                 $ascenseur->setLatLon($lat,$lon);
-                 $dm->persist($ascenseur);
-                 $dm->flush();
-             }
+             $ascenseur = new Ascenseur();
+             $ascenseur->setLatLon($lat,$lon);
+             $dm->persist($ascenseur);
+             $dm->flush();
          }else{
              var_dump("not valid"); exit;
          }
-           $urlRetour = $this->generateUrl('ascenseurs-liste');
+           $urlRetour = $this->generateUrl('signalement',array('ascenseurid' => $ascenseur->getId()));
            return $this->redirect($urlRetour);
        }
    }
 
    /**
-    * @Route("/ascenseurs-liste", name="ascenseurs-liste")
+    * @Route("/signalement/{ascenseurid}", name="signalement")
     */
-   public function ascenseursListeAction(Request $request)
+   public function singalementAction(Request $request,$ascenseurid)
    {
        $dm = $this->get('doctrine_mongodb')->getManager();
-       $ascenseur = new Ascenseur();
-       $dm->persist($ascenseur);
-       $dm->flush();
-       return $this->redirectToRoute('homepage');
+       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
+       // signalement = new Signalement();
+       return $this->render('default/signalement.html.twig',array("ascenseur" => $ascenseur));
    }
 
-    /**
-     * @Route("/creation-ascenseur", name="creation_ascenseur")
-     */
-    public function createAscenseurAction(Request $request)
-    {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $ascenseur = new Ascenseur();
-        $dm->persist($ascenseur);
-        $dm->flush();
-        return $this->redirectToRoute('homepage');
-    }
+
 }

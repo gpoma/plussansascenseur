@@ -70,17 +70,6 @@ class Photo
     */
    protected $updatedAt;
 
-   /**
-    * @MongoDB\Field(type="string")
-    *
-    */
-   protected $titre;
-
-   /**
-    * @MongoDB\Field(type="string")
-    *
-    */
-   protected $originalName;
 
    /**
     * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="photos", simple=true)
@@ -110,27 +99,6 @@ class Photo
         return $this->updatedAt;
     }
 
-    /**
-     * Set titre
-     *
-     * @param string $titre
-     * @return $this
-     */
-    public function setTitre($titre)
-    {
-        $this->titre = $titre;
-        return $this;
-    }
-
-    /**
-     * Get titre
-     *
-     * @return string $titre
-     */
-    public function getTitre()
-    {
-        return $this->titre;
-    }
 
     /**
      * Get id
@@ -200,9 +168,6 @@ class Photo
 
       if ($imageFile && !$this->getBase64()) {
           $this->updatedAt = new \DateTime('now');
-      }
-      if($imageFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile && $imageFile->getClientOriginalName()){
-         $this->setOriginalName($imageFile->getClientOriginalName());
       }
     }
 
@@ -308,15 +273,12 @@ class Photo
     public function convertBase64AndRemove($resizeWidth = false){
         $file = '../data/'.$this->getImageName();
         $this->setExt(mime_content_type($file));
-        if($resizeWidth){
-            list($width, $height, $type, $attr) = getimagesize(realpath($file));
-            $attent_width = $resizeWidth;
-            $attent_height = ($attent_width * $height) / $attent_width;
-            $dstImg = $this->resize_image(realpath($file), $attent_width, $attent_height);
-            $this->setBase64(base64_encode(file_get_contents(realpath($file))));
-        }else{
-            $this->setBase64(base64_encode(file_get_contents(realpath($file))));
-        }
+        list($width, $height, $type, $attr) = getimagesize(realpath($file));
+        $attent_width = ($resizeWidth)? $resizeWidth : $width;
+        $attent_height = ($attent_width * $height) / $attent_width;
+        $dstImg = $this->resize_image(realpath($file), $attent_width, $attent_height);
+        $this->setBase64(base64_encode(file_get_contents(realpath($file))));
+
         $this->removeFile();
     }
 
