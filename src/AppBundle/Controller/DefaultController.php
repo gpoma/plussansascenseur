@@ -23,7 +23,7 @@ class DefaultController extends Controller
             'method' => 'POST'
         ));
 
-        return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView(),"photos" => $photos));
+        return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView()));
     }
 
     /**
@@ -51,6 +51,7 @@ class DefaultController extends Controller
              }
              $ascenseur = new Ascenseur();
              $ascenseur->setLatLon($lat,$lon);
+             $ascenseur->addPhoto($photo);
              $dm->persist($ascenseur);
              $dm->flush();
          }else{
@@ -70,6 +71,16 @@ class DefaultController extends Controller
        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
        // signalement = new Signalement();
        return $this->render('default/signalement.html.twig',array("ascenseur" => $ascenseur));
+   }
+
+   /**
+    * @Route("/ascenseur/{ascenseurid}", name="ascenseur")
+    */
+   public function ascenseurAction(Request $request,$ascenseurid)
+   {
+       $dm = $this->get('doctrine_mongodb')->getManager();
+       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
+       return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur));
    }
 
 
