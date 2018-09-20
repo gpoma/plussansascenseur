@@ -18,3 +18,16 @@
 web/bundles/
 var
 composer.phar
+
+/web/bundles/
+/app/bootstrap.php.cache
+/var/cache/*
+/app/config/parameters.yml
+/var/logs/*
+!var/cache/.gitkeep
+!var/logs/.gitkeep
+/app/phpunit.xml
+/build/
+/vendor/
+/composer.phar
+/data/
