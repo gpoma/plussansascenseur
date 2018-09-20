@@ -39,28 +39,24 @@ class DefaultController extends Controller
        if ($request->isMethod('POST')) {
            $uploadPhotoForm->handleRequest($request);
            if($uploadPhotoForm->isValid()){
-           $data = $request->request->get('photo');
-           $lat = floatval($data['lat']);
-           $lon = floatval($data['lon']);
+           $data = $request->request->get('photos');
+           $lat = $data['lat'];
+           $lon = $data['lon'];
              $f = $uploadPhotoForm->getData()->getImageFile();
              if($f){
                  $dm->persist($photo);
                  $dm->flush();
                  $photo->convertBase64AndRemove();
+                 $photo->setLatLon($lat,$lon);
                  $dm->flush();
              }
-             $ascenseur = new Ascenseur();
-             $ascenseur->setLatLon($lat,$lon);
-             $ascenseur->addPhoto($photo);
-             $dm->persist($ascenseur);
-             $dm->flush();
-         }else{
-             var_dump("not valid"); exit;
-         }
-           $urlRetour = $this->generateUrl('signalement',array('ascenseurid' => $ascenseur->getId()));
-           return $this->redirect($urlRetour);
-       }
-   }
+               $urlRetour = $this->generateUrl('listing',array('id' => $photo->getId()));
+               return $this->redirect($urlRetour);
+            }
+        }
+    }
+
+
 
    /**
     * @Route("/signalement/{ascenseurid}", name="signalement")
@@ -80,8 +76,27 @@ class DefaultController extends Controller
    {
        $dm = $this->get('doctrine_mongodb')->getManager();
        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
-       return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur));
+       return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
    }
+
+   private function buildGeoJson($ascenseur) {
+        $geojson = new \stdClass();
+        $geojson->type = "FeatureCollection";
+        $geojson->features = array();
+
+        $feature = new \stdClass();
+        $feature->type = "Feature";
+        $feature->properties = new \stdClass();
+        $feature->properties->_id = $ascenseur->getId();
+        $feature->properties->icon = 'ascenseur';
+
+        $feature->geometry = new \stdClass();
+        $feature->geometry->type = "Point";
+        $feature->geometry->coordinates = array($ascenseur->getLon(), $ascenseur->getLat());
+
+        $geojson->features[] = $feature;
+        return $geojson;
+    }
 
 
 }

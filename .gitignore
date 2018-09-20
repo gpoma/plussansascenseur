@@ -10,3 +10,6 @@
 /vendor/
 /composer.phar
 /data/
+var/logs
+var/cache
+composer.lock
