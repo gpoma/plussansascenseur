@@ -50,7 +50,6 @@
         ]
     },
     "config": {
-        "bin-dir": "bin",
         "sort-packages": true,
         "platform": {
             "ext-mongo": "1.6.16"
