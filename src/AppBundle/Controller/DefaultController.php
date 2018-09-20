@@ -80,8 +80,27 @@ class DefaultController extends Controller
    {
        $dm = $this->get('doctrine_mongodb')->getManager();
        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
-       return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur));
+       return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
    }
+
+   private function buildGeoJson($ascenseur) {
+        $geojson = new \stdClass();
+        $geojson->type = "FeatureCollection";
+        $geojson->features = array();
+
+        $feature = new \stdClass();
+        $feature->type = "Feature";
+        $feature->properties = new \stdClass();
+        $feature->properties->_id = $ascenseur->getId();
+        $feature->properties->icon = 'ascenseur';
+
+        $feature->geometry = new \stdClass();
+        $feature->geometry->type = "Point";
+        $feature->geometry->coordinates = array($ascenseur->getLon(), $ascenseur->getLat());
+
+        $geojson->features[] = $feature;
+        return $geojson;
+    }
 
 
 }

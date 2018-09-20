@@ -1,5 +1,6 @@
     $(document).ready(function ()
     {
+        $.initGeolocalisation = function (){
         var debug = true;
 
         var options = {
@@ -26,4 +27,48 @@
         };
 
         navigator.geolocation.getCurrentPosition(success, error, options);
+    };
+
+        $.initMap = function () {
+        if ($('#map').length) {
+            var lat = 48.8593829;
+            var lon = 2.347227;
+            var zoom = 0;
+            if ($('#map').attr('data-lat') && $('#map').attr('data-lon')) {
+                lat = $('#map').data('lat');
+                lon = $('#map').data('lon');
+            }
+            if($('#map').attr('data-zoom')){
+                zoom = $('#map').data('zoom');
+            }
+
+            var map = L.map('map').setView([lat, lon], zoom);
+
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var geojson = JSON.parse($('#map').attr('data-geojson'));
+            var markers = [];
+
+            var ascenseurIcon = L.icon({
+                iconUrl: '../../elevator_inv_32px.svg',
+                iconSize: [32, 32]
+            });
+            L.geoJson(geojson,
+                    {
+                        pointToLayer: function (feature, latlng) {
+                            var marker = L.marker(latlng, {icon: ascenseurIcon});
+                            markers[feature.properties._id] = marker;
+                            return marker;
+                        }
+                    }
+            ).addTo(map);
+
+            }
+        };
+
+        $.initGeolocalisation();
+        $.initMap();
+
       });
