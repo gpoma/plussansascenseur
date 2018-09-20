@@ -58,15 +58,16 @@ class SignalementTest extends KernelTestCase
     }
 
     public function testForm() {
-        $form = $this->formFactory->create(SignalementType::class, new Signalement());
+        $signalement = new Signalement();
+        $form = $this->formFactory->create(SignalementType::class, $signalement);
 
         $form->submit(array(
                         'etage' => "9",
                         'usage' => 'HABITANT',
                         'etageAtteint' => "0",
+                        'duree' => "30 minutes",
                         'commentaire' => "Je ne suis pas content",
                         'abonnement' => "1",
-                        'duree' => "30 minutes",
                         'pseudo' => 'test',
                         'email' => 'contact@24eme.fr',
                         'telephone' => '0102030405',
@@ -74,6 +75,16 @@ class SignalementTest extends KernelTestCase
 
         $this->assertTrue($form->isSubmitted(), true);
         $this->assertTrue($form->isValid(), true);
+
+        $this->assertEquals($signalement->getEtage(), "9");
+        $this->assertEquals($signalement->getUsage(), "HABITANT");
+        $this->assertEquals($signalement->getEtageAtteint(), false);
+        $this->assertEquals($signalement->getDuree(), "30 minutes");
+        $this->assertEquals($signalement->getCommentaire(), "Je ne suis pas content");
+        $this->assertEquals($signalement->getAbonnement(), true);
+        $this->assertEquals($signalement->getPseudo(), "test");
+        $this->assertEquals($signalement->getEmail(), "contact@24eme.fr");
+        $this->assertEquals($signalement->getTelephone(), "0102030405");
     }
 
 }

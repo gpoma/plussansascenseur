@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Document\Photo;
 use AppBundle\Type\PhotoType;
+use AppBundle\Type\SignalementType;
+use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
 
 class DefaultController extends Controller
@@ -39,34 +41,54 @@ class DefaultController extends Controller
        if ($request->isMethod('POST')) {
            $uploadPhotoForm->handleRequest($request);
            if($uploadPhotoForm->isValid()){
-           $data = $request->request->get('photos');
-           $lat = $data['lat'];
-           $lon = $data['lon'];
+           $data = $request->request->get('photo');
+           $lat = floatval($data['lat']);
+           $lon = floatval($data['lon']);
              $f = $uploadPhotoForm->getData()->getImageFile();
              if($f){
                  $dm->persist($photo);
                  $dm->flush();
                  $photo->convertBase64AndRemove();
-                 $photo->setLatLon($lat,$lon);
                  $dm->flush();
              }
-               $urlRetour = $this->generateUrl('listing',array('id' => $photo->getId()));
-               return $this->redirect($urlRetour);
-            }
-        }
-    }
-
-
+             $ascenseur = new Ascenseur();
+             $ascenseur->setLatLon($lat,$lon);
+             $ascenseur->addPhoto($photo);
+             $dm->persist($ascenseur);
+             $dm->flush();
+         }else{
+             var_dump("not valid"); exit;
+         }
+           $urlRetour = $this->generateUrl('signalement',array('ascenseurid' => $ascenseur->getId()));
+           return $this->redirect($urlRetour);
+       }
+   }
 
    /**
-    * @Route("/signalement/{ascenseurid}", name="signalement")
+    * @Route("/signalement", name="signalement")
     */
-   public function singalementAction(Request $request,$ascenseurid)
+   public function signalement(Request $request)
    {
-       $dm = $this->get('doctrine_mongodb')->getManager();
-       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
-       // signalement = new Signalement();
-       return $this->render('default/signalement.html.twig',array("ascenseur" => $ascenseur));
+        $signalement = new Signalement();
+        $form = $this->createForm(SignalementType::class, new Signalement(), array('method' => Request::METHOD_POST));
+
+        if($request->getMethod() != Request::METHOD_POST) {
+
+            return $this->render('default/signalement.html.twig', array("form" => $form->createView()));
+        }
+
+        $form->handleRequest($request);
+
+        if(!$form->isSubmitted() || !$form->isValid()) {
+            return $this->render('default/signalement.html.twig', array("form" => $form->createView()));
+        }
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $dm->persist($signalement);
+        $dm->flush();
+
+        return $this->redirect($this->generateUrl('homepage'));
    }
 
    /**

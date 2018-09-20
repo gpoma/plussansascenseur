@@ -18,15 +18,15 @@ class SignalementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('etage', TextType::class)
+            ->add('etage', TextType::class, array('required' => false))
             ->add('usage', ChoiceType::class, array('choices' => array_flip(Signalement::$usageList), 'choices_as_values' => true))
-            ->add('etageAtteint', RadioType::class)
-            ->add('duree', TextType::class)
-            ->add('commentaire', TextareaType::class)
-            ->add('abonnement', CheckboxType::class)
-            ->add('pseudo', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('telephone', TextType::class)
+            ->add('etageAtteint', ChoiceType::class, array('choices' => $this->getChoicesEtageAtteint(), 'choices_as_values' => true, 'expanded' => true, 'required' => false))
+            ->add('duree', TextType::class, array('required' => false))
+            ->add('commentaire', TextareaType::class, array('required' => false))
+            ->add('abonnement', CheckboxType::class, array('required' => false))
+            ->add('pseudo', TextType::class, array('required' => false))
+            ->add('email', EmailType::class, array('required' => false))
+            ->add('telephone', TextType::class, array('required' => false))
         ;
     }
 
@@ -35,5 +35,11 @@ class SignalementType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Signalement::class,
         ]);
+    }
+
+    public function getChoicesEtageAtteint() {
+
+        return array("J'ai pu rejoindre cet étage" => "",
+                     "Je n'ai pas pu rejoindre cet étage" => "1");
     }
 }
