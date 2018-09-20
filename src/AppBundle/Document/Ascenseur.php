@@ -10,6 +10,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  */
 class Ascenseur {
 
+    const STATUT_ENPANNE = "ENPANNE";
+
     /**
       * @MongoDB\Id(strategy="AUTO")
       */
@@ -24,10 +26,23 @@ class Ascenseur {
      */
     protected $photos;
 
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $statut;
+
+    /**
+     *  @MongoDB\EmbedMany(targetDocument="Evennement")
+     *
+     */
+    protected $historique;
+
 
     public function __construct()
     {
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setStatut(self::STATUT_ENPANNE);
     }
 
     /**
@@ -110,5 +125,57 @@ class Ascenseur {
     }
     public function getLat(){
         return $this->getLocalisation()->getCoordinates()->getY();
+    }
+
+    /**
+     * Set statut
+     *
+     * @param string $statut
+     * @return $this
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+        return $this;
+    }
+
+    /**
+     * Get statut
+     *
+     * @return string $statut
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * Add historique
+     *
+     * @param AppBundle\Document\Evennement $historique
+     */
+    public function addHistorique(\AppBundle\Document\Evennement $historique)
+    {
+        $this->historique[] = $historique;
+    }
+
+    /**
+     * Remove historique
+     *
+     * @param AppBundle\Document\Evennement $historique
+     */
+    public function removeHistorique(\AppBundle\Document\Evennement $historique)
+    {
+        $this->historique->removeElement($historique);
+    }
+
+    /**
+     * Get historique
+     *
+     * @return \Doctrine\Common\Collections\Collection $historique
+     */
+    public function getHistorique()
+    {
+        return $this->historique;
     }
 }
