@@ -5,6 +5,7 @@ namespace Tests;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Yaml\Yaml;
 use AppBundle\Document\Ascenseur;
+use AppBundle\Document\Photo;
 
 class AscenseurTest extends KernelTestCase
 {
@@ -38,26 +39,26 @@ class AscenseurTest extends KernelTestCase
         $this->assertEquals($ascenseur->getLocalisation()->getCoordinates()->getX(), $lon);
         $this->assertEquals($ascenseur->getLocalisation()->getCoordinates()->getY(), $lat);
 
-        
+        $ascenseur = $this->odm->find('AppBundle\Document\Ascenseur', $ascenseur->getId());
+        $nbPhotos = 5;
+        for ($i=0; $i < $nbPhotos; $i++) {
+            $photo = new Photo();
+            $photo->setLatLon($lat,$lon);
+            $photo->setBase64(base64_encode(file_get_contents(realpath("web/psa_logo_300x300.png"))));
+            $this->odm->persist($photo);
+            $photo->setAscenseur($ascenseur);
+        }
+        $this->odm->flush();
+
+        $photos = $this->odm->getRepository('AppBundle:Photo')->findAll();
+        $ascenseur = $this->odm->getRepository('AppBundle:Ascenseur')->find($ascenseur->getId());
+
+        $this->assertTrue(count($photos) >= $nbPhotos);
+
+
     }
 
     public function testForm() {
-        // $form = $this->formFactory->create(SignalementType::class, new Signalement());
-        //
-        // $form->submit(array(
-        //                 'etage' => "9",
-        //                 'usage' => 'HABITANT',
-        //                 'etageAtteint' => "0",
-        //                 'commentaire' => "Je ne suis pas content",
-        //                 'abonnement' => "1",
-        //                 'duree' => "30 minutes",
-        //                 'pseudo' => 'test',
-        //                 'email' => 'contact@24eme.fr',
-        //                 'telephone' => '0102030405',
-        //               ));
-        //
-        // $this->assertTrue($form->isSubmitted(), true);
-        // $this->assertTrue($form->isValid(), true);
     }
 
 }

@@ -5,7 +5,6 @@ namespace AppBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * @MongoDB\Document
  * @MongoDB\Document(repositoryClass="AppBundle\Repository\AscenseurRepository")
  */
 class Ascenseur {
@@ -19,7 +18,7 @@ class Ascenseur {
 
 
      /** @MongoDB\EmbedOne(targetDocument="GeoJson") */
-    public $localisation;
+    protected $localisation;
 
      /**
      *  @MongoDB\ReferenceMany(targetDocument="Photo", mappedBy="ascenseur")
