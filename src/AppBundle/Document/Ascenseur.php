@@ -29,6 +29,60 @@ class Ascenseur {
      * @MongoDB\Field(type="string")
      *
      */
+    protected $adresse;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $codePostal;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $commune;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $emplacement;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $reference;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $marque;
+
+    /**
+     * @MongoDB\Field(type="int")
+     *
+     */
+    protected $etageMin;
+
+    /**
+     * @MongoDB\Field(type="int")
+     *
+     */
+    protected $etageMax;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $telephoneDepannage;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
     protected $statut;
 
     /**
@@ -121,10 +175,112 @@ class Ascenseur {
     }
 
     public function getLon(){
+
         return $this->getLocalisation()->getCoordinates()->getX();
     }
+
     public function getLat(){
+
         return $this->getLocalisation()->getCoordinates()->getY();
+    }
+
+    public function setAdresse($adresse){
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getAdresse() {
+
+        return $this->adresse;
+    }
+
+    public function setCodePostal($codePostal){
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getCodePostal() {
+
+        return $this->codePostal;
+    }
+
+    public function setCommune($commune){
+        $this->commune = $commune;
+
+        return $this;
+    }
+
+    public function getCommune() {
+
+        return $this->commune;
+    }
+
+    public function setEmplacement($emplacement){
+        $this->emplacement = $emplacement;
+
+        return $this;
+    }
+
+    public function getEmplacement() {
+
+        return $this->emplacement;
+    }
+
+    public function setReference($reference){
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getReference() {
+
+        return $this->reference;
+    }
+
+    public function setMarque($marque){
+        $this->marque = $marque;
+
+        return $this;
+    }
+
+    public function getMarque() {
+
+        return $this->marque;
+    }
+
+    public function setEtageMin($etageMin){
+        $this->etageMin = $etageMin;
+
+        return $this;
+    }
+
+    public function getEtageMin() {
+
+        return $this->etageMin;
+    }
+
+    public function setEtageMax($etageMax){
+        $this->etageMax = $etageMax;
+
+        return $this;
+    }
+
+    public function getEtageMax() {
+
+        return $this->etageMax;
+    }
+
+    public function setTelephoneDepannage($telephoneDepannage){
+        $this->telephoneDepannage = $telephoneDepannage;
+
+        return $this;
+    }
+
+    public function getTelephoneDepannage() {
+
+        return $this->telephoneDepannage;
     }
 
     /**

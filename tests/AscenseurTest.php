@@ -29,6 +29,15 @@ class AscenseurTest extends KernelTestCase
         $lon = 2.3530048999999735;
 
         $ascenseur->setLatLon($lat,$lon);
+        $ascenseur->setAdresse("102 rue des Poissonniers");
+        $ascenseur->setCodePostal("75018");
+        $ascenseur->setCommune("Paris");
+        $ascenseur->setEmplacement("Batiment A Ascenseur de droite");
+        $ascenseur->setReference("123456789");
+        $ascenseur->setMarque("Otis");
+        $ascenseur->setEtageMin(-2);
+        $ascenseur->setEtageMax(9);
+        $ascenseur->setTelephoneDepannage("0102030405");
 
         $this->odm->persist($ascenseur);
         $this->odm->flush();
@@ -38,6 +47,15 @@ class AscenseurTest extends KernelTestCase
         $this->assertNotNull($ascenseur->getLocalisation());
         $this->assertEquals($ascenseur->getLocalisation()->getCoordinates()->getX(), $lon);
         $this->assertEquals($ascenseur->getLocalisation()->getCoordinates()->getY(), $lat);
+        $this->assertEquals($ascenseur->getAdresse(), "102 rue des Poissonniers");
+        $this->assertEquals($ascenseur->getCodePostal(), "75018");
+        $this->assertEquals($ascenseur->getCommune(), "Paris");
+        $this->assertEquals($ascenseur->getEmplacement(), "Batiment A Ascenseur de droite");
+        $this->assertEquals($ascenseur->getReference(), "123456789");
+        $this->assertEquals($ascenseur->getMarque(), "Otis");
+        $this->assertEquals($ascenseur->getEtageMin(), -2);
+        $this->assertEquals($ascenseur->getEtageMax(), 9);
+        $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
 
         $ascenseur = $this->odm->find('AppBundle\Document\Ascenseur', $ascenseur->getId());
         $nbPhotos = 5;
