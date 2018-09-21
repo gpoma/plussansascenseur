@@ -68,16 +68,17 @@ class DefaultController extends Controller
    /**
     * @Route("/listing", name="listing")
     */
-   public function listingAction(Request $request, $photoid = null)
+   public function listingAction(Request $request)
    {
+        return $this->redirect($this->generateUrl('signalement', array('photo' => $request->get('photo'))));
 		$dm = $this->get('doctrine_mongodb')->getManager();
-		
+
 		$coordinates = $request->get('coordinates', null);
-		$photoid = $request->get('photoid', null);
-		
+		$photoid = $request->get('photo', null);
+
 		if ($photoid && !$coordinates) {
 			if ($photo = $dm->getRepository('AppBundle:Photo')->findOneById($photoid)) {
-				
+
 			} else {
 				$photoid = null;
 			}
