@@ -5,8 +5,7 @@
 <h2>Ascenseur<br />
 <small>{{ ascenseur.emplacement }}<br />{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}</small>
 </h2>
-<hr />
-<div class="row">
+<div class="row" style="margin-top: 20px;">
     <div class="col-sm-6">
         {% set lat = ascenseur.lat  %}
         {% set lon = ascenseur.lon  %}
@@ -22,8 +21,7 @@
         </div>
     </div>
 </div>
-<hr />
-<table class="table table-bordered table-striped table-condensed">
+<table class="table table-bordered table-condensed" style="margin-top: 20px;">
     <tr>
         <th class="col-3">Référence</th>
         <td class="col-3">{{ ascenseur.reference }}</td>
@@ -39,10 +37,10 @@
 </table>
 <hr />
 <div class="row">
-<div class="col-sm-8 col-6">
+<div class="col-sm-8">
     <button class="btn btn-danger btn-lg btn-block">{{ ascenseur.statut }}</button>
 </div>
-<div class="col-sm-4 col-6">
+<div class="col-sm-4">
     <button class="btn btn-link btn-lg btn-block">Signaler un changement</button>
 </div>
 </div>
