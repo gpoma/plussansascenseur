@@ -4,25 +4,43 @@
 
 {% block body %}
 
-<h2>Signalement de la panne d'ascenseur</h2>
+<h2>Signaler la panne d'ascenseur</h2>
 
 <p class="text-muted">Nous vous invitons à compléter quelques informations toutes facultatives afin d'en savoir plus sur votre situation et les préjudices subits</p>
 
 {{ form_start(form) }}
     L'ascenseur est en panne depuis : <a href="">Ajourd'hui</a>
     <hr />
+    <h3>Votre usage de l'ascenseur</h3>
     {{ form_row(form.usage) }}
-    {{ form_row(form.etage) }}
+    <div class="form-group">
+        {{ form_label(form.etage) }}
+        <div class="input-group">
+            {{ form_widget(form.etage) }}
+            <div class="input-group-append"><span class="input-group-text">Numéro de l'étage</span></div>
+        </div>
+        <small class="form-text text-muted">Par exemple -2 ou 9</small>
+    </div>
     {{ form_row(form.etageAtteint) }}
-    {{ form_row(form.duree) }}
+    <div class="form-group">
+        {{ form_label(form.duree) }}
+        <div class="input-group">
+            {{ form_widget(form.duree) }}
+            <div class="input-group-append"><span class="input-group-text">Durée</span></div>
+        </div>
+        <small class="form-text text-muted">Par exemple 30 min ou 1h</small>
+    </div>
     {{ form_row(form.commentaire) }}
     <hr />
-    {{ form_row(form.abonnement) }}
+    <h3>Vous</h3>
     {{ form_row(form.pseudo) }}
+    {{ form_row(form.abonnement) }}
+    <div class="d-none">
     {{ form_row(form.email) }}
     {{ form_row(form.telephone) }}
-
-    <div style="margin-top: 30px;">
+    </div>
+    <hr />
+    <div>
     <button type="submit" class="btn btn-block btn-success">Soumettre le signalement</button>
     </div>
 {{ form_end(form) }}

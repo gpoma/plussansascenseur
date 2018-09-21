@@ -19,11 +19,11 @@ class SignalementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('usage', ChoiceType::class, array('choices' => array_flip(Signalement::$usageList), 'choices_as_values' => true, 'label' => "Pourquoi utilisez-vous cet ascenseur :"))
-            ->add('etage', NumberType::class, array('required' => false, 'label' => "Quelle étage souhaitez-vous atteindre :", "attr" => array("placeholder" => "Numéro de l'étage")))
-            ->add('etageAtteint', ChoiceType::class, array('choices' => $this->getChoicesEtageAtteint(), 'choices_as_values' => true, 'label' => "Avez-vous pu le rejoindre :"))
-            ->add('duree', TextType::class, array('required' => false, 'label' => 'Combien de temps avez-vous mis :', "attr" => array("placeholder" => "Par exemple : 30 min, 1h")))
-            ->add('commentaire', TextareaType::class, array('required' => false, 'label' => "Dites-nous pourquoi :"))
+            ->add('usage', ChoiceType::class, array('choices' => array_flip(Signalement::$usageList), 'choices_as_values' => true, 'required' => false, 'label' => "Pourquoi comptiez-vous utiliser cet ascenseur :"))
+            ->add('etage', NumberType::class, array('required' => false, 'label' => "Quelle étage souhaitez-vous atteindre :", "attr" => array("placeholder" => "")))
+            ->add('etageAtteint', ChoiceType::class, array('choices' => $this->getChoicesEtageAtteint(), 'choices_as_values' => true, 'required' => false, 'label' => "Avez-vous pu rejoindre votre étage :"))
+            ->add('duree', TextType::class, array('required' => false, 'label' => 'Combien de temps avez-vous mis :', "attr" => array("placeholder" => "")))
+            ->add('commentaire', TextareaType::class, array('required' => false, 'label' => "Dites-nous en plus :"))
             ->add('pseudo', TextType::class, array('required' => false, 'label' => "Votre nom / pseudo :"))
             ->add('abonnement', CheckboxType::class, array('required' => false, 'label' => "Être tenu-e informé-e"))
             ->add('email', EmailType::class, array('required' => false, 'label' => "Email :"))
