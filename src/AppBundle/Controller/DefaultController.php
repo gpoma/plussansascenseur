@@ -90,6 +90,10 @@ class DefaultController extends Controller
     */
    public function signalementAction(Request $request)
    {
+        $ascenseur = new Ascenseur();
+        if($request->get('ascenseur_id')) {
+           $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($request->get('ascenseur_id'));
+        }
         $signalement = new Signalement(new Ascenseur());
         $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST));
 
