@@ -22,7 +22,7 @@ class SignalementType extends AbstractType
             ->add('usage', ChoiceType::class, array('choices' => array_flip(Signalement::$usageList), 'choices_as_values' => true, 'label' => "Pourquoi utilisez-vous cet ascenseur :"))
             ->add('etage', NumberType::class, array('required' => false, 'label' => "Quelle étage souhaitez-vous atteindre :", "attr" => array("placeholder" => "Numéro de l'étage")))
             ->add('etageAtteint', ChoiceType::class, array('choices' => $this->getChoicesEtageAtteint(), 'choices_as_values' => true, 'label' => "Avez-vous pu le rejoindre :"))
-            ->add('duree', TextType::class, array('required' => false, 'label' => 'Combien de temps avez-vous mis :', "attr" => array("placeholder" => "Durée, par exemple 30 min, 1h")))
+            ->add('duree', TextType::class, array('required' => false, 'label' => 'Combien de temps avez-vous mis :', "attr" => array("placeholder" => "Par exemple : 30 min, 1h")))
             ->add('commentaire', TextareaType::class, array('required' => false, 'label' => "Dites-nous pourquoi :"))
             ->add('pseudo', TextType::class, array('required' => false, 'label' => "Votre nom / pseudo :"))
             ->add('abonnement', CheckboxType::class, array('required' => false, 'label' => "Étre tenu informé-e"))
