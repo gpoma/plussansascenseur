@@ -86,7 +86,7 @@ class Ascenseur {
     protected $statut;
 
     /**
-     *  @MongoDB\EmbedMany(targetDocument="Evennement")
+     *  @MongoDB\EmbedMany(targetDocument="Evenement")
      *
      */
     protected $historique;
@@ -306,26 +306,6 @@ class Ascenseur {
     }
 
     /**
-     * Add historique
-     *
-     * @param AppBundle\Document\Evennement $historique
-     */
-    public function addHistorique(\AppBundle\Document\Evennement $historique)
-    {
-        $this->historique[] = $historique;
-    }
-
-    /**
-     * Remove historique
-     *
-     * @param AppBundle\Document\Evennement $historique
-     */
-    public function removeHistorique(\AppBundle\Document\Evennement $historique)
-    {
-        $this->historique->removeElement($historique);
-    }
-
-    /**
      * Get historique
      *
      * @return \Doctrine\Common\Collections\Collection $historique
@@ -333,5 +313,14 @@ class Ascenseur {
     public function getHistorique()
     {
         return $this->historique;
+    }
+
+    public function addEvenement($date, $infos, $auteur) {
+        $evenement = new Evenement();
+        $evenement->setDate($date);
+        $evenement->setCommentaire($infos);
+        $evenement->setAuteur($auteur);
+
+        $this->historique[] = $evenement;
     }
 }
