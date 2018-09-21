@@ -32,36 +32,37 @@ class DefaultController extends Controller
      * @Route("/photo/upload", name="photo_upload")
      */
     public function photoUploadAction(Request $request) {
-       $dm = $this->get('doctrine_mongodb')->getManager();
-       $photo = new Photo();
-       $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, array(
+        if (!$request->isMethod('POST')) {
+            throw new NotFoundHttpException();
+        }
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $photo = new Photo();
+
+        $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, array(
            'action' => $this->generateUrl('photo_upload'),
            'method' => 'POST',
-       ));
-       if ($request->isMethod('POST')) {
-           $uploadPhotoForm->handleRequest($request);
-           if($uploadPhotoForm->isValid()){
-           $data = $request->request->get('photo');
-           $lat = floatval($data['lat']);
-           $lon = floatval($data['lon']);
-             $f = $uploadPhotoForm->getData()->getImageFile();
-             if($f){
-                 $dm->persist($photo);
-                 $dm->flush();
-                 $photo->convertBase64AndRemove();
-                 $dm->flush();
-             }
-             $ascenseur = new Ascenseur();
-             $ascenseur->setLatLon($lat,$lon);
-             $ascenseur->addPhoto($photo);
-             $dm->persist($ascenseur);
-             $dm->flush();
-         }else{
-             var_dump("not valid"); exit;
-         }
-           $urlRetour = $this->generateUrl('signalement',array('ascenseurid' => $ascenseur->getId()));
-           return $this->redirect($urlRetour);
-       }
+        ));
+
+        $uploadPhotoForm->handleRequest($request);
+
+        if(!$uploadPhotoForm->isValid()) {
+
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+
+        $data = $request->request->get('photo');
+        $lat = floatval($data['lat']);
+        $lon = floatval($data['lon']);
+        $f = $uploadPhotoForm->getData()->getImageFile();
+
+        $photo->setLatLon($lat,$lon);
+
+        $dm->persist($photo);
+        $dm->flush();
+        $photo->convertBase64AndRemove();
+        $dm->flush();
+
+        return $this->redirect($this->generateUrl('listing', array('photo' => $photo->getId())));
    }
 
    /**
