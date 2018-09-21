@@ -67,8 +67,56 @@
 
             }
         };
+        
+        $.initAddrSearch = function() {
+        	
 
+            if (!$('#addrSearch').length) {
+                return;
+            }
+            
+
+            var target = $('#addrSearch').data('target');
+        	
+        	var address = new Bloodhound({
+        		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        		queryTokenizer: Bloodhound.tokenizers.whitespace,
+        		remote: {
+        			url: searchUri,
+                    wildcard: '_query_',
+                    transform: function(response) {return response.features}
+        		}
+        	});
+        	
+        	$('#addrSearch .typeahead').typeahead({hint: false, highlight: true, minLength: 1},
+        			{
+                		limit: 10,
+                		source: address,
+                		async: true,
+                		templates: {
+                				suggestion: function(e) {
+                					var result = '<a href="'+target.replace('_coordinates_', e.geometry.coordinates)+'">'+e.properties.label+' <small class="text-muted">['+e.geometry.coordinates+']</small>';
+                					return $('<div class="searchable_result">'+result+'</div>');
+                				}
+
+                		},
+                		notFound: function(query) {
+                				return '<div class="searchable_result">aucun résultat</div>';
+                		}
+        			}
+            );
+
+        	$('#addrSearch .typeahead').bind('typeahead:asyncreceive', function (event, suggestion) {
+                $('#addrSearch').find(".tt-dataset .tt-suggestion:first").addClass('tt-cursor');
+            });
+
+        	$('#addrSearch .typeahead').bind('typeahead:select', function(ev, suggestion) {
+            	document.location.href=target.replace('_coordinates_', suggestion.geometry.coordinates);
+            });
+        }
+        
         $.initGeolocalisation();
         $.initMap();
+        $.initAddrSearch();
 
       });

@@ -12,16 +12,22 @@
     </head>
     <body>
         <div class="container">
-            <div class="navbar-header">
-                    <a id="logo" href="/" alt="plus sans ascenseur"><img src="/psa_logo_300x300.png" style="margin-top: 5px;" class="d-md-block d-sm-none" height="150"> <img src="/apple-touch-icon.png" style="margin-top: 5px;" class="d-md-none d-sm-block" height="40"></a>
+            <div class="text-center">
+            	<a id="logo" href="/" alt="plus sans ascenseur">
+            		<img src="/psa_logo_300x300.png" height="150">
+            	</a>
             </div>
             {% block body %}{% endblock %}
         </div>
-        <script type="text/javascript" src="{{ asset('lib/jquery/jquery-3.3.1.slim.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('lib/jquery/jquery-3.3.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('lib/popper/popper.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('lib/leaflet/leaflet.js') }}"></script>
         <script type="text/javascript" src="{{ asset('lib/leaflet-extra-markers/js/leaflet.extra-markers.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('lib/typeahead/js/typeahead.min.js') }}"></script>
+        <script type="text/javascript">
+			var searchUri = "{{ constant('AppBundle\\Lib\\AdresseDataGouvApi::SEARCH_URI')~constant('AppBundle\\Lib\\AdresseDataGouvApi::SEARCH_PARAM') }}" ;
+        </script>
         <script type="text/javascript" src="{{ asset('lib/js/main.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>

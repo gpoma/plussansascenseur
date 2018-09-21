@@ -6,3 +6,48 @@
     background: url('../elevator_inv_32px.svg');
     background-size: 100px 82px;
 }
+/* TYPEAHEAD ----- */
+.twitter-typeahead {
+    display: block !important;
+}
+.tt-highlight {
+  color: #d93337;
+}
+.tt-menu {
+  max-height: 500px;
+  overflow-y: auto;
+  width: 100%;
+  margin: 8px 0;
+  padding: 4px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+.tt-suggestion {
+  padding: 3px 15px;
+  font-size: 15px;
+  line-height: 28px;
+}
+.tt-suggestion:hover {
+  cursor: pointer;
+  background-color: #d93337;
+}
+.tt-suggestion:hover a,
+.tt-suggestion:hover .text-muted,
+.tt-suggestion:hover .tt-highlight {
+  color: #fff !important;
+}
+.searchable_result a {
+	color: #333;
+}
+.searchable_result a:hover {
+	text-decoration: none;
+  	color: #fff !important;
+}
+/* ----- TYPEAHEAD */

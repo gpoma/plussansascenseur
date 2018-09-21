@@ -63,6 +63,27 @@ class DefaultController extends Controller
    }
 
    /**
+    * @Route("/listing", name="listing")
+    */
+   public function listingAction(Request $request, $photoid = null)
+   {
+		$dm = $this->get('doctrine_mongodb')->getManager();
+		
+		$coordinates = $request->get('coordinates', null);
+		$photoid = $request->get('photoid', null);
+		
+		if ($photoid && !$coordinates) {
+			if ($photo = $dm->getRepository('AppBundle:Photo')->findOneById($photoid)) {
+				
+			} else {
+				$photoid = null;
+			}
+       	}
+
+       	return $this->render('default/listing.html.twig',array());
+   }
+
+   /**
     * @Route("/signalement/{ascenseurid}", name="signalement")
     */
    public function singalementAction(Request $request,$ascenseurid)

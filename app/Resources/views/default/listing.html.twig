@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-sm-12" id="addrSearch" data-target="{{ path('listing', {coordinates: '_coordinates_'}) }}">
+		<input class="typeahead form-control" type="text" placeholder="Adresse ou se situe l'ascenseur">
+    </div>
+</div>
+<script type="text/javascript">
+	
+</script>
+{% endblock %}
