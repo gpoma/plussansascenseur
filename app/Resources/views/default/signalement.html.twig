@@ -8,7 +8,6 @@
 
 <p class="text-muted">Nous vous invitons à compléter quelques informations toutes facultatives afin d'en savoir plus sur votre situation et les préjudices subits</p>
 
-<hr />
 {{ form_start(form) }}
     L'ascenseur est en panne depuis : <a href="">Ajourd'hui</a>
     <hr />
@@ -22,8 +21,8 @@
     {{ form_row(form.pseudo) }}
     {{ form_row(form.email) }}
     {{ form_row(form.telephone) }}
-    <hr />
-    <div class="text-right">
+
+    <div style="margin-top: 30px;">
     <button type="submit" class="btn btn-block btn-success">Soumettre le signalement</button>
     </div>
 {{ form_end(form) }}

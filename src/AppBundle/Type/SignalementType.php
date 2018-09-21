@@ -25,7 +25,7 @@ class SignalementType extends AbstractType
             ->add('duree', TextType::class, array('required' => false, 'label' => 'Combien de temps avez-vous mis :', "attr" => array("placeholder" => "Par exemple : 30 min, 1h")))
             ->add('commentaire', TextareaType::class, array('required' => false, 'label' => "Dites-nous pourquoi :"))
             ->add('pseudo', TextType::class, array('required' => false, 'label' => "Votre nom / pseudo :"))
-            ->add('abonnement', CheckboxType::class, array('required' => false, 'label' => "Étre tenu informé-e"))
+            ->add('abonnement', CheckboxType::class, array('required' => false, 'label' => "Être tenu-e informé-e"))
             ->add('email', EmailType::class, array('required' => false, 'label' => "Email :"))
             ->add('telephone', TextType::class, array('required' => false, 'label' => "Téléphone :"))
         ;

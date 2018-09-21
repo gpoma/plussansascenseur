@@ -29,8 +29,7 @@
 
                 navigator.geolocation.getCurrentPosition(success, error, options);
                 }
-    };
-
+        };
 
         $.initMap = function () {
         if ($('#map').length) {
@@ -71,7 +70,24 @@
             }
         };
 
+        $.initSignalement = function () {
+            if(!$('form[name=signalement]')) {
+                return;
+            }
+
+            $('#signalement_etageAtteint').on('change', function() {
+                $('#signalement_duree').parents('form-group').find('label').removeClass('text-muted');
+                $('#signalement_duree').removeAttr('disabled');
+                if($(this).val() == "0") {
+                    $('#signalement_duree').parents('.form-group').find('label').addClass('text-muted');
+                    $('#signalement_duree').attr('disabled', 'disabled');
+                } else {
+                }
+            });
+        };
+
         $.initGeolocalisation();
         $.initMap();
+        $.initSignalement();
 
       });
