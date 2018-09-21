@@ -17,13 +17,16 @@ namespace AppBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\HasLifecycleCallbacks;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PreUpdate;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PrePersist;
 use Symfony\Component\HttpFoundation\File\File;
 
 
 /**
  * @MongoDB\Document
  * @Vich\Uploadable
- * @MongoDB\Document(repositoryClass="AppBundle\Repository\PhotoRepository")
+ * @MongoDB\Document(repositoryClass="AppBundle\Repository\PhotoRepository") @HasLifecycleCallbacks
  */
 class Photo
 {
@@ -72,13 +75,14 @@ class Photo
 
 
    /**
-    * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="photos", simple=true)
+    * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="photos", storeAs="id")
     */
    protected $ascenseur;
 
 
    /** @MongoDB\EmbedOne(targetDocument="GeoJson") */
    public $localisation;
+
 
 
     /**
@@ -203,6 +207,13 @@ class Photo
       return preg_match('/(\.gif)$/i',$this->getImageName());
     }
 
+    /**
+     * @MongoDB\PrePersist()
+     * @MongoDB\PreUpdate()
+     */
+    public function prePersist() {
+        $this->setUpdatedAt(new \DateTime());
+    }
 
     /**
      * Set originalName
