@@ -91,12 +91,18 @@ class DefaultController extends Controller
     */
    public function signalementAction(Request $request)
    {
+        $dm = $this->get('doctrine_mongodb')->getManager();
         $ascenseur = new Ascenseur();
-        if($request->get('ascenseur_id')) {
-           $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($request->get('ascenseur_id'));
+        if($request->get('ascenseur')) {
+           $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($request->get('ascenseur'));
         }
-        $signalement = new Signalement(new Ascenseur());
-        $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST));
+        $signalement = new Signalement($ascenseur);
+        if($request->get('photo')) {
+           $photo = $dm->getRepository('AppBundle:Photo')->find($request->get('photo'));
+           $photo->setAscenseur($signalement->getAscenseur());
+           $signalement->getAscenseur()->addPhoto($photo);
+        }
+        $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST, 'action' => $this->generateUrl('signalement', array('photo' => $request->get('photo')))));
 
         if($request->getMethod() != Request::METHOD_POST) {
 
