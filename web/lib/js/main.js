@@ -1,33 +1,35 @@
     $(document).ready(function ()
     {
         $.initGeolocalisation = function (){
-        var debug = true;
+            if ($('#geolocation').length) {
+                var debug = true;
 
-        var options = {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0
+                var options = {
+                  enableHighAccuracy: true,
+                  timeout: 5000,
+                  maximumAge: 0
+                };
+
+                function success(pos) {
+                  var crd = pos.coords;
+                  if(debug){
+                      console.log('Votre position actuelle est :');
+                      console.log(`Latitude : ${crd.latitude}`);
+                      console.log(`Longitude: ${crd.longitude}`);
+                      console.log(`Plus ou moins ${crd.accuracy} mètres.`);
+                  }
+
+                  $("#photos_lat").val(crd.latitude);
+                  $("#photos_lon").val(crd.longitude);
+                };
+
+                function error(err) {
+                  console.warn(`ERROR(${err.code}): ${err.message}`);
+                };
+
+                navigator.geolocation.getCurrentPosition(success, error, options);
+                }
         };
-
-        function success(pos) {
-          var crd = pos.coords;
-          if(debug){
-              console.log('Votre position actuelle est :');
-              console.log(`Latitude : ${crd.latitude}`);
-              console.log(`Longitude: ${crd.longitude}`);
-              console.log(`Plus ou moins ${crd.accuracy} mètres.`);
-          }
-
-          $("#photo_lat").val(crd.latitude);
-          $("#photo_lon").val(crd.longitude);
-        };
-
-        function error(err) {
-          console.warn(`ERROR(${err.code}): ${err.message}`);
-        };
-
-        navigator.geolocation.getCurrentPosition(success, error, options);
-    };
 
         $.initMap = function () {
         if ($('#map').length) {
@@ -70,7 +72,6 @@
         
         $.initAddrSearch = function() {
         	
-
             if (!$('#addrSearch').length) {
                 return;
             }
@@ -115,8 +116,30 @@
             });
         }
         
+        $.initSignalement = function () {
+            if(!$('form[name=signalement]')) {
+                return;
+            }
+            $('#signalement_etageAtteint').on('change', function() {
+                $('#signalement_duree').parents('.form-group').addClass('d-none');
+                if($(this).val() == "1") {
+                    $('#signalement_duree').parents('.form-group').removeClass('d-none');
+                }
+            });
+
+            $('#signalement_abonnement').on('change', function() {
+                $('#signalement_infos_abonnement').addClass('d-none');
+                if($(this).prop('checked') == true) {
+                    $('#signalement_infos_abonnement').removeClass('d-none');
+                }
+            });
+            $('#signalement_etageAtteint').change();
+            $('#signalement_abonnement').change();
+        };
+        
         $.initGeolocalisation();
         $.initMap();
         $.initAddrSearch();
+        $.initSignalement();
 
       });

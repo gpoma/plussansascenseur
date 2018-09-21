@@ -15,6 +15,10 @@ class GeoJson {
      /** @MongoDB\EmbedOne(targetDocument="Coordinates") */
     public $coordinates;
 
+    public function __construct() {
+        $this->setCoordinates(new Coordinates());
+    }
+
     /**
      * Set type
      *

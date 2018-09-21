@@ -34,6 +34,7 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes: ['bootstrap_4_layout.html.twig']
 
 doctrine_mongodb:
     connections:
@@ -50,7 +51,7 @@ vich_uploader:
     mappings:
         attachement_image:
             uri_prefix: /photos
-            upload_destination: '%kernel.root_dir%/../data'
+            upload_destination: '%kernel.root_dir%/../var/cache/upload'
             namer: vich_uploader.namer_uniqid
             inject_on_load: true
             delete_on_update: false

@@ -17,16 +17,21 @@ namespace AppBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\HasLifecycleCallbacks;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PreUpdate;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PrePersist;
 use Symfony\Component\HttpFoundation\File\File;
 
 
 /**
  * @MongoDB\Document
  * @Vich\Uploadable
- * @MongoDB\Document(repositoryClass="AppBundle\Repository\PhotoRepository")
+ * @MongoDB\Document(repositoryClass="AppBundle\Repository\PhotoRepository") @HasLifecycleCallbacks
  */
 class Photo
 {
+
+  const image_path = "../var/cache/upload/";
 
   /**
     * @MongoDB\Id(strategy="AUTO")
@@ -72,9 +77,14 @@ class Photo
 
 
    /**
-    * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="photos", simple=true)
+    * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="photos", storeAs="id")
     */
    protected $ascenseur;
+
+
+   /** @MongoDB\EmbedOne(targetDocument="GeoJson") */
+   public $localisation;
+
 
 
     /**
@@ -199,6 +209,13 @@ class Photo
       return preg_match('/(\.gif)$/i',$this->getImageName());
     }
 
+    /**
+     * @MongoDB\PrePersist()
+     * @MongoDB\PreUpdate()
+     */
+    public function prePersist() {
+        $this->setUpdatedAt(new \DateTime());
+    }
 
     /**
      * Set originalName
@@ -223,7 +240,7 @@ class Photo
     }
 
     public function removeFile(){
-        unlink(realpath('../data/'.$this->getImageName()));
+        unlink(realpath(self::image_path.$this->getImageName()));
     }
 
     /**
@@ -271,7 +288,7 @@ class Photo
     }
 
     public function convertBase64AndRemove($resizeWidth = false){
-        $file = '../data/'.$this->getImageName();
+        $file = self::image_path.$this->getImageName();
         $this->setExt(mime_content_type($file));
         list($width, $height, $type, $attr) = getimagesize(realpath($file));
         $attent_width = ($resizeWidth)? $resizeWidth : $width;
@@ -351,5 +368,47 @@ class Photo
     public function getAscenseur()
     {
         return $this->ascenseur;
+    }
+
+    /**
+     * Set localisation
+     *
+     * @param AppBundle\Document\GeoJson $localisation
+     * @return $this
+     */
+    public function setLocalisation(\AppBundle\Document\GeoJson $localisation)
+    {
+        $this->localisation = $localisation;
+        return $this;
+    }
+
+    /**
+     * Get localisation
+     *
+     * @return AppBundle\Document\GeoJson $localisation
+     */
+    public function getLocalisation()
+    {
+        return $this->localisation;
+    }
+
+    public function setLatLon($lat,$lon){
+
+        $localisation = new GeoJson();
+        $localisation->setType("Point");
+
+        $coordinates = new Coordinates();
+        $coordinates->setX($lon);
+        $coordinates->setY($lat);
+        $localisation->setCoordinates($coordinates);
+
+        $this->setLocalisation($localisation);
+    }
+
+    public function getLon(){
+        return $this->getLocalisation()->getCoordinates()->getX();
+    }
+    public function getLat(){
+        return $this->getLocalisation()->getCoordinates()->getY();
     }
 }

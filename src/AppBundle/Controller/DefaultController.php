@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Document\Photo;
 use AppBundle\Type\PhotoType;
+use AppBundle\Type\SignalementType;
+use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
 
 class DefaultController extends Controller
@@ -84,23 +86,41 @@ class DefaultController extends Controller
    }
 
    /**
-    * @Route("/signalement/{ascenseurid}", name="signalement")
+    * @Route("/signalement", name="signalement")
     */
-   public function singalementAction(Request $request,$ascenseurid)
+   public function signalementAction(Request $request)
    {
-       $dm = $this->get('doctrine_mongodb')->getManager();
-       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
-       // signalement = new Signalement();
-       return $this->render('default/signalement.html.twig',array("ascenseur" => $ascenseur));
+        $signalement = new Signalement(new Ascenseur());
+        $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST));
+
+        if($request->getMethod() != Request::METHOD_POST) {
+
+            return $this->render('default/signalement.html.twig', array("form" => $form->createView()));
+        }
+
+        $form->handleRequest($request);
+
+        if(!$form->isSubmitted() || !$form->isValid()) {
+            return $this->render('default/signalement.html.twig', array("form" => $form->createView()));
+        }
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $dm->persist($signalement->getAscenseur());
+        $dm->persist($signalement);
+        $dm->flush();
+
+        return $this->redirect($this->generateUrl('ascenseur', array('id' => $signalement->getAscenseur()->getId())));
    }
 
    /**
-    * @Route("/ascenseur/{ascenseurid}", name="ascenseur")
+    * @Route("/ascenseur/{id}", name="ascenseur")
     */
-   public function ascenseurAction(Request $request,$ascenseurid)
+   public function ascenseurAction(Request $request, $id)
    {
        $dm = $this->get('doctrine_mongodb')->getManager();
-       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
+       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($id);
+
        return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
    }
 
