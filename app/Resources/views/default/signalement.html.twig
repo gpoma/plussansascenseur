@@ -22,7 +22,7 @@
         <small class="form-text text-muted">Par exemple -2 ou 9</small>
     </div>
     {{ form_row(form.etageAtteint) }}
-    <div class="form-group">
+    <div class="form-group {% if not form.vars.value.etageAtteint %}d-none{% endif %}">
         {{ form_label(form.duree) }}
         <div class="input-group">
             {{ form_widget(form.duree) }}
@@ -30,18 +30,25 @@
         </div>
         <small class="form-text text-muted">Par exemple 30 min ou 1h</small>
     </div>
+    <div class="form-group">
+        {{ form_label(form.commentaire) }}
+        {{ form_widget(form.commentaire) }}
+        <small class="form-text text-muted">Ce commentaire sera rendu public</small>
+    </div>
     {{ form_row(form.commentaire) }}
     <hr />
-    <h3>Vous</h3>
-    {{ form_row(form.pseudo) }}
+    <h3>Qui êtes vous</h3>
+    <div class="form-group">
+        {{ form_label(form.pseudo) }}
+        {{ form_widget(form.pseudo) }}
+        <small class="form-text text-muted">Votre nom / pseudo sera rendu public</small>
+    </div>
     {{ form_row(form.abonnement) }}
-    <div class="d-none">
+    <div id="signalement_infos_abonnement" class="{% if not form.vars.value.abonnement %}d-none{% endif %}">
     {{ form_row(form.email) }}
     {{ form_row(form.telephone) }}
     </div>
     <hr />
-    <div>
     <button type="submit" class="btn btn-block btn-success">Soumettre le signalement</button>
-    </div>
 {{ form_end(form) }}
 {% endblock %}

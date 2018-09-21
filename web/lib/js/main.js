@@ -74,16 +74,21 @@
             if(!$('form[name=signalement]')) {
                 return;
             }
-
             $('#signalement_etageAtteint').on('change', function() {
-                $('#signalement_duree').parents('form-group').find('label').removeClass('text-muted');
-                $('#signalement_duree').removeAttr('disabled');
-                if($(this).val() == "0") {
-                    $('#signalement_duree').parents('.form-group').find('label').addClass('text-muted');
-                    $('#signalement_duree').attr('disabled', 'disabled');
-                } else {
+                $('#signalement_duree').parents('.form-group').addClass('d-none');
+                if($(this).val() == "1") {
+                    $('#signalement_duree').parents('.form-group').removeClass('d-none');
                 }
             });
+
+            $('#signalement_abonnement').on('change', function() {
+                $('#signalement_infos_abonnement').addClass('d-none');
+                if($(this).prop('checked') == true) {
+                    $('#signalement_infos_abonnement').removeClass('d-none');
+                }
+            });
+            $('#signalement_etageAtteint').change();
+            $('#signalement_abonnement').change();
         };
 
         $.initGeolocalisation();
