@@ -3,6 +3,7 @@
 namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use AppBundle\Document\Ascenseur;
 
 /**
  * @MongoDB\Document
@@ -22,6 +23,11 @@ class Signalement {
       * @MongoDB\Id(strategy="AUTO")
       */
     protected $id;
+
+    /**
+     * @MongoDB\ReferenceOne(targetDocument="Ascenseur")
+     */
+    private $ascenseur;
 
     /**
      * @MongoDB\Field(type="date")
@@ -89,9 +95,10 @@ class Signalement {
      */
     protected $telephone;
 
-    public function __construct() {
+    public function __construct(Ascenseur $ascenseur) {
         $this->abonnement = false;
         $this->date = new \DateTime();
+        $this->ascenseur = $ascenseur;
     }
 
     public function getId() {
@@ -218,6 +225,16 @@ class Signalement {
     public function getTelephone() {
 
         return $this->telephone;
+    }
+
+    /**
+     * Get ascenseur
+     *
+     * @return AppBundle\Document\Ascenseur $ascenseur
+     */
+    public function getAscenseur()
+    {
+        return $this->ascenseur;
     }
 
 }

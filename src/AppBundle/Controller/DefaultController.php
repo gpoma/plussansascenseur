@@ -67,10 +67,10 @@ class DefaultController extends Controller
    /**
     * @Route("/signalement", name="signalement")
     */
-   public function signalement(Request $request)
+   public function signalementAction(Request $request)
    {
-        $signalement = new Signalement();
-        $form = $this->createForm(SignalementType::class, new Signalement(), array('method' => Request::METHOD_POST));
+        $signalement = new Signalement(new Ascenseur());
+        $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST));
 
         if($request->getMethod() != Request::METHOD_POST) {
 

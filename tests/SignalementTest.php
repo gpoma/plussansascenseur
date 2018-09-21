@@ -5,6 +5,7 @@ namespace Tests;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Yaml\Yaml;
 use AppBundle\Document\Signalement;
+use AppBundle\Document\Ascenseur;
 use AppBundle\Type\SignalementType;
 
 class SignalementTest extends KernelTestCase
@@ -23,10 +24,12 @@ class SignalementTest extends KernelTestCase
 
     public function testDocument()
     {
-        $signalement = new Signalement();
+        $ascenseur = new Ascenseur();
+        $signalement = new Signalement($ascenseur);
 
         $datePanne = new \DateTime();
         $datePanne->modify('-3 days');
+
 
         $signalement->setDate(new \DateTime());
         $signalement->setDatePanne($datePanne);
@@ -40,10 +43,12 @@ class SignalementTest extends KernelTestCase
         $signalement->setEmail("contact@24eme.fr");
         $signalement->setTelephone("0102030405");
 
+        $this->odm->persist($ascenseur);
         $this->odm->persist($signalement);
         $this->odm->flush();
 
         $this->assertNotNull($signalement->getId());
+        $this->assertEquals($signalement->getAscenseur()->getId(), $ascenseur->getId());
         $this->assertEquals($signalement->getDate()->format('Y-m-d'), (new \DateTime())->format('Y-m-d'));
         $this->assertEquals($signalement->getDatePanne()->format('Y-m-d'), $datePanne->format('Y-m-d'));
         $this->assertEquals($signalement->getEtage(), "8");
@@ -58,7 +63,9 @@ class SignalementTest extends KernelTestCase
     }
 
     public function testForm() {
-        $signalement = new Signalement();
+        $ascenseur = new Ascenseur();
+        $signalement = new Signalement($ascenseur);
+
         $form = $this->formFactory->create(SignalementType::class, $signalement);
 
         $form->submit(array(
