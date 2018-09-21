@@ -42,6 +42,7 @@ class Ascenseur {
     {
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setStatut(self::STATUT_ENPANNE);
+        $this->localisation = new GeoJson();
     }
 
     /**

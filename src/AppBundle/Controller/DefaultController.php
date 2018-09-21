@@ -85,19 +85,21 @@ class DefaultController extends Controller
 
         $dm = $this->get('doctrine_mongodb')->getManager();
 
+        $dm->persist($signalement->getAscenseur());
         $dm->persist($signalement);
         $dm->flush();
 
-        return $this->redirect($this->generateUrl('homepage'));
+        return $this->redirect($this->generateUrl('ascenseur', array('id' => $signalement->getAscenseur()->getId())));
    }
 
    /**
-    * @Route("/ascenseur/{ascenseurid}", name="ascenseur")
+    * @Route("/ascenseur/{id}", name="ascenseur")
     */
-   public function ascenseurAction(Request $request,$ascenseurid)
+   public function ascenseurAction(Request $request, $id)
    {
        $dm = $this->get('doctrine_mongodb')->getManager();
-       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->findOneById($ascenseurid);
+       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($id);
+
        return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
    }
 
