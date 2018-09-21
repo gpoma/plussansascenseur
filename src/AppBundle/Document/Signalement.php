@@ -15,6 +15,7 @@ class Signalement {
         "TRAVAIL" => "Je travaille ici",
         "VISITEUR" => "Je rend visite à quelqu'une",
         "PROFESSIONNEL" => "Je livre ou j'intervient chez quelqu'un",
+        "AUTRE" => "Autre"
     );
 
     /**
@@ -218,5 +219,5 @@ class Signalement {
 
         return $this->telephone;
     }
-    
+
 }

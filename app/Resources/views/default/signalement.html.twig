@@ -1,11 +1,19 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form _self %}
+
 {% block body %}
+
+<h2>Signalement de la panne d'ascenseur</h2>
+
+<p class="text-muted">Nous vous invitons à compléter quelques informations toutes facultatives afin d'en savoir plus sur votre situation et les préjudices subits</p>
+
+<hr />
 {{ form_start(form) }}
     {{ form_widget(form) }}
-
+    <hr />
     <div class="text-right">
-    <button type="submit" class="btn btn-success">Soumettre le dysfonctionnement</button>
+    <button type="submit" class="btn btn-block btn-success">Soumettre le signalement</button>
     </div>
 {{ form_end(form) }}
 {% endblock %}
