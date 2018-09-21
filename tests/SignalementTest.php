@@ -76,6 +76,7 @@ class SignalementTest extends KernelTestCase
         $this->assertTrue($form->isSubmitted(), true);
         $this->assertTrue($form->isValid(), true);
 
+        $this->assertEquals($signalement->getDate()->format('Y-m-d'), (new \DateTime())->format('Y-m-d'));
         $this->assertEquals($signalement->getEtage(), "9");
         $this->assertEquals($signalement->getUsage(), "HABITANT");
         $this->assertEquals($signalement->getEtageAtteint(), false);

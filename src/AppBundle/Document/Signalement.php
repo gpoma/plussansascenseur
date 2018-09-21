@@ -90,8 +90,8 @@ class Signalement {
     protected $telephone;
 
     public function __construct() {
-
         $this->abonnement = false;
+        $this->date = new \DateTime();
     }
 
     public function getId() {
