@@ -28,6 +28,8 @@ use Symfony\Component\HttpFoundation\File\File;
 class Photo
 {
 
+  const image_path = "../var/cache/upload/";
+
   /**
     * @MongoDB\Id(strategy="AUTO")
     */
@@ -227,7 +229,7 @@ class Photo
     }
 
     public function removeFile(){
-        unlink(realpath('../data/'.$this->getImageName()));
+        unlink(realpath(self::image_path.$this->getImageName()));
     }
 
     /**
@@ -275,7 +277,7 @@ class Photo
     }
 
     public function convertBase64AndRemove($resizeWidth = false){
-        $file = '../data/'.$this->getImageName();
+        $file = self::image_path.$this->getImageName();
         $this->setExt(mime_content_type($file));
         list($width, $height, $type, $attr) = getimagesize(realpath($file));
         $attent_width = ($resizeWidth)? $resizeWidth : $width;
