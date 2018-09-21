@@ -9,7 +9,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  */
 class Ascenseur {
 
-    const STATUT_ENPANNE = "ENPANNE";
+    const STATUT_ENPANNE = "EN_PANNE";
 
     /**
       * @MongoDB\Id(strategy="AUTO")

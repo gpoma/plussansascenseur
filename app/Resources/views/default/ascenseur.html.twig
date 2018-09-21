@@ -2,7 +2,10 @@
 
 {% block body %}
 
-<h1>Ascenseur </h1>
+<h2>Ascenseur<br />
+<small>{{ ascenseur.emplacement }}<br />{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}</small>
+</h2>
+<hr />
 <div class="row">
     <div class="col-sm-6">
         {% set lat = ascenseur.lat  %}
@@ -20,6 +23,27 @@
     </div>
 </div>
 <hr />
-
-
+<table class="table table-bordered table-striped table-condensed">
+    <tr>
+        <th class="col-3">Référence</th>
+        <td class="col-3">{{ ascenseur.reference }}</td>
+        <th class="col-3">Marque</th>
+        <td class="col-3">{{ ascenseur.marque }}</td>
+    </td>
+    <tr>
+        <th>Étage</th>
+        <td>{{ ascenseur.etageMin }} au {{ ascenseur.etageMax }}</td>
+        <th>Dépannage</th>
+        <td><a href="tel:{{ ascenseur.telephoneDepannage }}">{{ ascenseur.telephoneDepannage }}</a></td>
+    </td>
+</table>
+<hr />
+<div class="row">
+<div class="col-sm-8 col-6">
+    <button class="btn btn-danger btn-lg btn-block">{{ ascenseur.statut }}</button>
+</div>
+<div class="col-sm-4 col-6">
+    <button class="btn btn-link btn-lg btn-block">Signaler un changement</button>
+</div>
+</div>
 {% endblock %}
