@@ -10,7 +10,18 @@
 
 <hr />
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    L'ascenseur est en panne depuis : <a href="">Ajourd'hui</a>
+    <hr />
+    {{ form_row(form.usage) }}
+    {{ form_row(form.etage) }}
+    {{ form_row(form.etageAtteint) }}
+    {{ form_row(form.duree) }}
+    {{ form_row(form.commentaire) }}
+    <hr />
+    {{ form_row(form.abonnement) }}
+    {{ form_row(form.pseudo) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.telephone) }}
     <hr />
     <div class="text-right">
     <button type="submit" class="btn btn-block btn-success">Soumettre le signalement</button>
