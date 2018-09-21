@@ -43,6 +43,8 @@ class SignalementTest extends KernelTestCase
         $signalement->setEmail("contact@24eme.fr");
         $signalement->setTelephone("0102030405");
 
+        $signalement->createEvenement();
+
         $this->odm->persist($ascenseur);
         $this->odm->persist($signalement);
         $this->odm->flush();
@@ -60,6 +62,7 @@ class SignalementTest extends KernelTestCase
         $this->assertEquals($signalement->getPseudo(), "test");
         $this->assertEquals($signalement->getEmail(), "contact@24eme.fr");
         $this->assertEquals($signalement->getTelephone(), "0102030405");
+        $this->assertCount(1, $signalement->getAscenseur()->getHistorique());
     }
 
     public function testForm() {

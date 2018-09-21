@@ -108,10 +108,12 @@ class DefaultController extends Controller
             return $this->render('default/signalement.html.twig', array("form" => $form->createView()));
         }
 
-        $dm = $this->get('doctrine_mongodb')->getManager();
+        $signalement->createEvenement();
 
+        $dm = $this->get('doctrine_mongodb')->getManager();
         $dm->persist($signalement->getAscenseur());
         $dm->persist($signalement);
+
         $dm->flush();
 
         return $this->redirect($this->generateUrl('ascenseur', array('id' => $signalement->getAscenseur()->getId())));

@@ -237,4 +237,8 @@ class Signalement {
         return $this->ascenseur;
     }
 
+    public function createEvenement() {
+        $this->getAscenseur()->addEvenement($this->getDate(), "Signalé en panne (".$this->getCommentaire().")", $this->getPseudo());
+    }
+
 }
