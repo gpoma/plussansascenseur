@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Document\Photo;
 use AppBundle\Type\PhotoType;
 use AppBundle\Type\SignalementType;
+use AppBundle\Type\AscenseurType;
 use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
 
@@ -33,7 +34,8 @@ class DefaultController extends Controller
      */
     public function photoUploadAction(Request $request) {
         if (!$request->isMethod('POST')) {
-            throw new NotFoundHttpException();
+
+            return $this->redirect($this->generateUrl('homepage'));
         }
         $dm = $this->get('doctrine_mongodb')->getManager();
         $photo = new Photo();
@@ -47,7 +49,7 @@ class DefaultController extends Controller
 
         if(!$uploadPhotoForm->isValid()) {
 
-            return $this->redirect($this->generateUrl('homepage'));
+            return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView()));
         }
 
         $data = $request->request->get('photo');
@@ -136,6 +138,33 @@ class DefaultController extends Controller
        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($id);
 
        return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
+   }
+
+   /**
+    * @Route("/ascenseur/{ascenseur}/edition", name="ascenseur_edition")
+    */
+   public function ascenseurEditionAction(Request $request, $ascenseur)
+   {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($ascenseur);
+
+        $form = $this->createForm(AscenseurType::class, $ascenseur, array('method' => Request::METHOD_POST));
+
+        if($request->getMethod() != Request::METHOD_POST) {
+
+           return $this->render('default/ascenseur_edition.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
+        }
+
+       $form->handleRequest($request);
+
+       if(!$form->isSubmitted() || !$form->isValid()) {
+
+           return $this->render('default/ascenseur_edition.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
+       }
+
+       $dm->flush();
+
+       return $this->redirect($this->generateUrl('ascenseur', array('id' => $ascenseur->getId())));
    }
 
    private function buildGeoJson($ascenseur) {

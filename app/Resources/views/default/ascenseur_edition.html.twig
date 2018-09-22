@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_4_horizontal_layout.html.twig' _self %}
+
+{% block form_label_class -%}
+col-sm-6 col-md-4
+{%- endblock form_label_class %}
+
+{% block form_group_class -%}
+col-sm-6 col-md-8
+{%- endblock form_group_class %}
+
+{% block body %}
+<h2>Compléter les informations de l'ascenseur</h2>
+<p>N'hésitez pas à vous appuyer sur les photos ci-dessous</p>
+<hr />
+{% for photo in ascenseur.photos|slice(0, 4) %}
+    <a href=""><img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="max-height: 150px;"/></a>
+{% endfor %}
+<hr />
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<hr />
+<div class="row">
+    <div class="col-6">
+        <a href="{{ path('ascenseur', {'id': ascenseur.id}) }}" class="btn btn-block btn-light">Annuler</a>
+    </div>
+    <div class="col-6">
+        <button type="submit" class="btn btn-block btn-success">Enregistrer</button>
+    </div>
+</div>
+{{ form_end(form) }}
+{% endblock %}

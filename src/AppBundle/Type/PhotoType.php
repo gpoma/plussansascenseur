@@ -21,7 +21,7 @@ class PhotoType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('imageFile', VichFileType::class, array(
-            'required' => false,
+            'required' => true,
             'allow_delete' => false,
             'label' => 'Choisir un document (.jpg, .png, .pdf)',
         ))->add('lat', HiddenType::class, array(

@@ -2,6 +2,7 @@
 
 {% block body %}
 
+<a href="{{ path('ascenseur_edition', { ascenseur: ascenseur.id })}}" class="btn btn-info float-right">Compléter les informations</a>
 <h2>Ascenseur<br />
 <small>{{ ascenseur.emplacement }}<br />{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}</small>
 </h2>
@@ -23,10 +24,10 @@
 </div>
 <table class="table table-bordered table-condensed" style="margin-top: 20px;">
     <tr>
-        <th class="col-3">Référence</th>
-        <td class="col-3">{{ ascenseur.reference }}</td>
         <th class="col-3">Marque</th>
         <td class="col-3">{{ ascenseur.marque }}</td>
+        <th class="col-3">Référence</th>
+        <td class="col-3">{{ ascenseur.reference }}</td>
     </td>
     <tr>
         <th>Étage</th>
