@@ -56,15 +56,19 @@ class DefaultController extends Controller
         $lat = floatval($data['lat']);
         $lon = floatval($data['lon']);
         $f = $uploadPhotoForm->getData()->getImageFile();
-
-        $photo->setLatLon($lat,$lon);
+        if ($lat || $lon) {
+          $photo->setLatLon($lat,$lon);
+        }else{
+          $parameters = $request->request->get('photos');
+          $photo->setLatLon($parameters['lat'], $parameters['lon']);
+        }
 
         $dm->persist($photo);
         $dm->flush();
         $photo->convertBase64AndRemove();
         $dm->flush();
 
-        return $this->redirect($this->generateUrl('listing', array('photo' => $photo->getId())));
+        return $this->redirect($this->generateUrl('listing', array('photo' => $photo->getId(), 'coordinates' => $photo->getLocalisation())));
    }
 
    /**
