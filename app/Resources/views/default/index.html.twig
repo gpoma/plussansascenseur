@@ -14,7 +14,7 @@
                       <div class="form-group">
                           {{ form_label(uploadPhotoForm.imageFile, "Fichier :", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
                           <div class="col-sm-8">
-                              {{ form_widget(uploadPhotoForm.imageFile,{'attr' : {'accept' : "image/*;capture=camera"}}) }}
+                              {{ form_widget(uploadPhotoForm.imageFile) }}
                           </div>
                       </div>
                   </div>
