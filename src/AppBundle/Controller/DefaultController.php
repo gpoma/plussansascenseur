@@ -52,15 +52,13 @@ class DefaultController extends Controller
             return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView()));
         }
 
-        $data = $request->request->get('photo');
+        $data = $request->request->get('photos');
         $lat = floatval($data['lat']);
         $lon = floatval($data['lon']);
         $f = $uploadPhotoForm->getData()->getImageFile();
+
         if ($lat || $lon) {
           $photo->setLatLon($lat,$lon);
-        }else{
-          $parameters = $request->request->get('photos');
-          $photo->setLatLon($parameters['lat'], $parameters['lon']);
         }
 
         $dm->persist($photo);
@@ -88,9 +86,9 @@ class DefaultController extends Controller
 			} else {
 				$photoid = null;
 			}
-       	}
+    }
 
-       	return $this->render('default/listing.html.twig',array());
+    return $this->render('default/listing.html.twig',array());
    }
 
    /**
