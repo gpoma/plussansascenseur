@@ -24,6 +24,7 @@ class PhotoType extends AbstractType {
             'required' => true,
             'allow_delete' => false,
             'label' => 'Choisir un document (.jpg, .png, .pdf)',
+            'attr' => array('accept' => "image/*", 'capture' => "camera"),
         ))->add('lat', HiddenType::class, array(
             'data' => 0,
             'mapped' => false
