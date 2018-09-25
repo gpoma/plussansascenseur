@@ -14,7 +14,7 @@ class AdresseDataGouvApi {
 	public function getAddrByCoordinates($coordinates) {
 		$coordinates = explode(',', $coordinates);
 		if (count($coordinates) != 2) {
-			throw new \Exception('Coordonnées géographiques non valides : '.$coordinates);
+			return null;
 		}
 		$url = str_replace('_lon_', $coordinates[0], str_replace('_lat_', $coordinates[1], self::REVERSE_URI.self::REVERSE_PARAM));
 		$curl = curl_init();

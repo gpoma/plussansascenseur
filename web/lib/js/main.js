@@ -153,7 +153,7 @@
             }
             
             $(".clickable-row").click(function() {
-                document.window.location = $(this).data("href");
+                document.location.href = $(this).data("href");
             });
         };
         

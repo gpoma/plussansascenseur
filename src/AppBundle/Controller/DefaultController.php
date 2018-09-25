@@ -76,7 +76,7 @@ class DefaultController extends Controller
     */
    public function listingAction(Request $request)
    {
-        return $this->redirect($this->generateUrl('signalement', array('photo' => $request->get('photo'))));
+        //return $this->redirect($this->generateUrl('signalement', array('photo' => $request->get('photo'))));
 		$dm = $this->get('doctrine_mongodb')->getManager();
 
 		$coordinates = $request->get('coordinates', null);

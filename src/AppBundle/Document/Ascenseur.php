@@ -3,6 +3,7 @@
 namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use AppBundle\Lib\AdresseDataGouvApi;
 
 /**
  * @MongoDB\Document(repositoryClass="AppBundle\Repository\AscenseurRepository")
@@ -218,6 +219,18 @@ class Ascenseur {
     public function getCommune() {
 
         return $this->commune;
+    }
+    
+    public function getAdresseLibelle() {
+    	if ($this->getAdresse() || $this->getCommune() || $this->getCodePostal()) {
+    		return $this->getAdresse().' '.$this->getCodePostal().' '.$this->getCommune();
+    	}
+    	if ($localisation = $this->getLocalisation()) {
+    		if ($coordinates = $localisation->getCoordinates()) {
+    			return AdresseDataGouvApi::getAddrByCoordinates($coordinates->getLibelle());
+    		}
+    	}
+    	return null;
     }
 
     public function setEmplacement($emplacement){

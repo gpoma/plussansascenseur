@@ -63,6 +63,6 @@ class Coordinates
     
     public function getLibelle()
     {
-    	return $this->getX().','.$this->getY();
+    	return ($this->getX() && $this->getY())? $this->getX().','.$this->getY() : null;
     }
 }
