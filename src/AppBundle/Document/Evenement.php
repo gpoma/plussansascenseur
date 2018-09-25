@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
  * @MongoDB\EmbeddedDocument
  * AppBundle\Document\Evennement
  */
-class Evennement
+class Evenement
 {
     /**
      * @MongoDB\Field(type="date")

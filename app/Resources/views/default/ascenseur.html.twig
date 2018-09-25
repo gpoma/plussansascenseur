@@ -2,24 +2,67 @@
 
 {% block body %}
 
-<div class="row">
-    <div class="col-sm-12">
-        <h1>Ascenseur {{ ascenseur.id }}</h1>
+<a href="{{ path('ascenseur_edition', { ascenseur: ascenseur.id })}}" class="btn btn-info float-right">Compléter les informations</a>
+<h2>Ascenseur<br />
+<small>{{ ascenseur.emplacement }}<br />{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}</small>
+</h2>
+<div class="row" style="margin-top: 20px;">
+    <div class="col-sm-6">
+        {% set lat = ascenseur.lat  %}
+        {% set lon = ascenseur.lon  %}
+        <div id="map" style="width: 100%; min-height: 200px;" data-geojson="{{ geojson | json_encode(constant('JSON_HEX_QUOT')) }}" data-lat="{{ lat }}" data-lon="{{ lon }}" data-zoom="12"></div>
     </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-6">
         <div class="row">
-            <div class="col-sm-6">
-                {% set lat = ascenseur.lat  %}
-                {% set lon = ascenseur.lon  %}
-                <div id="map" style="width: 100%; min-height: 200px;" data-geojson="{{ geojson | json_encode(constant('JSON_HEX_QUOT')) }}" data-lat="{{ lat }}" data-lon="{{ lon }}" data-zoom="12"></div>
-            </div>
-            <div class="col-sm-6">
-                {% for photo in ascenseur.photos %}
-                 <img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-thumbnail vignette" style="margin-bottom:0; max-width : 100px; max-height : 100px;"/>
-                {% endfor %}
-            </div>
+        {% for photo in ascenseur.photos|slice(0, 4) %}
+        <div class="col-6 text-center">
+            <img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="margin-bottom:0; max-height : 100px;"/>
+         </div>
+        {% endfor %}
+        </div>
     </div>
 </div>
+<table class="table table-bordered table-condensed" style="margin-top: 20px;">
+    <tr>
+        <th class="col-3">Marque</th>
+        <td class="col-3">{{ ascenseur.marque }}</td>
+        <th class="col-3">Référence</th>
+        <td class="col-3">{{ ascenseur.reference }}</td>
+    </td>
+    <tr>
+        <th>Étage</th>
+        <td>{{ ascenseur.etageMin }} au {{ ascenseur.etageMax }}</td>
+        <th>Dépannage</th>
+        <td><a href="tel:{{ ascenseur.telephoneDepannage }}">{{ ascenseur.telephoneDepannage }}</a></td>
+    </td>
+</table>
+<hr />
+<div class="row">
+<div class="col-sm-8">
+    <button class="btn btn-danger btn-lg btn-block">{{ ascenseur.statut }}</button>
+</div>
+<div class="col-sm-4">
+    <button class="btn btn-link btn-lg btn-block">Signaler un changement</button>
+</div>
+</div>
+<hr />
+<h3>Historique de l'ascenseur</h3>
+<table class="table table-bordered table-condensed">
+    <thead>
+        <tr>
+            <th class="col-3">Date</th>
+            <th class="col-7">Infos</th>
+            <th class="col-2">Auteur</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for evenement in ascenseur.historique %}
+        <tr>
+            <td>{{ evenement.date | date }}</td>
+            <td>{{ evenement.commentaire }}</td>
+            <td>{{ evenement.auteur }}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

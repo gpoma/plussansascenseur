@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Document\Photo;
 use AppBundle\Type\PhotoType;
 use AppBundle\Type\SignalementType;
+use AppBundle\Type\AscenseurType;
 use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
 use AppBundle\Lib\AdresseDataGouvApi;
@@ -34,47 +35,52 @@ class DefaultController extends Controller
      * @Route("/photo/upload", name="photo_upload")
      */
     public function photoUploadAction(Request $request) {
-       $dm = $this->get('doctrine_mongodb')->getManager();
-       $photo = new Photo();
-       $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, array(
+        if (!$request->isMethod('POST')) {
+
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $photo = new Photo();
+
+        $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, array(
            'action' => $this->generateUrl('photo_upload'),
            'method' => 'POST',
-       ));
-       if ($request->isMethod('POST')) {
-           $uploadPhotoForm->handleRequest($request);
-           if($uploadPhotoForm->isValid()){
-           $data = $request->request->get('photo');
-           $lat = floatval($data['lat']);
-           $lon = floatval($data['lon']);
-             $f = $uploadPhotoForm->getData()->getImageFile();
-             if($f){
-                 $dm->persist($photo);
-                 $dm->flush();
-                 $photo->convertBase64AndRemove();
-                 $dm->flush();
-             }
-             $ascenseur = new Ascenseur();
-             $ascenseur->setLatLon($lat,$lon);
-             $ascenseur->addPhoto($photo);
-             $dm->persist($ascenseur);
-             $dm->flush();
-         }else{
-             var_dump("not valid"); exit;
-         }
-           $urlRetour = $this->generateUrl('signalement',array('ascenseurid' => $ascenseur->getId()));
-           return $this->redirect($urlRetour);
-       }
+        ));
+
+        $uploadPhotoForm->handleRequest($request);
+
+        if(!$uploadPhotoForm->isValid()) {
+
+            return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView()));
+        }
+
+        $data = $request->request->get('photos');
+        $lat = floatval($data['lat']);
+        $lon = floatval($data['lon']);
+        $f = $uploadPhotoForm->getData()->getImageFile();
+
+        if ($lat || $lon) {
+          $photo->setLatLon($lat,$lon);
+        }
+
+        $dm->persist($photo);
+        $dm->flush();
+        $photo->convertBase64AndRemove();
+        $dm->flush();
+
+        return $this->redirect($this->generateUrl('listing', array('photo' => $photo->getId(), 'coordinates' => $photo->getLocalisation())));
    }
 
    /**
     * @Route("/listing", name="listing")
     */
-   public function listingAction(Request $request, $photoid = null)
+   public function listingAction(Request $request)
    {
+        return $this->redirect($this->generateUrl('signalement', array('photo' => $request->get('photo'))));
 		$dm = $this->get('doctrine_mongodb')->getManager();
-		
+
 		$coordinates = $request->get('coordinates', null);
-		$photoid = $request->get('photoid', null);
+		$photoid = $request->get('photo', null);
 		$address = null;
 		$elevators = array();
 		
@@ -101,8 +107,18 @@ class DefaultController extends Controller
     */
    public function signalementAction(Request $request)
    {
-        $signalement = new Signalement(new Ascenseur());
-        $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST));
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = new Ascenseur();
+        if($request->get('ascenseur')) {
+           $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($request->get('ascenseur'));
+        }
+        $signalement = new Signalement($ascenseur);
+        if($request->get('photo')) {
+           $photo = $dm->getRepository('AppBundle:Photo')->find($request->get('photo'));
+           $photo->setAscenseur($signalement->getAscenseur());
+           $signalement->getAscenseur()->addPhoto($photo);
+        }
+        $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST, 'action' => $this->generateUrl('signalement', array('photo' => $request->get('photo')))));
 
         if($request->getMethod() != Request::METHOD_POST) {
 
@@ -115,10 +131,12 @@ class DefaultController extends Controller
             return $this->render('default/signalement.html.twig', array("form" => $form->createView()));
         }
 
-        $dm = $this->get('doctrine_mongodb')->getManager();
+        $signalement->createEvenement();
 
+        $dm = $this->get('doctrine_mongodb')->getManager();
         $dm->persist($signalement->getAscenseur());
         $dm->persist($signalement);
+
         $dm->flush();
 
         return $this->redirect($this->generateUrl('ascenseur', array('id' => $signalement->getAscenseur()->getId())));
@@ -133,6 +151,33 @@ class DefaultController extends Controller
        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($id);
 
        return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
+   }
+
+   /**
+    * @Route("/ascenseur/{ascenseur}/edition", name="ascenseur_edition")
+    */
+   public function ascenseurEditionAction(Request $request, $ascenseur)
+   {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($ascenseur);
+
+        $form = $this->createForm(AscenseurType::class, $ascenseur, array('method' => Request::METHOD_POST));
+
+        if($request->getMethod() != Request::METHOD_POST) {
+
+           return $this->render('default/ascenseur_edition.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
+        }
+
+       $form->handleRequest($request);
+
+       if(!$form->isSubmitted() || !$form->isValid()) {
+
+           return $this->render('default/ascenseur_edition.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
+       }
+
+       $dm->flush();
+
+       return $this->redirect($this->generateUrl('ascenseur', array('id' => $ascenseur->getId())));
    }
 
    private function buildGeoJson($ascenseur) {

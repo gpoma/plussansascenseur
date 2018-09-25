@@ -21,6 +21,9 @@
 
                   $("#photos_lat").val(crd.latitude);
                   $("#photos_lon").val(crd.longitude);
+
+                  $('#voir_position').attr('href', "https://www.openstreetmap.org/?mlat="+crd.latitude+"&mlon="+crd.longitude);
+                  $('#voir_position').html(crd.latitude+";"+crd.longitude);
                 };
 
                 function error(err) {
@@ -28,7 +31,13 @@
                 };
 
                 navigator.geolocation.getCurrentPosition(success, error, options);
-                }
+
+                $('#demander_position').on('click', function() {
+                    navigator.geolocation.getCurrentPosition(success, error, options);
+
+                    return false;
+                });
+            }
         };
 
         $.initMap = function () {
