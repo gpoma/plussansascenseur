@@ -10,6 +10,8 @@ use AppBundle\Type\PhotoType;
 use AppBundle\Type\SignalementType;
 use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
+use AppBundle\Lib\AdresseDataGouvApi;
+use AppBundle\Repository\AscenseurRepository;
 
 class DefaultController extends Controller
 {
@@ -73,16 +75,25 @@ class DefaultController extends Controller
 		
 		$coordinates = $request->get('coordinates', null);
 		$photoid = $request->get('photoid', null);
+		$address = null;
+		$elevators = array();
 		
 		if ($photoid && !$coordinates) {
 			if ($photo = $dm->getRepository('AppBundle:Photo')->findOneById($photoid)) {
-				
+				if ($localisation = $photo->getLocalisation()) {
+					$coordinates = $localisation->getCoordinatesLibelle();
+				}
 			} else {
 				$photoid = null;
 			}
        	}
+       	
+       	if ($coordinates) {
+       		$address = AdresseDataGouvApi::getAddrByCoordinates($coordinates);
+       		$elevators = $dm->getRepository('AppBundle:Ascenseur')->findByCoordinates($coordinates);
+       	}
 
-       	return $this->render('default/listing.html.twig',array());
+       	return $this->render('default/listing.html.twig', array('coordinates' => $coordinates, 'address' => $address, 'photoid' => $photoid, 'elevators' => $elevators));
    }
 
    /**

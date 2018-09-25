@@ -137,9 +137,21 @@
             $('#signalement_abonnement').change();
         };
         
+        $.initClickableRow = function () {
+        	
+            if (!$('.clickable-row').length) {
+                return;
+            }
+            
+            $(".clickable-row").click(function() {
+                document.window.location = $(this).data("href");
+            });
+        };
+        
         $.initGeolocalisation();
         $.initMap();
         $.initAddrSearch();
         $.initSignalement();
+        $.initClickableRow();
 
       });

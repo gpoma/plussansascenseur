@@ -5,6 +5,7 @@ namespace AppBundle\Repository;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use AppBundle\Document\Photo;
 use Doctrine\Common\Collections\ArrayCollection;
+use GeoJson\Geometry\Point;
 
 /**
  * AttachementRepository
@@ -15,5 +16,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 class AscenseurRepository extends DocumentRepository {
 
 
-
+	public function findByCoordinates($coordinates, $distance = 100) {
+		$coordinates = explode(',', $coordinates);
+		if (count($coordinates) != 2) {
+			throw new \Exception('Coordonnées géographiques non valides : '.$coordinates);
+		}
+		$point = new Point(array($coordinates[0]*1, $coordinates[1]*1));
+		$query = $this->createQueryBuilder()->field('localisation.coordinates')->near($point)->maxDistance($distance)->getQuery();
+		return $query->execute();
+	}
 }

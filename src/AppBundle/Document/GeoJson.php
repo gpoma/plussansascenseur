@@ -4,7 +4,10 @@ namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
-/** @MongoDB\EmbeddedDocument */
+/** 
+ * @MongoDB\EmbeddedDocument 
+ * @MongoDB\Index(keys={"coordinates"="2d"})
+ * */
 class GeoJson {
 
     /**
@@ -61,6 +64,11 @@ class GeoJson {
     public function getCoordinates()
     {
         return $this->coordinates;
+    }
+
+    public function getCoordinatesLibelle()
+    {
+    	return $this->getCoordinates()->getLibelle();
     }
 
 }

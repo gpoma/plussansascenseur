@@ -60,4 +60,9 @@ class Coordinates
     {
         return $this->y;
     }
+    
+    public function getLibelle()
+    {
+    	return $this->getX().','.$this->getY();
+    }
 }
