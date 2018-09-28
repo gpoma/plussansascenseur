@@ -220,13 +220,14 @@ class Ascenseur {
 
         return $this->commune;
     }
-    
+
     public function getAdresseLibelle() {
     	if ($this->getAdresse() || $this->getCommune() || $this->getCodePostal()) {
     		return $this->getAdresse().' '.$this->getCodePostal().' '.$this->getCommune();
     	}
     	if ($localisation = $this->getLocalisation()) {
     		if ($coordinates = $localisation->getCoordinates()) {
+                var_dump($coordinates->getLibelle()); exit;
     			return AdresseDataGouvApi::getAddrByCoordinates($coordinates->getLibelle());
     		}
     	}

@@ -80,10 +80,11 @@ class DefaultController extends Controller
 		$dm = $this->get('doctrine_mongodb')->getManager();
 
 		$coordinates = $request->get('coordinates', null);
+        $coordinates = ($coordinates)? implode(",",array_values($coordinates['coordinates'])) : null;
 		$photoid = $request->get('photo', null);
 		$address = null;
 		$elevators = array();
-		
+
 		if ($photoid && !$coordinates) {
 			if ($photo = $dm->getRepository('AppBundle:Photo')->findOneById($photoid)) {
 				if ($localisation = $photo->getLocalisation()) {
@@ -93,7 +94,7 @@ class DefaultController extends Controller
 				$photoid = null;
 			}
        	}
-       	
+
        	if ($coordinates) {
        		$address = AdresseDataGouvApi::getAddrByCoordinates($coordinates);
        		$elevators = $dm->getRepository('AppBundle:Ascenseur')->findByCoordinates($coordinates);

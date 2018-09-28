@@ -1,8 +1,9 @@
     $(document).ready(function ()
     {
         $.initGeolocalisation = function (){
+
             if ($('#geolocation').length) {
-                var debug = true;
+                var debug = false;
 
                 var options = {
                   enableHighAccuracy: true,
@@ -22,20 +23,25 @@
                   $("#photos_lat").val(crd.latitude);
                   $("#photos_lon").val(crd.longitude);
 
-                  $('#voir_position').attr('href', "https://www.openstreetmap.org/?mlat="+crd.latitude+"&mlon="+crd.longitude);
-                  $('#voir_position').html(crd.latitude+";"+crd.longitude);
+                  if(crd.latitude+crd.longitude){
+                      console.log("ouvrir photos");
+                      $("#test").trigger('click');
+                  }
                 };
 
                 function error(err) {
                   console.warn(`ERROR(${err.code}): ${err.message}`);
                 };
 
-                navigator.geolocation.getCurrentPosition(success, error, options);
+                //navigator.geolocation.getCurrentPosition(success, error, options);
 
-                $('#demander_position').on('click', function() {
+                $('#camera-button').on('click', function() {
+                    $("#photos_imageFile_file").trigger('click');
                     navigator.geolocation.getCurrentPosition(success, error, options);
-
                     return false;
+                });
+                $("#photos_imageFile_file").bind('change', function() {
+                    $("form").submit();
                 });
             }
         };
@@ -78,16 +84,16 @@
 
             }
         };
-        
+
         $.initAddrSearch = function() {
-        	
+
             if (!$('#addrSearch').length) {
                 return;
             }
-            
+
 
             var target = $('#addrSearch').data('target');
-        	
+
         	var address = new Bloodhound({
         		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         		queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -97,7 +103,7 @@
                     transform: function(response) {return response.features}
         		}
         	});
-        	
+
         	$('#addrSearch .typeahead').typeahead({hint: false, highlight: true, minLength: 1},
         			{
                 		limit: 10,
@@ -124,7 +130,7 @@
             	document.location.href=target.replace('_coordinates_', suggestion.geometry.coordinates);
             });
         }
-        
+
         $.initSignalement = function () {
             if(!$('form[name=signalement]')) {
                 return;
@@ -145,18 +151,18 @@
             $('#signalement_etageAtteint').change();
             $('#signalement_abonnement').change();
         };
-        
+
         $.initClickableRow = function () {
-        	
+
             if (!$('.clickable-row').length) {
                 return;
             }
-            
+
             $(".clickable-row").click(function() {
                 document.location.href = $(this).data("href");
             });
         };
-        
+
         $.initGeolocalisation();
         $.initMap();
         $.initAddrSearch();

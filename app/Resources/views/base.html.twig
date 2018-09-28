@@ -12,12 +12,38 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        <div class="container" style="padding-bottom: 20px">
-            <div class="text-center">
-            	<a id="logo" href="/" alt="plus sans ascenseur">
-            		<img src="/psa_logo_300x300.png" height="150">
-            	</a>
-            </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-bottom:1px solid #d93337;">
+            <a  class="navbar-brand" id="logo" href="{{ path('homepage') }}" alt="plus sans ascenseur">
+                <img src="/psa_logo_300x300.png" height="150">
+            </a>
+
+          <form class="form-inline my-2 my-lg-0">
+              <div class="input-group mr-sm-2">
+                  <input class="form-control" type="search" placeholder="Rue, ville, Réf Ascenseur..." aria-label="Rue, ville, Réf Ascenseur..." aria-describedby="basic-addon2">
+                  <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button"><img src="img/search.svg" alt="Created by Andy Miranda from Noun Project" class="img-fluid" style="margin-bottom:0; height:22px;"></button>
+                  </div>
+              </div>
+          </form>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link d-inline-block" href="{{ path("homepage") }}">Signalement&nbsp;</a>
+        <span class="d-md-none d-lg-inline-block"> > </span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-inline-block" href="#">Liste&nbsp;Ascenseur&nbsp;</a>
+            <span class="d-md-none d-lg-inline-block"> > </span>
+      </li>     
+    </ul>
+  </div>
+</nav>
+        <div class="container">
             {% block body %}{% endblock %}
         </div>
         <script type="text/javascript" src="{{ asset('lib/jquery/jquery-3.3.1.min.js') }}"></script>
