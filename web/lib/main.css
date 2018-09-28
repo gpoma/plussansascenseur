@@ -56,4 +56,9 @@
 	text-decoration: none;
   	color: #fff !important;
 }
+
+.vich-file{
+    position:absolute;
+    left:-1000px;
+}
 /* ----- TYPEAHEAD */
