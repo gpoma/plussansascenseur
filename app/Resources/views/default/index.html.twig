@@ -22,7 +22,9 @@
 
                         </div>
                     </div>
-                    {{ form_widget(uploadPhotoForm.imageFile,{'attr':{'style': "position:absolute; left:-1000px;"}}) }}
+                    <div style="position:absolute; left:-1000px;">
+                    {{ form_widget(uploadPhotoForm.imageFile) }}
+                    </div>
 
                   </div>
                   {{ form_widget(uploadPhotoForm.lat) }}
