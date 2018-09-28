@@ -7,7 +7,7 @@
 
                 var options = {
                   enableHighAccuracy: true,
-                  timeout: 5000,
+                  timeout: 10000,
                   maximumAge: 0
                 };
 
@@ -20,19 +20,8 @@
                       console.log(`Plus ou moins ${crd.accuracy} mètres.`);
                   }
 
-                  $("#photos_lat").val(crd.latitude);
-                  $("#photos_lon").val(crd.longitude);
-
                   if(crd.latitude+crd.longitude){
-                      $.ajax({
-                        url: $('#geolocation').data('url').replace("lat",crd.latitude).replace("lon",crd.longitude),
-                        success: function(data){
-                            var adresse=JSON.parse(data);
-                            $(".typeahead").val(adresse);
-                            $("#typeahead_object").val(adresse).focus().trigger('keyup');
-
-                        }
-                    });
+                      window.location = window.location.origin + $('#geolocation').data('url').replace("lat",crd.latitude).replace("lon",crd.longitude);
                   }
                 };
 

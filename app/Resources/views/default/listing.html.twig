@@ -4,7 +4,7 @@
 <br/><br/>
 <h1>Mon ascenseur</h1>
 {% if not coordinates %}
-<div id="geolocation" data-url="{{ path('recupAdresse',{ "lat" : "lat","lon" : "lon"}) }}">
+<div id="geolocation" data-url="{{ path('listing',{ "coordinates" : "lon,lat","photo": photoid}) }}">
 </div>
 {% endif %}
 <div class="row my-4">
