@@ -73,7 +73,7 @@ class DefaultController extends Controller
         //return $this->redirect($this->generateUrl('signalement', array('photo' => $request->get('photo'))));
 		$dm = $this->get('doctrine_mongodb')->getManager();
 
-		$coordinates = $request->get('coordinates', null);
+		$coordinates = urldecode($request->get('coordinates', null));
 		$photoid = $request->get('photo', null);
 		$address = null;
 		$elevators = array();
