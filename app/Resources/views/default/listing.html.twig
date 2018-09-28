@@ -1,8 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-<h2>Mon ascenseur</h2>
+<br/><br/>
+<h1>Mon ascenseur</h1>
+{% if not coordinates %}
+<div id="geolocation" style="display:none;" data-url="{{ path('recupAdresse',{ "lat" : "lat","lon" : "lon"}) }}">
+</div>
+{% endif %}
 <div class="row my-4">
     <div class="col-sm-12" id="addrSearch" data-target="{{ path('listing', {coordinates: '_coordinates_', photo: photoid}) }}">
 		<input class="typeahead form-control" type="text" placeholder="{% if address %}{{ address }}{% else %}Indiquer ici l'adresse de l'ascenseur{% endif %}">

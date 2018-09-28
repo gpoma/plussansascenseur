@@ -24,8 +24,15 @@
                   $("#photos_lon").val(crd.longitude);
 
                   if(crd.latitude+crd.longitude){
-                      console.log("ouvrir photos");
-                      $("#test").trigger('click');
+                      $.ajax({
+                        url: $('#geolocation').data('url').replace("lat",crd.latitude).replace("lon",crd.longitude),
+                        success: function(data){
+                            var adresse=JSON.parse(data);
+                            $(".typeahead").val(adresse);
+                            $("#typeahead_object").val(adresse).focus().trigger('keyup');
+
+                        }
+                    });
                   }
                 };
 
@@ -33,18 +40,22 @@
                   console.warn(`ERROR(${err.code}): ${err.message}`);
                 };
 
-                //navigator.geolocation.getCurrentPosition(success, error, options);
+                navigator.geolocation.getCurrentPosition(success, error, options);
 
-                $('#camera-button').on('click', function() {
-                    $("#photos_imageFile_file").trigger('click');
-                    navigator.geolocation.getCurrentPosition(success, error, options);
-                    return false;
-                });
-                $("#photos_imageFile_file").bind('change', function() {
-                    $("form").submit();
-                });
             }
         };
+
+        $.initCamera = function(){
+            $('#camera-button').on('click', function() {
+                $("#photos_imageFile_file").trigger('click');
+                return false;
+            });
+            $("#photos_imageFile_file").bind('change', function() {
+                $("form").submit();
+            });
+
+        }
+
 
         $.initMap = function () {
         if ($('#map').length) {
@@ -168,5 +179,6 @@
         $.initAddrSearch();
         $.initSignalement();
         $.initClickableRow();
+        $.initCamera();
 
       });

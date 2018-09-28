@@ -8,7 +8,7 @@
                 <h4 class="text-center"><i>Signalez-le !</i></h4>
             </div>
         </div>
-        <div class="row" id="geolocation">
+        <div class="row" >
             <div class="col-sm-12">
                 {{ form_start(uploadPhotoForm,{ "enctype" : "multipart/form-data"}) }}
                     <div class="row">
@@ -29,7 +29,7 @@
                   </div>
                   {{ form_widget(uploadPhotoForm.lat) }}
                   {{ form_widget(uploadPhotoForm.lon) }}
-                  <small><a id="demander_position" href="">Signaler l'ascenseur sans photo</a> (<a id="voir_position" href="">Aucune position</a>)</small>
+                  <small><a href="">Signaler l'ascenseur sans photo</a></small>
                 <hr />
                 {{ form_end(uploadPhotoForm) }}
             </div>

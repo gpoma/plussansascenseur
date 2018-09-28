@@ -13,6 +13,7 @@ use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
 use AppBundle\Lib\AdresseDataGouvApi;
 use AppBundle\Repository\AscenseurRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
 {
@@ -55,13 +56,6 @@ class DefaultController extends Controller
         }
 
         $data = $request->request->get('photos');
-        $lat = floatval($data['lat']);
-        $lon = floatval($data['lon']);
-        $f = $uploadPhotoForm->getData()->getImageFile();
-
-        if ($lat || $lon) {
-          $photo->setLatLon($lat,$lon);
-        }
 
         $dm->persist($photo);
         $dm->flush();
@@ -80,7 +74,6 @@ class DefaultController extends Controller
 		$dm = $this->get('doctrine_mongodb')->getManager();
 
 		$coordinates = $request->get('coordinates', null);
-        $coordinates = ($coordinates)? implode(",",array_values($coordinates['coordinates'])) : null;
 		$photoid = $request->get('photo', null);
 		$address = null;
 		$elevators = array();
@@ -90,8 +83,6 @@ class DefaultController extends Controller
 				if ($localisation = $photo->getLocalisation()) {
 					$coordinates = $localisation->getCoordinatesLibelle();
 				}
-			} else {
-				$photoid = null;
 			}
        	}
 
@@ -103,6 +94,16 @@ class DefaultController extends Controller
        	return $this->render('default/listing.html.twig', array('coordinates' => $coordinates, 'address' => $address, 'photoid' => $photoid, 'elevators' => $elevators));
    }
 
+   /**
+    * @Route("/recupAdresse/{lat}/{lon}", name="recupAdresse")
+    */
+    public function recupAdresseAction(Request $request,$lat,$lon)
+   {
+       $coordinates = $lon.",".$lat;
+       $adresse = AdresseDataGouvApi::getAddrByCoordinates($coordinates);
+       $json = json_encode($adresse);
+      return  new JsonResponse($json);
+    }
    /**
     * @Route("/signalement", name="signalement")
     */
