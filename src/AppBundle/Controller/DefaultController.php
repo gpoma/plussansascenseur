@@ -70,7 +70,6 @@ class DefaultController extends Controller
     */
    public function listingAction(Request $request)
    {
-        //return $this->redirect($this->generateUrl('signalement', array('photo' => $request->get('photo'))));
 		$dm = $this->get('doctrine_mongodb')->getManager();
 
 		$coordinates = $request->get('coordinates', null);
@@ -95,25 +94,22 @@ class DefaultController extends Controller
        	return $this->render('default/listing.html.twig', array('coordinates' => $coordinates, 'address' => $address, 'photoid' => $photoid, 'elevators' => $elevators));
    }
 
-   /**
-    * @Route("/recupAdresse/{lat}/{lon}", name="recupAdresse")
-    */
-    public function recupAdresseAction(Request $request,$lat,$lon)
-   {
-       $coordinates = $lon.",".$lat;
-       $adresse = AdresseDataGouvApi::getAddrByCoordinates($coordinates);
-       $json = json_encode($adresse);
-      return  new JsonResponse($json);
-    }
+
    /**
     * @Route("/signalement", name="signalement")
     */
    public function signalementAction(Request $request)
    {
         $dm = $this->get('doctrine_mongodb')->getManager();
+        $coordinates = $request->get('coordinates', null);
+        $coordinatesArr = null;
+        if($coordinates) $coordinatesArr = explode(",",urldecode($coordinates));
         $ascenseur = new Ascenseur();
         if($request->get('ascenseur')) {
            $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($request->get('ascenseur'));
+        }
+        if($coordinatesArr && count($coordinatesArr)==2){
+            $ascenseur->setLatLon($coordinatesArr[1], $coordinatesArr[0]);
         }
         $signalement = new Signalement($ascenseur);
         if($request->get('photo')) {

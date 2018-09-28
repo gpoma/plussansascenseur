@@ -117,9 +117,6 @@ class Ascenseur {
      */
     public function addPhoto(\AppBundle\Document\Photo $photo)
     {
-        if(!$this->getLon() || !$this->getLat()) {
-            $this->setLatLon($photo->getLat(), $photo->getLon());
-        }
         $this->photos[] = $photo;
     }
 
