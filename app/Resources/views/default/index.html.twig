@@ -27,9 +27,9 @@
                     </div>
 
                   </div>
-                  {{ form_widget(uploadPhotoForm.lat) }}
-                  {{ form_widget(uploadPhotoForm.lon) }}
-                  <small><a href="">Signaler l'ascenseur sans photo</a></small>
+                 <div class="col-sm-12 text-center">
+                     <small><a href="{{ path('listing') }}">Signaler l'ascenseur sans photo</a></small>
+                </div>
                 <hr />
                 {{ form_end(uploadPhotoForm) }}
             </div>

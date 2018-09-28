@@ -42,6 +42,12 @@
 
                 navigator.geolocation.getCurrentPosition(success, error, options);
 
+                $('#demander_position').on('click', function() {
+                navigator.geolocation.getCurrentPosition(success, error, options);
+
+                return false;
+                });
+
             }
         };
 
