@@ -19,7 +19,7 @@ class AscenseurType extends AbstractType
             ->add('commune', TextType::class, array('required' => false, 'label' => "Commune :"))
             ->add('emplacement', TextType::class, array('required' => false, 'label' => "Emplacement :"))
             ->add('reference', TextType::class, array('required' => false, 'label' => "Numéro de référence :"))
-            ->add('marque', TextType::class, array('required' => false, 'label' => "Marque :"))
+            ->add('constructeurNom', TextType::class, array('required' => false, 'label' => "Constructeur :"))
             ->add('etageMin', NumberType::class, array('required' => false, 'label' => "Étage le plus bas :"))
             ->add('etageMax', NumberType::class, array('required' => false, 'label' => "Étage le plus haut :"))
             ->add('telephoneDepannage', TextType::class, array('required' => false, 'label' => "N° de téléphone du dépannage :"))

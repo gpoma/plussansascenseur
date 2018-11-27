@@ -34,7 +34,10 @@ class AscenseurTest extends KernelTestCase
         $ascenseur->setCommune("Paris");
         $ascenseur->setEmplacement("Batiment A Ascenseur de droite");
         $ascenseur->setReference("123456789");
-        $ascenseur->setMarque("Otis");
+        $ascenseur->setConstructeurNom("Otis");
+        $ascenseur->setBailleurNom("Bailleur");
+        $ascenseur->setSyndicNom("Syndic");
+        $ascenseur->setAscensoristeNom("Ascensoriste");
         $ascenseur->setEtageMin(-2);
         $ascenseur->setEtageMax(9);
         $ascenseur->setTelephoneDepannage("0102030405");
@@ -52,7 +55,10 @@ class AscenseurTest extends KernelTestCase
         $this->assertEquals($ascenseur->getCommune(), "Paris");
         $this->assertEquals($ascenseur->getEmplacement(), "Batiment A Ascenseur de droite");
         $this->assertEquals($ascenseur->getReference(), "123456789");
-        $this->assertEquals($ascenseur->getMarque(), "Otis");
+        $this->assertEquals($ascenseur->getConstructeurNom(), "Otis");
+        $this->assertEquals($ascenseur->getBailleurNom(), "Bailleur");
+        $this->assertEquals($ascenseur->getSyndicNom(), "Syndic");
+        $this->assertEquals($ascenseur->getAscensoristeNom(), "Ascensoriste");
         $this->assertEquals($ascenseur->getEtageMin(), -2);
         $this->assertEquals($ascenseur->getEtageMax(), 9);
         $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
