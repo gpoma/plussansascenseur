@@ -108,6 +108,7 @@ class Signalement {
     public function __construct(Ascenseur $ascenseur) {
         $this->abonnement = false;
         $this->date = new \DateTime();
+        $this->datePanne = new \DateTime();
         $this->ascenseur = $ascenseur;
     }
 
