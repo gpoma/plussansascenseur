@@ -29,8 +29,8 @@
             	{% endif %}
 			</td>
 			<td>
-				{% if elevator.marque %}Ascenseur <strong>{{ elevator.marque }}</strong> {% endif %}{% if elevator.reference %}Ref. <strong>{{ elevator.reference }}</strong>{% endif %}
-				{% if elevator.marque and elevator.reference %}<br />{% endif %}
+				{% if elevator.constructeurNom %}Ascenseur <strong>{{ elevator.constructeurNom }}</strong> {% endif %}{% if elevator.reference %}Ref. <strong>{{ elevator.reference }}</strong>{% endif %}
+				{% if elevator.constructeurNom and elevator.reference %}<br />{% endif %}
 				{{ elevator.getAdresseLibelle() }}
 			</td>
 		</tr>

@@ -1,21 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br/><br/>
-{% if not coordinates %}
-<div id="geolocation" data-url="{{ path('nearby',{ "coordinates" : "lon,lat","photo": photoid}) }}">
-</div>
-{% endif %}
-<div class="col-sm-12">
-  <div class="row">
-    <h1 class="col-sm-8">Veuillez localiser cet ascenseur</h1>
-    <small class="col-sm-4 text-right" style="padding:12px 0 0 0;"><a id="demander_position" class="btn btn-sm btn-info pull-right">Re-demander la position</a></small>
-  </div>
-</div>
-<div class="row my-4">
-    <div class="col-sm-12" id="addrSearch" data-target="{{ path('nearby', {coordinates: '_coordinates_', photo: photoid}) }}">
-		<input class="typeahead form-control" type="text" placeholder="{% if address %}{{ address }}{% else %}Ou indiquer ici l'adresse de l'ascenseur{% endif %}">
+    <br/><br/>
+    {% if not coordinates %}
+    <div id="geolocation" data-url="{{ path('nearby',{ "coordinates" : "lon,lat","photo": photoid}) }}"></div>
+    {% endif %}
+    <h1>Nous tentons de localiser l'ascenseur</h1>
+    <p>Si vous êtes devant l'ascenseur en panne, votre appareil peut nous permettre de le localiser. Pour se faire, merci d'accepter le partage de votre position GPS.</p>
+    <p class="text-center"><a id="demander_position" class="btn btn-sm btn-info">Re-demander la position</a></p>
+    <p>Si vous ne souhaitez pas être géolocalisé-e, vous pouvez passer cette étape et indiquer l'adresse de l'ascenseur manuellement.</p>
+    <div class="float-right">
+      <p><a class="btn btn-default" href="{{ path('nearby', {photo: photoid}) }}">Étape suivante</a></p>
     </div>
-</div>
-
+    <br/><br/>
 {% endblock %}
