@@ -78,15 +78,15 @@ class DefaultController extends Controller
      $address = null;
      if ($coordinates) {
        $coordinates = urldecode($coordinates);
-       return $this->redirect($this->generateUrl('listing', array('photo' => $photo->getId(), 'coordinates' => $coordinates)));
+       return $this->redirect($this->generateUrl('nearby', array('photo' => $photo->getId(), 'coordinates' => $coordinates)));
      }
      return $this->render('default/localisation.html.twig', array('coordinates' => $coordinates, 'photoid' => $photoid, 'address' => $address));
    }
 
    /**
-    * @Route("/listing", name="listing")
+    * @Route("/nearby", name="nearby")
     */
-   public function listingAction(Request $request)
+   public function nearbyAction(Request $request)
    {
 		$dm = $this->get('doctrine_mongodb')->getManager();
 
@@ -107,13 +107,21 @@ class DefaultController extends Controller
             $coordinates = urldecode($coordinates);
        		$address = AdresseDataGouvApi::getAddrByCoordinates($coordinates);
        		$elevators = $dm->getRepository('AppBundle:Ascenseur')->findByCoordinates($coordinates);
-       	} else {
-            $elevators = $dm->getRepository('AppBundle:Ascenseur')->findAll();
-        }
+       	}
 
-       	return $this->render('default/listing.html.twig', array('coordinates' => $coordinates, 'address' => $address, 'photoid' => $photoid, 'elevators' => $elevators));
+       	return $this->render('default/nearby.html.twig', array('coordinates' => $coordinates, 'address' => $address, 'photoid' => $photoid, 'elevators' => $elevators));
    }
 
+   /**
+    * @Route("/listing", name="listing")
+    */
+   public function listingAction(Request $request)
+   {
+       $dm = $this->get('doctrine_mongodb')->getManager();
+       $elevators = $dm->getRepository('AppBundle:Ascenseur')->findAll();
+
+       return $this->render('default/listing.html.twig', array('elevators' => $elevators));
+   }
 
    /**
     * @Route("/signalement", name="signalement")

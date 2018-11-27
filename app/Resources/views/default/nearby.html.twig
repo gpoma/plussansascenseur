@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br/><br/>
+<h1>Mon ascenseur</h1>
+{% if not coordinates %}
+<div id="geolocation" data-url="{{ path('nearby',{ "coordinates" : "lon,lat","photo": photoid}) }}">
+</div>
+{% endif %}
+<div class="row my-4">
+    <div class="col-sm-12" id="addrSearch" data-target="{{ path('nearby', {coordinates: '_coordinates_', photo: photoid}) }}">
+		<input class="typeahead form-control" type="text" placeholder="{% if address %}{{ address }}{% else %}Indiquer ici l'adresse de l'ascenseur{% endif %}">
+    </div>
+</div>
+
+<div class="col-sm-12 text-center">
+    <small><a id="demander_position" href="">Demander la position</a></small>
+</div>
+<h2>Résultats</h2>
+
+<table class="table table-striped table-hover">
+	<tbody>
+		{% for elevator in elevators %}
+		{% set photo = elevator.photos.first() %}
+        <tr class="clickable-row" data-href="{{ path('signalement', {ascenseur: elevator.id, photo: photoid}) }}">
+			<td class="col-sm-2 text-right">
+				{% if photo %}
+            	<img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="margin-bottom:0; max-height : 100px;"/>
+            	{% endif %}
+			</td>
+			<td>
+				{% if elevator.marque %}Ascenseur <strong>{{ elevator.marque }}</strong> {% endif %}{% if elevator.reference %}Ref. <strong>{{ elevator.reference }}</strong>{% endif %}
+				{% if elevator.marque and elevator.reference %}<br />{% endif %}
+				{{ elevator.getAdresseLibelle() }}
+			</td>
+		</tr>
+		{% endfor %}
+		<tr class="clickable-row" data-href="{{ path('signalement', {coordinates: coordinates, photo: photoid}) }}" style="border: 1px solid #dee2e6;">
+			<td class="col-sm-2 text-right"><img src="{{ asset('img/no-elevator.svg') }}" alt="Inspired by Adnen Kadri and Ali Riza Saçan from Noun Project" class="img-fluid" style="margin-bottom:0; max-height : 100px;"/></td>
+			<td valign="middle">Mon ascenseur n'est pas listé ici</td>
+		</tr>
+	</tbody>
+</table>
+
+{% endblock %}

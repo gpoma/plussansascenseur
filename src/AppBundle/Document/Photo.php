@@ -1,17 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of Attachement
- *
- * @author mathurin
- */
-
 namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
@@ -75,7 +63,6 @@ class Photo
     */
    protected $updatedAt;
 
-
    /**
     * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="photos", storeAs="id")
     */
@@ -84,20 +71,6 @@ class Photo
 
    /** @MongoDB\EmbedOne(targetDocument="GeoJson") */
    public $localisation;
-
-
-
-    /**
-     * Set updatedAt
-     *
-     * @param date $updatedAt
-     * @return $this
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
 
     /**
      * Get updatedAt
@@ -213,8 +186,8 @@ class Photo
      * @MongoDB\PrePersist()
      * @MongoDB\PreUpdate()
      */
-    public function prePersist() {
-        $this->setUpdatedAt(new \DateTime());
+    public function preSave() {
+        $this->updatedAt = new \DateTime();
     }
 
     /**
@@ -340,14 +313,6 @@ class Photo
         }
 
         return $resultImg;
-    }
-
-    public static function cmpUpdateAt($a, $b) {
-        if ($a->getUpdatedAt() == $b->getUpdatedAt()) {
-                return "0";
-            } else {
-                return ($b->getUpdatedAt() > $a->getUpdatedAt())? "+1" : "-1";
-            }
     }
 
     /**

@@ -62,6 +62,7 @@ class SignalementTest extends KernelTestCase
         $this->assertEquals($signalement->getPseudo(), "test");
         $this->assertEquals($signalement->getEmail(), "contact@24eme.fr");
         $this->assertEquals($signalement->getTelephone(), "0102030405");
+        $this->assertEquals($signalement->getUpdatedAt()->format('Y-m-d'), date('Y-m-d'));
         $this->assertCount(1, $signalement->getAscenseur()->getHistorique());
     }
 
