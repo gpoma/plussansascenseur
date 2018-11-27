@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<h2>Ascenseur {{ ascenseur.constructeurNom }}<br />
+<h2>Ascenseur {{ ascenseur.constructeurNom }}  <small><span class="badge badge-{% if ascenseur.statut == "EN_PANNE" %}danger{% else %}success{% endif %}">En panne</span></small><br />
 <small>{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}<br />{{ ascenseur.emplacement }}</small>
 </h2>
 <div class="row" style="margin-top: 20px;">
@@ -84,7 +84,7 @@
 </div>
 <a href="{{ path('ascenseur_edition', { ascenseur: ascenseur.id })}}" class="btn btn-link btn-block">Compléter les informations de cette ascenseur</a>
 <hr />
-<h3>Historique de l'ascenseur <small><span class="badge badge-{% if ascenseur.statut == "EN_PANNE" %}danger{% else %}success{% endif %}">En panne</span></small></h3>
+<h3>Historique de l'ascenseur</h3>
 {% if ascenseur.statut == "EN_PANNE" %}
 <div class="alert alert-danger" role="alert" style="margin-top: 20px;">
   Cette ascenseur est en panne de depuis le {{ ascenseur.dateStatut | date("d/m/Y") }} <a href="">(signaler un changement)</a>
