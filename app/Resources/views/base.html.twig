@@ -17,11 +17,11 @@
                 <img src="/psa_logo_300x300.png" height="100">
             </a>
 
-          <form class="form-inline my-2 my-lg-0">
+          <form action={{ path('listing') }} method="GET" class="form-inline my-2 my-lg-0">
               <div class="input-group mr-sm-2">
                   <input class="form-control" type="search" placeholder="Rue, ville, Réf Ascenseur..." aria-label="Rue, ville, Réf Ascenseur..." aria-describedby="basic-addon2">
                   <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="button"><img src="img/search.svg" alt="Created by Andy Miranda from Noun Project" class="img-fluid" style="margin-bottom:0; height:22px;"></button>
+                      <button class="btn btn-outline-secondary" type="submit"><img src="{{ asset('img/search.svg') }}" alt="Created by Andy Miranda from Noun Project" class="img-fluid" style="margin-bottom:0; height:22px;"></button>
                   </div>
               </div>
           </form>

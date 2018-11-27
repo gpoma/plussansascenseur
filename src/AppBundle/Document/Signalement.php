@@ -14,8 +14,9 @@ class Signalement {
     public static $usageList = array(
         "HABITANT" => "J'habite ici",
         "TRAVAIL" => "Je travaille ici",
-        "VISITEUR" => "Je rend visite à quelqu'une",
-        "PROFESSIONNEL" => "Je livre ou j'intervient chez quelqu'un",
+        "VISITEUR" => "Je rend visite à quelqu'un",
+        "MEDICAL" => "J'apporte une aide médicale",
+        "PROFESSIONNEL" => "Je livre ou j'interviens chez quelqu'un",
         "AUTRE" => "Autre"
     );
 

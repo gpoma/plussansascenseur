@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<br/><br/>
+{% if not coordinates %}
+<div id="geolocation" data-url="{{ path('listing',{ "coordinates" : "lon,lat","photo": photoid}) }}">
+</div>
+{% endif %}
+<div class="col-sm-12">
+  <div class="row">
+    <h1 class="col-sm-8">Veuillez localiser cet ascenseur</h1>
+    <small class="col-sm-4 text-right" style="padding:12px 0 0 0;"><a id="demander_position" class="btn btn-sm btn-info pull-right">Re-demander la position</a></small>
+  </div>
+</div>
+<div class="row my-4">
+    <div class="col-sm-12" id="addrSearch" data-target="{{ path('listing', {coordinates: '_coordinates_', photo: photoid}) }}">
+		<input class="typeahead form-control" type="text" placeholder="{% if address %}{{ address }}{% else %}Ou indiquer ici l'adresse de l'ascenseur{% endif %}">    
+    </div>
+</div>
+
+{% endblock %}
