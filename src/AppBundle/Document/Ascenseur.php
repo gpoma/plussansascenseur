@@ -90,6 +90,12 @@ class Ascenseur {
     protected $statut;
 
     /**
+     * @MongoDB\Field(type="date")
+     *
+     */
+    protected $dateStatut;
+
+    /**
      *  @MongoDB\EmbedMany(targetDocument="Evenement")
      *
      */
@@ -617,5 +623,27 @@ class Ascenseur {
     {
         $this->updatedAt = $updatedAt;
         return $this;
+    }
+
+    /**
+     * Set dateStatut
+     *
+     * @param date $dateStatut
+     * @return $this
+     */
+    public function setDateStatut($dateStatut)
+    {
+        $this->dateStatut = $dateStatut;
+        return $this;
+    }
+
+    /**
+     * Get dateStatut
+     *
+     * @return date $dateStatut
+     */
+    public function getDateStatut()
+    {
+        return $this->dateStatut;
     }
 }

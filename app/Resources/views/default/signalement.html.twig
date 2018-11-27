@@ -9,7 +9,10 @@
 <p class="text-muted">Nous vous invitons à compléter quelques informations afin d'en savoir plus sur votre situation et les préjudices subits. Tous les champs sont facultatifs.</p>
 
 {{ form_start(form) }}
-    L'ascenseur est en panne depuis : <a href="">Ajourd'hui</a>
+    L'ascenseur est en panne depuis :
+    <div class="form-group input-group">
+      {{ form_widget(form.datePanne) }}
+    </div>
     <hr />
     <h3>Votre usage de l'ascenseur</h3>
     {{ form_row(form.usage) }}

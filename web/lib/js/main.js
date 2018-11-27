@@ -115,7 +115,7 @@
                 		limit: 10,
                 		source: address,
                 		async: true,
-                    displayKey: 'id', // PUT IT HERE
+                    displayKey: 'id',
                 		templates: {
                 				suggestion: function(e) {
                 					var result = '<a href="'+target.replace('_coordinates_', e.geometry.coordinates)+'">'+e.properties.label;

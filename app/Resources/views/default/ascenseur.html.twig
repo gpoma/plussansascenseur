@@ -2,55 +2,102 @@
 
 {% block body %}
 
-<a href="{{ path('ascenseur_edition', { ascenseur: ascenseur.id })}}" class="btn btn-info float-right">Compléter les informations</a>
-<h2>Ascenseur<br />
-<small>{{ ascenseur.emplacement }}<br />{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}</small>
+<h2>Ascenseur {{ ascenseur.constructeurNom }}<br />
+<small>{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}<br />{{ ascenseur.emplacement }}</small>
 </h2>
 <div class="row" style="margin-top: 20px;">
-    <div class="col-sm-6">
+    <div class="col-md-6" style="margin-bottom: 20px;">
         {% set lat = ascenseur.lat  %}
         {% set lon = ascenseur.lon  %}
-        <div id="map" style="width: 100%; min-height: 200px;" data-geojson="{{ geojson | json_encode(constant('JSON_HEX_QUOT')) }}" data-lat="{{ lat }}" data-lon="{{ lon }}" data-zoom="12"></div>
+        <div id="map" style="width: 100%; height: 200px;" data-geojson="{{ geojson | json_encode(constant('JSON_HEX_QUOT')) }}" data-lat="{{ lat }}" data-lon="{{ lon }}" data-zoom="12"></div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-md-6" style="margin-bottom: 20px;">
         <div class="row">
-        {% for photo in ascenseur.photos|slice(0, 4) %}
-        <div class="col-6 text-center">
-            <img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="margin-bottom:0; max-height : 100px;"/>
+        {% for photo in ascenseur.photos|slice(0, 2) %}
+        <div class="col-md-6 text-center">
+            <img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="margin-bottom:0; max-height : 200px;"/>
          </div>
         {% endfor %}
         </div>
     </div>
 </div>
-<table class="table table-bordered table-condensed" style="margin-top: 20px;">
-    <tr>
-        <th class="col-3">Constructeur</th>
-        <td class="col-3">{{ ascenseur.constructeurNom }}</td>
-        <th class="col-3">Référence</th>
-        <td class="col-3">{{ ascenseur.reference }}</td>
-    </td>
-    <tr>
-        <th>Étage</th>
-        <td>{{ ascenseur.etageMin }} au {{ ascenseur.etageMax }}</td>
-        <th>Dépannage</th>
-        <td><a href="tel:{{ ascenseur.telephoneDepannage }}">{{ ascenseur.telephoneDepannage }}</a></td>
-    </td>
-</table>
-<hr />
+
 <div class="row">
-<div class="col-sm-8">
-    <button class="btn btn-danger btn-lg btn-block">{{ ascenseur.statut }}</button>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Informations techniques</h4>
+            </div>
+            <table class="table table-sm">
+                <tbody>
+                <tr>
+                    <th class="col-5">Constructeur</th>
+                    <td class="col-7">{{ ascenseur.constructeurNom }}</td>
+                </tr>
+                <tr>
+                    <th class="col-5">Référence</th>
+                    <td class="col-7">{{ ascenseur.reference }}</td>
+                </tr>
+                <tr>
+                    <th class="col-5">Date de construction</th>
+                    <td class="col-7">{{ ascenseur.dateConstruction }}</td>
+                </tr>
+                <tr>
+                    <th class="col-5">Date de rénovation</th>
+                    <td class="col-7">{{ ascenseur.dateRenovation }}</td>
+                </tr>
+                <tr>
+                    <th class="col-5">Étages</th>
+                    <td class="col-7">{% if ascenseur.etageMin %}{{ ascenseur.etageMin }} au {% endif %}{{ ascenseur.etageMax }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Contact des responsables</h4>
+            </div>
+            <table class="table table-sm">
+                <tbody>
+                <tr>
+                    <th class="col-5">Bailleur</th>
+                    <td class="col-7">{{ ascenseur.bailleurNom }} {% if ascenseur.bailleurContact %}({{ ascenseur.bailleurContact }}){% endif %}</td>
+                </tr>
+                <tr>
+                    <th class="col-5">Syndic</th>
+                    <td class="col-7">{{ ascenseur.syndicNom }} {% if ascenseur.syndicContact %}({{ ascenseur.syndicContact }}){% endif %}</td>
+                </tr>
+                <tr>
+                    <th class="col-5">Ascensoriste</th>
+                    <td class="col-7">{{ ascenseur.ascensoristeNom }} {% if ascenseur.ascensoristeContact %}({{ ascenseur.ascensoristeContact }}){% endif %}</td>
+                </tr>
+                <tr>
+                    <th class="col-5">Téléphone dépannage</th>
+                    <td class="col-7">{{ ascenseur.telephoneDepannage }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<div class="col-sm-4">
-    <button class="btn btn-link btn-lg btn-block">Signaler un changement</button>
-</div>
-</div>
+<a href="{{ path('ascenseur_edition', { ascenseur: ascenseur.id })}}" class="btn btn-link btn-block">Compléter les informations de cette ascenseur</a>
 <hr />
-<h3>Historique de l'ascenseur</h3>
-<table class="table table-bordered table-condensed">
+<h3>Historique de l'ascenseur <small><span class="badge badge-{% if ascenseur.statut == "EN_PANNE" %}danger{% else %}success{% endif %}">En panne</span></small></h3>
+{% if ascenseur.statut == "EN_PANNE" %}
+<div class="alert alert-danger" role="alert" style="margin-top: 20px;">
+  Cette ascenseur est en panne de depuis le {{ ascenseur.dateStatut | date("d/m/Y") }} <a href="">(signaler un changement)</a>
+</div>
+{% else %}
+<div class="alert alert-success" role="alert" style="margin-top: 20px;">
+  Cette ascenseur fonctionne depuis le {{ ascenseur.dateStatut | date("d/m/Y") }} <a href="">(signaler un changement)</a>
+</div>
+{% endif %}
+<table class="table table-bordered table-sm">
     <thead>
         <tr>
-            <th class="col-3">Date</th>
+            <th class="col-1">Date</th>
             <th class="col-7">Infos</th>
             <th class="col-2">Auteur</th>
         </tr>
@@ -58,7 +105,7 @@
     <tbody>
         {% for evenement in ascenseur.historique %}
         <tr>
-            <td>{{ evenement.date | date }}</td>
+            <td>{{ evenement.date | date("d/m/Y") }}</td>
             <td>{{ evenement.commentaire }}</td>
             <td>{{ evenement.auteur }}</th>
         </tr>
