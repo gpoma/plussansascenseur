@@ -63,7 +63,7 @@ class Ascenseur {
      * @MongoDB\Field(type="string")
      *
      */
-    protected $marque;
+    protected $constructeurNom;
 
     /**
      * @MongoDB\Field(type="int")
@@ -94,6 +94,54 @@ class Ascenseur {
      *
      */
     protected $historique;
+
+    /**
+     *  @MongoDB\Field(type="date")
+     *
+     */
+    protected $dateConstruction;
+
+    /**
+     *  @MongoDB\Field(type="date")
+     *
+     */
+    protected $dateRenovation;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $syndicNom;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $syndicContact;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $bailleurNom;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $bailleurContact;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $ascensoristeNom;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $ascensoristeContact;
 
     /**
      * @MongoDB\Field(type="date")
@@ -260,15 +308,15 @@ class Ascenseur {
         return $this->reference;
     }
 
-    public function setMarque($marque){
-        $this->marque = $marque;
+    public function setConstructeurNom($constructeurNom){
+        $this->constructeurNom = $constructeurNom;
 
         return $this;
     }
 
-    public function getMarque() {
+    public function getConstructeurNom() {
 
-        return $this->marque;
+        return $this->constructeurNom;
     }
 
     public function setEtageMin($etageMin){
@@ -346,6 +394,202 @@ class Ascenseur {
     }
 
     /**
+     * Add historique
+     *
+     * @param AppBundle\Document\Evenement $historique
+     */
+    public function addHistorique(\AppBundle\Document\Evenement $historique)
+    {
+        $this->historique[] = $historique;
+    }
+
+    /**
+     * Remove historique
+     *
+     * @param AppBundle\Document\Evenement $historique
+     */
+    public function removeHistorique(\AppBundle\Document\Evenement $historique)
+    {
+        $this->historique->removeElement($historique);
+    }
+
+    /**
+     * Set dateConstruction
+     *
+     * @param date $dateConstruction
+     * @return $this
+     */
+    public function setDateConstruction($dateConstruction)
+    {
+        $this->dateConstruction = $dateConstruction;
+        return $this;
+    }
+
+    /**
+     * Get dateConstruction
+     *
+     * @return date $dateConstruction
+     */
+    public function getDateConstruction()
+    {
+        return $this->dateConstruction;
+    }
+
+    /**
+     * Set dateRenovation
+     *
+     * @param date $dateRenovation
+     * @return $this
+     */
+    public function setDateRenovation($dateRenovation)
+    {
+        $this->dateRenovation = $dateRenovation;
+        return $this;
+    }
+
+    /**
+     * Get dateRenovation
+     *
+     * @return date $dateRenovation
+     */
+    public function getDateRenovation()
+    {
+        return $this->dateRenovation;
+    }
+
+    /**
+     * Set syndicNom
+     *
+     * @param string $syndicNom
+     * @return $this
+     */
+    public function setSyndicNom($syndicNom)
+    {
+        $this->syndicNom = $syndicNom;
+        return $this;
+    }
+
+    /**
+     * Get syndicNom
+     *
+     * @return string $syndicNom
+     */
+    public function getSyndicNom()
+    {
+        return $this->syndicNom;
+    }
+
+    /**
+     * Set syndicContact
+     *
+     * @param string $syndicContact
+     * @return $this
+     */
+    public function setSyndicContact($syndicContact)
+    {
+        $this->syndicContact = $syndicContact;
+        return $this;
+    }
+
+    /**
+     * Get syndicContact
+     *
+     * @return string $syndicContact
+     */
+    public function getSyndicContact()
+    {
+        return $this->syndicContact;
+    }
+
+    /**
+     * Set bailleurNom
+     *
+     * @param string $bailleurNom
+     * @return $this
+     */
+    public function setBailleurNom($bailleurNom)
+    {
+        $this->bailleurNom = $bailleurNom;
+        return $this;
+    }
+
+    /**
+     * Get bailleurNom
+     *
+     * @return string $bailleurNom
+     */
+    public function getBailleurNom()
+    {
+        return $this->bailleurNom;
+    }
+
+    /**
+     * Set bailleurContact
+     *
+     * @param string $bailleurContact
+     * @return $this
+     */
+    public function setBailleurContact($bailleurContact)
+    {
+        $this->bailleurContact = $bailleurContact;
+        return $this;
+    }
+
+    /**
+     * Get bailleurContact
+     *
+     * @return string $bailleurContact
+     */
+    public function getBailleurContact()
+    {
+        return $this->bailleurContact;
+    }
+
+    /**
+     * Set ascensoristeNom
+     *
+     * @param string $ascensoristeNom
+     * @return $this
+     */
+    public function setAscensoristeNom($ascensoristeNom)
+    {
+        $this->ascensoristeNom = $ascensoristeNom;
+        return $this;
+    }
+
+    /**
+     * Get ascensoristeNom
+     *
+     * @return string $ascensoristeNom
+     */
+    public function getAscensoristeNom()
+    {
+        return $this->ascensoristeNom;
+    }
+
+    /**
+     * Set ascensoristeContact
+     *
+     * @param string $ascensoristeContact
+     * @return $this
+     */
+    public function setAscensoristeContact($ascensoristeContact)
+    {
+        $this->ascensoristeContact = $ascensoristeContact;
+        return $this;
+    }
+
+    /**
+     * Get ascensoristeContact
+     *
+     * @return string $ascensoristeContact
+     */
+    public function getAscensoristeContact()
+    {
+        return $this->ascensoristeContact;
+    }
+
+    /**
      * Get updatedAt
      *
      * @return date $updatedAt
@@ -361,5 +605,17 @@ class Ascenseur {
      */
     public function preSave() {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param date $updatedAt
+     * @return $this
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

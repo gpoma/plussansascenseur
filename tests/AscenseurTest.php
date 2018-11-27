@@ -34,10 +34,15 @@ class AscenseurTest extends KernelTestCase
         $ascenseur->setCommune("Paris");
         $ascenseur->setEmplacement("Batiment A Ascenseur de droite");
         $ascenseur->setReference("123456789");
-        $ascenseur->setMarque("Otis");
+        $ascenseur->setConstructeurNom("Otis");
+        $ascenseur->setBailleurNom("Bailleur");
+        $ascenseur->setSyndicNom("Syndic");
+        $ascenseur->setAscensoristeNom("Ascensoriste");
         $ascenseur->setEtageMin(-2);
         $ascenseur->setEtageMax(9);
         $ascenseur->setTelephoneDepannage("0102030405");
+        $ascenseur->setDateConstruction("1980-11-08");
+        $ascenseur->setDateRenovation("2011-08-11");
 
         $this->odm->persist($ascenseur);
         $this->odm->flush();
@@ -52,9 +57,15 @@ class AscenseurTest extends KernelTestCase
         $this->assertEquals($ascenseur->getCommune(), "Paris");
         $this->assertEquals($ascenseur->getEmplacement(), "Batiment A Ascenseur de droite");
         $this->assertEquals($ascenseur->getReference(), "123456789");
-        $this->assertEquals($ascenseur->getMarque(), "Otis");
+        $this->assertEquals($ascenseur->getConstructeurNom(), "Otis");
+        $this->assertEquals($ascenseur->getBailleurNom(), "Bailleur");
+        $this->assertEquals($ascenseur->getSyndicNom(), "Syndic");
+        $this->assertEquals($ascenseur->getAscensoristeNom(), "Ascensoriste");
         $this->assertEquals($ascenseur->getEtageMin(), -2);
         $this->assertEquals($ascenseur->getEtageMax(), 9);
+        $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
+        $this->assertEquals($ascenseur->getDateConstruction(), "1980-11-08");
+        $this->assertEquals($ascenseur->getDateRenovation(), "2011-08-11");
         $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
         $this->assertEquals($ascenseur->getUpdatedAt()->format('Y-m-d'), date('Y-m-d'));
 
