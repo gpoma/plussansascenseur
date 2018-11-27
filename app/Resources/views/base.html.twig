@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>{% block title %}Plus sans Ascenseur{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('lib/leaflet/leaflet.css') }}">
         <link rel="stylesheet" href="{{ asset('lib/leaflet-extra-markers/css/leaflet.extra-markers.css') }}">
         <link rel="stylesheet" href="{{ asset('lib/main.css') }}">
@@ -14,15 +15,18 @@
     <body>
     	<header>
 	        <nav class="navbar navbar-light bg-light justify-content-center py-0" style="border-bottom:1px solid #d93337;">
-				<a id="logo" href="{{ path('homepage') }}" alt="plus sans ascenseur">
-					<img src="/psa_logo_300x300.png" height="100">
-				</a>
+          <div class="col text-center"><h1>
+				        <a id="logo" href="{{ path('homepage') }}" style="color: black; text-decoration: none;" alt="plus sans ascenseur">
+					      <img src="/psa_logo_300x300.png" height="100">Ascenseur&nbsp;en&nbsp;panne</a>
+				  </h1></div>
 			</nav>
 		</header>
-        <div class="container" style="margin-top: 25px;">
+        <div class="container">
             {% block body %}{% endblock %}
         </div>
-
+    <footer class="text-mutted">
+      <p class="text-center">Ce site est une initiative du <a href="https://www.facebook.com/Plussansascenseurs/">collectif Plus sans ascenseur</a>. Il a été développé par la <a href="http://24eme.fr/">société 24ème</a>.</p>
+    </footer>
         <script type="text/javascript" src="{{ asset('lib/jquery/jquery-3.3.1.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('lib/popper/popper.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('lib/bootstrap/js/bootstrap.min.js') }}"></script>
