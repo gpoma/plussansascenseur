@@ -4,9 +4,12 @@ namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use AppBundle\Lib\AdresseDataGouvApi;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\HasLifecycleCallbacks;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PreUpdate;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PrePersist;
 
 /**
- * @MongoDB\Document(repositoryClass="AppBundle\Repository\AscenseurRepository")
+ * @MongoDB\Document(repositoryClass="AppBundle\Repository\AscenseurRepository") @HasLifecycleCallbacks
  */
 class Ascenseur {
 
@@ -140,6 +143,11 @@ class Ascenseur {
      */
     protected $ascensoristeContact;
 
+    /**
+     * @MongoDB\Field(type="date")
+     *
+     */
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -272,7 +280,6 @@ class Ascenseur {
     	}
     	if ($localisation = $this->getLocalisation()) {
     		if ($coordinates = $localisation->getCoordinates()) {
-                var_dump($coordinates->getLibelle()); exit;
     			return AdresseDataGouvApi::getAddrByCoordinates($coordinates->getLibelle());
     		}
     	}
@@ -580,5 +587,35 @@ class Ascenseur {
     public function getAscensoristeContact()
     {
         return $this->ascensoristeContact;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return date $updatedAt
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @MongoDB\PrePersist()
+     * @MongoDB\PreUpdate()
+     */
+    public function preSave() {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param date $updatedAt
+     * @return $this
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

@@ -16,7 +16,7 @@
 
                         </div>
                         <div class="col-6">
-                          <button class="btn btn-outline-secondary btn-lg" id="camera-button" style="margin-bottom:0; width:100%;"><img src="/img/camera.svg" alt="Prendre une photo" class="img-fluid" style="margin-bottom:0; width:100%;"></button>
+                          <button class="btn btn-outline-secondary btn-lg" id="camera-button" style="margin-bottom:0; width:100%;"><img src="{{ asset('img/camera.svg') }}" alt="Prendre une photo" class="img-fluid" style="margin-bottom:0; width:100%;"></button>
                         </div>
                         <div class="col">
 
@@ -29,7 +29,7 @@
                   </div>
                   <br/>
                  <div class="col-sm-12 text-center">
-                     <small><a href="{{ path('listing') }}">Signaler l'ascenseur sans photo</a></small>
+                     <small><a href="{{ path('localisation') }}">Signaler l'ascenseur sans photo</a></small>
                 </div>
                 <hr />
                 {{ form_end(uploadPhotoForm) }}

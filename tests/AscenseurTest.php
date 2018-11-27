@@ -67,6 +67,7 @@ class AscenseurTest extends KernelTestCase
         $this->assertEquals($ascenseur->getDateConstruction(), "1980-11-08");
         $this->assertEquals($ascenseur->getDateRenovation(), "2011-08-11");
         $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
+        $this->assertEquals($ascenseur->getUpdatedAt()->format('Y-m-d'), date('Y-m-d'));
 
         $ascenseur = $this->odm->find('AppBundle\Document\Ascenseur', $ascenseur->getId());
         $nbPhotos = 5;
@@ -75,6 +76,7 @@ class AscenseurTest extends KernelTestCase
             $photo->setLatLon($lat,$lon);
             $photo->setBase64(base64_encode(file_get_contents(realpath("web/psa_logo_300x300.png"))));
             $this->odm->persist($photo);
+            $this->assertEquals($photo->getUpdatedAt()->format('Y-m-d'), date('Y-m-d'));
             $photo->setAscenseur($ascenseur);
         }
         $this->odm->flush();
