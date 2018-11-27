@@ -10,7 +10,12 @@ a:active{
 .container {
 	padding: 10px 10px;
 }
+#camera-button {
+}
+#camera-button svg {
+	fill: #6c757d;
+}
 
-#camera-button svg path {
-	fill: #fff;
+.btn-outline-secondary:hover svg {
+	fill: #fff !important;
 }
