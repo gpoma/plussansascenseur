@@ -224,7 +224,6 @@ class Ascenseur {
     	}
     	if ($localisation = $this->getLocalisation()) {
     		if ($coordinates = $localisation->getCoordinates()) {
-                var_dump($coordinates->getLibelle()); exit;
     			return AdresseDataGouvApi::getAddrByCoordinates($coordinates->getLibelle());
     		}
     	}

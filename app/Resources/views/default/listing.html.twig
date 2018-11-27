@@ -3,19 +3,12 @@
 {% block body %}
 <br/><br/>
 <h1>Mon ascenseur</h1>
-{% if not coordinates %}
-<div id="geolocation" data-url="{{ path('listing',{ "coordinates" : "lon,lat","photo": photoid}) }}">
-</div>
-{% endif %}
 <div class="row my-4">
     <div class="col-sm-12" id="addrSearch" data-target="{{ path('listing', {coordinates: '_coordinates_', photo: photoid}) }}">
 		<input class="typeahead form-control" type="text" placeholder="{% if address %}{{ address }}{% else %}Indiquer ici l'adresse de l'ascenseur{% endif %}">
     </div>
 </div>
 
-<div class="col-sm-12 text-center">
-    <small><a id="demander_position" href="">Demander la position</a></small>
-</div>
 <h2>Résultats</h2>
 
 <table class="table table-striped table-hover">

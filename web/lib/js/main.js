@@ -115,9 +115,10 @@
                 		limit: 10,
                 		source: address,
                 		async: true,
+                    displayKey: 'id', // PUT IT HERE
                 		templates: {
                 				suggestion: function(e) {
-                					var result = '<a href="'+target.replace('_coordinates_', e.geometry.coordinates)+'">'+e.properties.label+' <small class="text-muted">['+e.geometry.coordinates+']</small>';
+                					var result = '<a href="'+target.replace('_coordinates_', e.geometry.coordinates)+'">'+e.properties.label;
                 					return $('<div class="searchable_result">'+result+'</div>');
                 				}
 
@@ -127,6 +128,7 @@
                 		}
         			}
             );
+
 
         	$('#addrSearch .typeahead').bind('typeahead:asyncreceive', function (event, suggestion) {
                 $('#addrSearch').find(".tt-dataset .tt-suggestion:first").addClass('tt-cursor');
