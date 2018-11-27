@@ -41,6 +41,8 @@ class AscenseurTest extends KernelTestCase
         $ascenseur->setEtageMin(-2);
         $ascenseur->setEtageMax(9);
         $ascenseur->setTelephoneDepannage("0102030405");
+        $ascenseur->setDateConstruction("1980-11-08");
+        $ascenseur->setDateRenovation("2011-08-11");
 
         $this->odm->persist($ascenseur);
         $this->odm->flush();
@@ -61,6 +63,9 @@ class AscenseurTest extends KernelTestCase
         $this->assertEquals($ascenseur->getAscensoristeNom(), "Ascensoriste");
         $this->assertEquals($ascenseur->getEtageMin(), -2);
         $this->assertEquals($ascenseur->getEtageMax(), 9);
+        $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
+        $this->assertEquals($ascenseur->getDateConstruction(), "1980-11-08");
+        $this->assertEquals($ascenseur->getDateRenovation(), "2011-08-11");
         $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
 
         $ascenseur = $this->odm->find('AppBundle\Document\Ascenseur', $ascenseur->getId());

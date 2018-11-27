@@ -19,7 +19,48 @@ col-sm-6 col-md-8
 {% endfor %}
 <hr />
 {{ form_start(form) }}
-{{ form_widget(form) }}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Localisation de l'ascenseur</3>
+  </div>
+  <div class="panel-body">
+  {{ form_row(form.adresse) }}
+  {{ form_row(form.commune) }}
+  {{ form_row(form.codePostal) }}
+  {{ form_row(form.emplacement) }}
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Informations techniques</3>
+  </div>
+  <div class="panel-body">
+  {{ form_row(form.constructeurNom) }}
+  {{ form_row(form.reference) }}
+  {{ form_row(form.dateConstruction) }}
+  {{ form_row(form.dateRenovation) }}
+  {{ form_row(form.etageMin) }}
+  {{ form_row(form.etageMax) }}
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Contact des responsables</3>
+  </div>
+  <div class="panel-body">
+  {{ form_row(form.bailleurNom) }}
+  {{ form_row(form.bailleurContact) }}
+  {{ form_row(form.syndicNom) }}
+  {{ form_row(form.syndicContact) }}
+  {{ form_row(form.ascensoristeNom) }}
+  {{ form_row(form.ascensoristeContact) }}
+  {{ form_row(form.telephoneDepannage) }}
+  </div>
+</div>
+
+
 <hr />
 <div class="row">
     <div class="col-6">
