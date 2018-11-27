@@ -4,9 +4,12 @@ namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use AppBundle\Lib\AdresseDataGouvApi;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\HasLifecycleCallbacks;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PreUpdate;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PrePersist;
 
 /**
- * @MongoDB\Document(repositoryClass="AppBundle\Repository\AscenseurRepository")
+ * @MongoDB\Document(repositoryClass="AppBundle\Repository\AscenseurRepository") @HasLifecycleCallbacks
  */
 class Ascenseur {
 
@@ -92,6 +95,11 @@ class Ascenseur {
      */
     protected $historique;
 
+    /**
+     * @MongoDB\Field(type="date")
+     *
+     */
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -336,5 +344,23 @@ class Ascenseur {
         $evenement->setAuteur($auteur);
 
         $this->historique[] = $evenement;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return date $updatedAt
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @MongoDB\PrePersist()
+     * @MongoDB\PreUpdate()
+     */
+    public function preSave() {
+        $this->updatedAt = new \DateTime();
     }
 }

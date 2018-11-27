@@ -4,10 +4,13 @@ namespace AppBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use AppBundle\Document\Ascenseur;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\HasLifecycleCallbacks;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PreUpdate;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\PrePersist;
 
 /**
  * @MongoDB\Document
- * @MongoDB\Document(repositoryClass="AppBundle\Repository\SignalementRepository")
+ * @MongoDB\Document(repositoryClass="AppBundle\Repository\SignalementRepository") @HasLifecycleCallbacks
  */
 class Signalement {
 
@@ -95,6 +98,12 @@ class Signalement {
      *string
      */
     protected $telephone;
+
+    /**
+     * @MongoDB\Field(type="date")
+     *
+     */
+    protected $updatedAt;
 
     public function __construct(Ascenseur $ascenseur) {
         $this->abonnement = false;
@@ -240,6 +249,24 @@ class Signalement {
 
     public function createEvenement() {
         $this->getAscenseur()->addEvenement($this->getDate(), "Signalé en panne (".$this->getCommentaire().")", $this->getPseudo());
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return date $updatedAt
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @MongoDB\PrePersist()
+     * @MongoDB\PreUpdate()
+     */
+    public function preSave() {
+        $this->updatedAt = new \DateTime();
     }
 
 }
