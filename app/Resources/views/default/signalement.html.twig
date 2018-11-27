@@ -48,6 +48,7 @@
     <div id="signalement_infos_abonnement" class="{% if not form.vars.value.abonnement %}d-none{% endif %}">
     {{ form_row(form.email) }}
     {{ form_row(form.telephone) }}
+    <small class="form-text text-muted">L'email et le téléphone sont des données à caractère personnelles qui seront utilisées que dans le cadre de ce service. Elles ne seront pas communiquées à des tiers. Vous disposez d'un droit d'accès, de modification et de suppression conformément au dispositions CNIL. N'hésitez pas à contacter les administrateurs du site pour toute question.</small>
     </div>
     <hr />
     <button type="submit" class="btn btn-block btn-success">Soumettre le signalement</button>
