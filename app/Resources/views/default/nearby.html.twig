@@ -35,7 +35,7 @@
 			</td>
 		</tr>
 		{% endfor %}
-		<tr class="clickable-row table-danger" data-href="{{ path('signalement', {coordinates: coordinates, photo: photoid}) }}">
+		<tr class="clickable-row" data-href="{{ path('signalement', {coordinates: coordinates, photo: photoid}) }}" style="border: 1px solid #dee2e6;">
 			<td class="col-sm-2 text-right"><img src="{{ asset('img/no-elevator.svg') }}" alt="Inspired by Adnen Kadri and Ali Riza Saçan from Noun Project" class="img-fluid" style="margin-bottom:0; max-height : 100px;"/></td>
 			<td valign="middle">Mon ascenseur n'est pas listé ici</td>
 		</tr>
