@@ -62,7 +62,25 @@ class DefaultController extends Controller
         $photo->convertBase64AndRemove();
         $dm->flush();
 
-        return $this->redirect($this->generateUrl('listing', array('photo' => $photo->getId(), 'coordinates' => $photo->getLocalisation())));
+        return $this->redirect($this->generateUrl('localisation', array('photo' => $photo->getId(), 'coordinates' => $photo->getLocalisation())));
+   }
+
+
+   /**
+    * @Route("/localisation", name="localisation")
+    */
+   public function localisationAction(Request $request)
+   {
+     $dm = $this->get('doctrine_mongodb')->getManager();
+
+     $coordinates = $request->get('coordinates', null);
+     $photoid = $request->get('photo', null);
+     $address = null;
+     if ($coordinates) {
+       $coordinates = urldecode($coordinates);
+       return $this->redirect($this->generateUrl('listing', array('photo' => $photo->getId(), 'coordinates' => $coordinates)));
+     }
+     return $this->render('default/localisation.html.twig', array('coordinates' => $coordinates, 'photoid' => $photoid, 'address' => $address));
    }
 
    /**
