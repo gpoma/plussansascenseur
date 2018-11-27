@@ -89,7 +89,9 @@ class DefaultController extends Controller
             $coordinates = urldecode($coordinates);
        		$address = AdresseDataGouvApi::getAddrByCoordinates($coordinates);
        		$elevators = $dm->getRepository('AppBundle:Ascenseur')->findByCoordinates($coordinates);
-       	}
+       	} else {
+            $elevators = $dm->getRepository('AppBundle:Ascenseur')->findAll();
+        }
 
        	return $this->render('default/listing.html.twig', array('coordinates' => $coordinates, 'address' => $address, 'photoid' => $photoid, 'elevators' => $elevators));
    }
