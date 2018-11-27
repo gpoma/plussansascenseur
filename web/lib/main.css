@@ -6,6 +6,13 @@
     background: url('../elevator_inv_32px.svg');
     background-size: 100px 82px;
 }
+footer{
+  margin-top: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  border-top: 1px solid #aaa;
+  color: #aaa;
+}
 .clickable-row {
 	cursor: pointer;
 }
