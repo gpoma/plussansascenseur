@@ -53,7 +53,10 @@
 
 
         $.initMap = function () {
-        if ($('#map').length) {
+            if (!$('#map').length) {
+                return;
+            }
+
             var lat = 48.8593829;
             var lon = 2.347227;
             var zoom = 0;
@@ -73,22 +76,7 @@
 
             var geojson = JSON.parse($('#map').attr('data-geojson'));
             var markers = [];
-
-            var ascenseurIcon = L.icon({
-                iconUrl: '../../elevator_inv_32px.svg',
-                iconSize: [32, 32]
-            });
-            L.geoJson(geojson,
-                    {
-                        pointToLayer: function (feature, latlng) {
-                            var marker = L.marker(latlng, {icon: ascenseurIcon});
-                            markers[feature.properties._id] = marker;
-                            return marker;
-                        }
-                    }
-            ).addTo(map);
-
-            }
+            L.marker([lat, lon]).addTo(map);
         };
 
         $.initAddrSearch = function() {
