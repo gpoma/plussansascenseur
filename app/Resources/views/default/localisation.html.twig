@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<br/><br/>
-{% if not coordinates %}
-<div id="geolocation" data-url="{{ path('nearby',{ "coordinates" : "lon,lat","photo": photoid}) }}">
-</div>
-{% endif %}
+    <br/><br/>
+    {% if not coordinates %}
+    <div id="geolocation" data-url="{{ path('nearby',{ "coordinates" : "lon,lat","photo": photoid}) }}"></div>
+    {% endif %}
     <h1>Nous tentons de localiser l'ascenseur</h1>
-    <p>Si vous êtes devant l'ascenseur en panne, votre appareil peut nous permettre de le localiser. Pour se faire, merci d'accepter le partage de votre position GPS.<p>
+    <p>Si vous êtes devant l'ascenseur en panne, votre appareil peut nous permettre de le localiser. Pour se faire, merci d'accepter le partage de votre position GPS.</p>
     <p class="text-center"><a id="demander_position" class="btn btn-sm btn-info">Re-demander la position</a></p>
-    <p>Si vous ne souhaitez pas être géolocalisé-e, vous pouvez passer cette étape et indiquer l'adresse de l'ascenseur manuellement.<p>
+    <p>Si vous ne souhaitez pas être géolocalisé-e, vous pouvez passer cette étape et indiquer l'adresse de l'ascenseur manuellement.</p>
     <div class="float-right">
-      <a class="btn btn-default" href="{{ path('nearby', {photo: photoid}) }}">Étape suivante</a>
+      <p><a class="btn btn-default" href="{{ path('nearby', {photo: photoid}) }}">Étape suivante</a></p>
     </div>
+    <br/><br/>
 {% endblock %}
