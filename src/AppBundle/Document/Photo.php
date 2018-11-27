@@ -63,7 +63,6 @@ class Photo
     */
    protected $updatedAt;
 
-
    /**
     * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="photos", storeAs="id")
     */
