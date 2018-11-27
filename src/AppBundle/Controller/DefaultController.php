@@ -117,7 +117,10 @@ class DefaultController extends Controller
     */
    public function listingAction(Request $request)
    {
+       $dm = $this->get('doctrine_mongodb')->getManager();
+       $elevators = $dm->getRepository('AppBundle:Ascenseur')->findAll();
 
+       return $this->render('default/listing.html.twig', array('elevators' => $elevators));
    }
 
    /**
