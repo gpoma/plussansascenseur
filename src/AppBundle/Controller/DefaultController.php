@@ -145,7 +145,7 @@ class DefaultController extends Controller
            $photo->setAscenseur($signalement->getAscenseur());
            $signalement->getAscenseur()->addPhoto($photo);
         }
-        $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST, 'action' => $this->generateUrl('signalement', array('photo' => $request->get('photo'),"coordinates" => $coordinates))));
+        $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST));
 
         if($request->getMethod() != Request::METHOD_POST) {
 
