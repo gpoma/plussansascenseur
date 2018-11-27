@@ -1,0 +1,16 @@
+a:focus,
+a:active{
+	outline:none;
+}
+
+.h1, h1 {
+    font-size: 2rem;
+}
+
+.container {
+	padding: 10px 10px;
+}
+
+#camera-button svg path {
+	fill: #fff;
+}
