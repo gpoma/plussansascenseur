@@ -29,7 +29,8 @@ class Signalement {
     protected $id;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Ascenseur")
+     * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="signalements")
+     *
      */
     private $ascenseur;
 

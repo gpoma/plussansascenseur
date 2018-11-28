@@ -155,9 +155,22 @@ class Ascenseur {
      */
     protected $updatedAt;
 
+    /**
+     * @MongoDB\ReferenceMany(targetDocument="Signalement", mappedBy="ascenseur")
+     */
+     protected $signalements;
+
+
+    /**
+     * @MongoDB\Field(type="int")
+     *
+     */
+    protected $nombreFollowers;
+
     public function __construct()
     {
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->signalements = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setStatut(self::STATUT_ENPANNE);
         $this->localisation = new GeoJson();
     }
@@ -397,6 +410,8 @@ class Ascenseur {
         $evenement->setAuteur($auteur);
 
         $this->historique[] = $evenement;
+
+        $this->setNombreFollowers($this->getSignalements()->count());
     }
 
     /**
@@ -645,5 +660,37 @@ class Ascenseur {
     public function getDateStatut()
     {
         return $this->dateStatut;
+    }
+
+    /**
+     * Set nombreFollowers
+     *
+     * @param int $nombreFollowers
+     * @return $this
+     */
+    public function setNombreFollowers($nombreFollowers)
+    {
+        $this->nombreFollowers = $nombreFollowers;
+        return $this;
+    }
+
+    /**
+     * Get nombreFollowers
+     *
+     * @return int $nombreFollowers
+     */
+    public function getNombreFollowers()
+    {
+        return $this->nombreFollowers;
+    }
+
+    /**
+     * Get signalements
+     *
+     * @return \Doctrine\Common\Collections\Collection $signalements
+     */
+    public function getSignalements()
+    {
+        return $this->signalements;
     }
 }
