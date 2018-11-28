@@ -29,7 +29,8 @@ class Signalement {
     protected $id;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Ascenseur")
+     * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="signalements")
+     *
      */
     private $ascenseur;
 
@@ -260,11 +261,11 @@ class Signalement {
             $this->getAscenseur()->createVersion($this->getPseudo(), "Création de l'ascenseur");
         }
         $this->createFollower();
-        $this->createEvenement("Signalé en panne");
+        $this->createEvenement("Ascenseur signalé en panne");
     }
 
     public function createFollower() {
-        $this->createEvenement("Un nouvel utilisateur à rejoint la communauté", false);
+        $this->createEvenement("Une nouvelle personne a rejoint la communauté");
     }
 
     /**
