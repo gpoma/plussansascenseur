@@ -6,7 +6,7 @@
 <small>{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}<br />{{ ascenseur.emplacement }}</small>
 </h2>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 mb-3">
         {% set lat = ascenseur.lat  %}
         {% set lon = ascenseur.lon  %}
         <div id="map" style="width: 100%; height: 200px;" data-geojson="{{ geojson | json_encode(constant('JSON_HEX_QUOT')) }}" data-lat="{{ lat }}" data-lon="{{ lon }}" data-zoom="12"></div>
@@ -14,7 +14,7 @@
     <div class="col-md-6">
         <div class="row">
         {% for photo in ascenseur.photos|slice(0, 2) %}
-        <div class="col-md-6 text-center">
+        <div class="col-md-6 mb-3 text-center">
             <img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="margin-bottom:0; max-height : 200px;"/>
          </div>
         {% endfor %}
@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mt-1">
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">

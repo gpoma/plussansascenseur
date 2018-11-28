@@ -13,11 +13,6 @@ a:active{
     font-size: 1.5rem;
 }
 
-.container {
-	padding: 10px 10px;
-}
-#camera-button {
-}
 #camera-button svg {
 	fill: #6c757d;
 }
