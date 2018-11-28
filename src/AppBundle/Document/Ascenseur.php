@@ -387,7 +387,7 @@ class Ascenseur {
      */
     public function getHistorique()
     {
-        return $this->historique;
+        return array_reverse($this->historique->toArray());
     }
 
     public function addEvenement($date, $infos, $auteur) {
