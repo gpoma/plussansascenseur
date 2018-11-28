@@ -38,11 +38,11 @@
                 </tr>
                 <tr>
                     <th class="col-5">Date de construction :</th>
-                    <td class="col-7">{% if ascenseur.dateConstruction %}{{ ascenseur.dateConstruction }}{% else %}<small class="text-muted"><i>Information manquante</i></small>{% endif %}</td>
+                    <td class="col-7">{% if ascenseur.dateConstruction %}{{ ascenseur.dateConstruction | date('d/m/Y') }}{% else %}<small class="text-muted"><i>Information manquante</i></small>{% endif %}</td>
                 </tr>
                 <tr>
                     <th class="col-5">Date de rénovation :</th>
-                    <td class="col-7">{% if ascenseur.dateRenovation %}{{ ascenseur.dateRenovation }}{% else %}<small class="text-muted"><i>Information manquante</i></small>{% endif %}</td>
+                    <td class="col-7">{% if ascenseur.dateRenovation %}{{ ascenseur.dateRenovation | date('d/m/Y') }}{% else %}<small class="text-muted"><i>Information manquante</i></small>{% endif %}</td>
                 </tr>
                 </tbody>
             </table>
