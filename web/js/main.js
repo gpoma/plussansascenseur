@@ -150,7 +150,7 @@
         }
 
         $.initSignalement = function () {
-            if(!$('form[name=signalement]')) {
+            if(!$('form[name=signalement]') || !$('form[name=follower]')) {
                 return;
             }
             $('#signalement_etageAtteint').on('change', function() {
@@ -160,7 +160,14 @@
                 }
             });
 
+            console.log("signalement on");
             $('#signalement_abonnement').on('change', function() {
+                $('#signalement_infos_abonnement').addClass('d-none');
+                if($(this).prop('checked') == true) {
+                    $('#signalement_infos_abonnement').removeClass('d-none');
+                }
+            });
+            $('#follower_abonnement').on('change', function() {
                 $('#signalement_infos_abonnement').addClass('d-none');
                 if($(this).prop('checked') == true) {
                     $('#signalement_infos_abonnement').removeClass('d-none');
@@ -168,6 +175,7 @@
             });
             $('#signalement_etageAtteint').change();
             $('#signalement_abonnement').change();
+            $('#follower_abonnement').change();
         };
 
         $.initClickableRow = function () {

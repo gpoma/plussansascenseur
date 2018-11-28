@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Document\Photo;
 use AppBundle\Type\PhotoType;
 use AppBundle\Type\SignalementType;
+use AppBundle\Type\FollowerType;
 use AppBundle\Type\AscenseurType;
 use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
@@ -158,7 +159,7 @@ class DefaultController extends Controller
             return $this->render('default/signalement.html.twig', array("form" => $form->createView()));
         }
 
-        $signalement->createEvenement();
+        $signalement->createEnPanne();
 
         $dm = $this->get('doctrine_mongodb')->getManager();
         $dm->persist($signalement->getAscenseur());
@@ -178,6 +179,39 @@ class DefaultController extends Controller
        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($id);
 
        return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
+   }
+
+   /**
+    * @Route("/ascenseur/{ascenseur}/join", name="ascenseur_follower")
+    */
+   public function followerAction(Request $request, $ascenseur)
+   {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($ascenseur);
+        $signalement = new Signalement($ascenseur);
+        $form = $this->createForm(FollowerType::class, $signalement, array('method' => Request::METHOD_POST));
+
+        if($request->getMethod() != Request::METHOD_POST) {
+
+            return $this->render('default/follower.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
+        }
+
+        $form->handleRequest($request);
+
+        if(!$form->isSubmitted() || !$form->isValid()) {
+            return $this->render('default/follower.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
+        }
+
+        if ($signalement->getPseudo() || $signalement->getEmail() || $signalement->getTelephone()) {
+          $signalement->createFollower();
+          $dm = $this->get('doctrine_mongodb')->getManager();
+          $dm->persist($signalement);
+
+          $dm->flush();
+        }
+
+        return $this->redirect($this->generateUrl('ascenseur', array('id' => $signalement->getAscenseur()->getId())));
+
    }
 
    /**
