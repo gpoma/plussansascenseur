@@ -248,8 +248,8 @@ class Signalement {
         return $this->ascenseur;
     }
 
-    protected function createEvenement($description) {
-      if($this->getCommentaire()) {
+    protected function createEvenement($description, $commentaire = true) {
+      if($this->getCommentaire() && $commentaire) {
           $description .= " (".$this->getCommentaire().")";
       }
       $this->getAscenseur()->addEvenement($this->getDate(), $description, $this->getPseudo());
@@ -262,7 +262,7 @@ class Signalement {
 
 
     public function createFollower() {
-        $this->createEvenement("Un nouvel utilisateur à rejoint la communauté");
+        $this->createEvenement("Un nouvel utilisateur à rejoint la communauté", false);
     }
 
     /**
