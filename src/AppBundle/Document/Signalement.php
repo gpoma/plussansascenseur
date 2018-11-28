@@ -248,12 +248,21 @@ class Signalement {
         return $this->ascenseur;
     }
 
-    public function createEvenement() {
-        $description = "Signalé en panne";
-        if($this->getCommentaire()) {
-            $description .= " (".$this->getCommentaire().")";
-        }
-        $this->getAscenseur()->addEvenement($this->getDate(), $description, $this->getPseudo());
+    protected function createEvenement($description) {
+      if($this->getCommentaire()) {
+          $description .= " (".$this->getCommentaire().")";
+      }
+      $this->getAscenseur()->addEvenement($this->getDate(), $description, $this->getPseudo());
+    }
+
+    public function createEnPanne() {
+        $this->createFollower();
+        $this->createEvenement("Signalé en panne");
+    }
+
+
+    public function createFollower() {
+        $this->createEvenement("Un nouvel utilisateur à rejoint la communauté");
     }
 
     /**

@@ -69,8 +69,8 @@
 
             var map = L.map('map').setView([lat, lon], zoom);
 
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
             var geojson = JSON.parse($('#map').attr('data-geojson'));
@@ -127,7 +127,7 @@
         }
 
         $.initSignalement = function () {
-            if(!$('form[name=signalement]')) {
+            if(!$('form[name=signalement]') || !$('form[name=follower]')) {
                 return;
             }
             $('#signalement_etageAtteint').on('change', function() {
@@ -137,7 +137,14 @@
                 }
             });
 
+            console.log("signalement on");
             $('#signalement_abonnement').on('change', function() {
+                $('#signalement_infos_abonnement').addClass('d-none');
+                if($(this).prop('checked') == true) {
+                    $('#signalement_infos_abonnement').removeClass('d-none');
+                }
+            });
+            $('#follower_abonnement').on('change', function() {
                 $('#signalement_infos_abonnement').addClass('d-none');
                 if($(this).prop('checked') == true) {
                     $('#signalement_infos_abonnement').removeClass('d-none');
@@ -145,6 +152,7 @@
             });
             $('#signalement_etageAtteint').change();
             $('#signalement_abonnement').change();
+            $('#follower_abonnement').change();
         };
 
         $.initClickableRow = function () {

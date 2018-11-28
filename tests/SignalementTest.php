@@ -43,7 +43,7 @@ class SignalementTest extends KernelTestCase
         $signalement->setEmail("contact@24eme.fr");
         $signalement->setTelephone("0102030405");
 
-        $signalement->createEvenement();
+        $signalement->createEnPanne();
 
         $this->odm->persist($ascenseur);
         $this->odm->persist($signalement);
