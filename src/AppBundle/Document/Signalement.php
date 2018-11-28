@@ -249,7 +249,11 @@ class Signalement {
     }
 
     public function createEvenement() {
-        $this->getAscenseur()->addEvenement($this->getDate(), "Signalé en panne (".$this->getCommentaire().")", $this->getPseudo());
+        $description = "Signalé en panne";
+        if($this->getCommentaire()) {
+            $description .= " (".$this->getCommentaire().")";
+        }
+        $this->getAscenseur()->addEvenement($this->getDate(), $description, $this->getPseudo());
     }
 
     /**
