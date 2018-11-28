@@ -249,8 +249,8 @@ class Signalement {
         return $this->ascenseur;
     }
 
-    protected function createEvenement($description) {
-      if($this->getCommentaire()) {
+    protected function createEvenement($description, $commentaire = true) {
+      if($this->getCommentaire() && $commentaire) {
           $description .= " (".$this->getCommentaire().")";
       }
       $this->getAscenseur()->addEvenement($this->getDate(), $description, $this->getPseudo());

@@ -63,9 +63,12 @@ class SignalementTest extends KernelTestCase
         $this->assertEquals($signalement->getEmail(), "contact@24eme.fr");
         $this->assertEquals($signalement->getTelephone(), "0102030405");
         $this->assertEquals($signalement->getUpdatedAt()->format('Y-m-d'), date('Y-m-d'));
-        $this->assertCount(1, $signalement->getAscenseur()->getHistorique());
-        $this->assertEquals($signalement->getAscenseur()->getHistorique()->first()->getCommentaire(), "Signalé en panne (J'ai la jambe cassé)");
+
+        $this->assertCount(2, $signalement->getAscenseur()->getHistorique());
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()->first()->getCommentaire(), "Un nouvel utilisateur à rejoint la communauté");
         $this->assertEquals($signalement->getAscenseur()->getHistorique()->first()->getAuteur(), $signalement->getPseudo());
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()->last()->getCommentaire(), "Signalé en panne (J'ai la jambe cassé)");
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()->last()->getAuteur(), $signalement->getPseudo());
     }
 
     public function testForm() {

@@ -6,7 +6,7 @@
         <title>{% block title %}Plus sans Ascenseur{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('lib/bootstrap/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('lib/leaflet/leaflet.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/main.css?201811281724') }}">
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
@@ -34,7 +34,7 @@
         <script type="text/javascript">
 			var searchUri = "{{ constant('AppBundle\\Lib\\AdresseDataGouvApi::SEARCH_URI')~constant('AppBundle\\Lib\\AdresseDataGouvApi::SEARCH_PARAM') }}" ;
         </script>
-        <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/main.js?201811281724') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class AscenseurType extends AbstractType
@@ -23,8 +23,8 @@ class AscenseurType extends AbstractType
             ->add('constructeurNom', TextType::class, array('required' => false, 'label' => "Constructeur :"))
             ->add('dateConstruction', DateType::class, array('required' => false, 'label' => "Date de construction :", 'widget' => 'single_text', 'html5' => true))
             ->add('dateRenovation', DateType::class, array('required' => false, 'label' => "Date de rénovation :", 'widget' => 'single_text', 'html5' => true))
-            ->add('etageMin', NumberType::class, array('required' => false, 'label' => "Étage le plus bas :"))
-            ->add('etageMax', NumberType::class, array('required' => false, 'label' => "Étage le plus haut :"))
+            ->add('etageMin', IntegerType::class, array('required' => false, 'label' => "Étage le plus bas :"))
+            ->add('etageMax', IntegerType::class, array('required' => false, 'label' => "Étage le plus haut :"))
             ->add('bailleurNom', TextType::class, array('required' => false, 'label' => "Nom du bailleur :"))
             ->add('bailleurContact', TextType::class, array('required' => false, 'label' => "Contact du bailleur :"))
             ->add('syndicNom', TextType::class, array('required' => false, 'label' => "Nom du syndic :"))
