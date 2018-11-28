@@ -39,9 +39,9 @@ twig:
 doctrine_mongodb:
     connections:
         default:
-            server: %database_host%:%database_port%
+            server: '%database_host%:%database_port%'
             options: {}
-    default_database: %database_name%
+    default_database: '%database_name%'
     document_managers:
         default:
             auto_mapping: true
