@@ -28,5 +28,5 @@ notifications:
   irc:
     channels:
       - "irc.freenode.net#le24eme"
-    on_success: always
+    on_success: change
     on_failure: always
