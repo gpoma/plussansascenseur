@@ -65,12 +65,12 @@ class SignalementTest extends KernelTestCase
         $this->assertEquals($signalement->getUpdatedAt()->format('Y-m-d'), date('Y-m-d'));
 
         $this->assertCount(3, $signalement->getAscenseur()->getHistorique());
-        $this->assertEquals($signalement->getAscenseur()->getHistorique()->first()->getCommentaire(), "Création de l'ascenseur");
-        $this->assertEquals($signalement->getAscenseur()->getHistorique()->first()->getAuteur(), $signalement->getPseudo());
-        $this->assertEquals($signalement->getAscenseur()->getHistorique()->get(1)->getCommentaire(), "Un nouvel utilisateur à rejoint la communauté");
-        $this->assertEquals($signalement->getAscenseur()->getHistorique()->get(1)->getAuteur(), $signalement->getPseudo());
-        $this->assertEquals($signalement->getAscenseur()->getHistorique()->last()->getCommentaire(), "Signalé en panne (J'ai la jambe cassé)");
-        $this->assertEquals($signalement->getAscenseur()->getHistorique()->last()->getAuteur(), $signalement->getPseudo());
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()[2]->getCommentaire(), "Création de l'ascenseur");
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()[2]->getAuteur(), $signalement->getPseudo());
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()[1]->getCommentaire(), "Une nouvelle personne a rejoint la communauté");
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()[1]->getAuteur(), $signalement->getPseudo());
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()[0]->getCommentaire(), "Ascenseur signalé en panne (J'ai la jambe cassé)");
+        $this->assertEquals($signalement->getAscenseur()->getHistorique()[0]->getAuteur(), $signalement->getPseudo());
     }
 
     public function testForm() {

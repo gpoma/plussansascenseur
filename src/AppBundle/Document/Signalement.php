@@ -265,7 +265,7 @@ class Signalement {
     }
 
     public function createFollower() {
-        $this->createEvenement("Une nouvelle personne a rejoint la communauté");
+        $this->createEvenement("Une nouvelle personne a rejoint la communauté", false);
     }
 
     /**

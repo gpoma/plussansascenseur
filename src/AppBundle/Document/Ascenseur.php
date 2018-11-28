@@ -667,7 +667,8 @@ class Ascenseur {
             $message = "Des informations sur l'ascenseur ont été complétées";
         }
         $this->addEvenement(new \DateTime(), $message, $auteur);
-
+    }
+    
     /**
      * Set nombreFollowers
      *

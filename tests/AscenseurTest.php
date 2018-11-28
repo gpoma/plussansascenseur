@@ -92,7 +92,7 @@ class AscenseurTest extends KernelTestCase
         $this->odm->flush();
 
         $this->assertCount(2, $ascenseur->getHistorique());
-        $this->assertEquals($ascenseur->getHistorique()->first()->getCommentaire(), "Des informations sur l'ascenseur ont été complétées");
+        $this->assertEquals($ascenseur->getHistorique()[1]->getCommentaire(), "Des informations sur l'ascenseur ont été complétées");
 
         $this->odm->flush();
     }
