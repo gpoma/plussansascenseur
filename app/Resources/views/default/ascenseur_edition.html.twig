@@ -12,6 +12,7 @@ col-sm-6 col-md-8
 
 {% block body %}
 <h2>Compléter les informations de l'ascenseur</h2>
+<p><a href="{{  path('ascenseur', {'id': ascenseur.id}) }}">Retour à l'ascenseur</a></p>
 {% if ascenseur.photos|length > 0 %}
 <p>N'hésitez pas à vous appuyer sur les photos ci-dessous</p>
 <hr />
@@ -21,11 +22,11 @@ col-sm-6 col-md-8
 {% endif %}
 <hr />
 {{ form_start(form) }}
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Localisation de l'ascenseur</h3>
+<div class="card my-3">
+  <div class="card-header">
+    <h3 class="card-title">Localisation de l'ascenseur</h3>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
   {{ form_row(form.adresse) }}
   {{ form_row(form.commune) }}
   {{ form_row(form.codePostal) }}
@@ -33,11 +34,11 @@ col-sm-6 col-md-8
   </div>
 </div>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Informations techniques</h3>
+<div class="card my-3">
+  <div class="card-header">
+    <h3 class="card-title">Informations techniques</h3>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
   {{ form_row(form.constructeurNom) }}
   {{ form_row(form.reference) }}
   {{ form_row(form.dateConstruction) }}
@@ -47,11 +48,11 @@ col-sm-6 col-md-8
   </div>
 </div>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title">Contact des responsables</h3>
+<div class="card my-3">
+  <div class="card-header">
+    <h3 class="card-title">Contact des responsables</h3>
   </div>
-  <div class="panel-body">
+  <div class="card-body">
   {{ form_row(form.bailleurNom) }}
   {{ form_row(form.bailleurContact) }}
   {{ form_row(form.syndicNom) }}

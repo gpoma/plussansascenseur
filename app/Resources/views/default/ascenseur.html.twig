@@ -3,7 +3,7 @@
 {% block body %}
 
 <h2>Ascenseur {{ ascenseur.constructeurNom }}  <small><span class="badge badge-{% if ascenseur.statut == "EN_PANNE" %}danger{% else %}success{% endif %}">{% if ascenseur.statut == "EN_PANNE" %}En panne{% else %}En fonction{% endif %}</span></small><br />
-<small>{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}<br />{{ ascenseur.emplacement }}</small>
+<small>{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}<br />{{ ascenseur.emplacement }} {% if ascenseur.etageMin or ascenseur.etageMax %}(du {{ ascenseur.etageMin }} au {{ ascenseur.etageMax }}){% endif %}</small>
 </h2>
 <div class="row">
     <div class="col-md-6 mb-3">
@@ -22,12 +22,10 @@
     </div>
 </div>
 
-<div class="row mt-1">
+<div class="row mb-3">
     <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Informations techniques</h4>
-            </div>
+        <div class="card">
+            <h4 class="card-header">Informations techniques</h4>
             <table class="table">
                 <tbody>
                 <tr>
@@ -46,19 +44,13 @@
                     <th class="col-5">Date de rénovation :</th>
                     <td class="col-7">{% if ascenseur.dateRenovation %}{{ ascenseur.dateRenovation }}{% else %}<small class="text-muted"><i>Information manquante</i></small>{% endif %}</td>
                 </tr>
-                <tr>
-                    <th class="col-5">Étages :</th>
-                    <td class="col-7">{% if ascenseur.etageMin or ascenseur.etageMax %}{% if ascenseur.etageMin %}{{ ascenseur.etageMin }} au {% endif %}{{ ascenseur.etageMax }}{% else %}<small class="text-muted"><i>Information manquante</i></small>{% endif %}</td>
-                </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">Contact des responsables</h4>
-            </div>
+        <div class="card">
+            <h4 class="card-header">Contact des responsables</h4>
             <table class="table">
                 <tbody>
                 <tr>
