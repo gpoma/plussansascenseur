@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div class="row mb-3">
+<div class="row">
     <div class="col-12 col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -82,7 +82,16 @@
         </div>
     </div>
 </div>
-<p class="text-center"><a href="{{ path('ascenseur_follower', { ascenseur: ascenseur.id })}}" class="btn btn-primary">Rejoindre cet ascenseur</a> &nbsp; <a href="{{ path('ascenseur_edition', { ascenseur: ascenseur.id })}}" class="btn btn-outline-secondary">Compléter les informations</a></p>
+
+<div class="row my-3">
+    <div class="col-6">
+        <a href="{{ path('ascenseur_follower', { ascenseur: ascenseur.id })}}" class="btn btn-block btn-primary">Rejoindre cet ascenseur</a>
+    </div>
+    <div class="col-6">
+        <a href="{{ path('ascenseur_edition', { ascenseur: ascenseur.id })}}" class="btn btn-block btn-outline-secondary">Compléter les informations</a>
+    </div>
+</div>
+
 <h3>Historique de l'ascenseur</h3>
 {% if ascenseur.statut == "EN_PANNE" %}
 <div class="alert alert-danger" role="alert">
