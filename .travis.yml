@@ -7,6 +7,7 @@ php:
   - '7.0'
 
 before-install:
+  - sudo apt-get install php-mongo
   - composer self-update
 
 
