@@ -1,4 +1,15 @@
 language: php
 
+services:
+  - mongodb
+
+php:
+  - '7.0'
+
+before-install:
+  - composer self-update
+
+
 install:
-- composer install
+  - composer install
+  - cp app/config/parameters.yml.dist app/config/parameters.yml
