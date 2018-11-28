@@ -11,29 +11,49 @@
                   maximumAge: 0
                 };
 
+                var updatePositionStatus = function(text, btnVisible, color) {
+                    if(!btnVisible) {
+                        $('#demander_position').addClass('disabled');
+                    } else {
+                        $('#demander_position').removeClass('disabled');
+                    }
+                    $('#aquisition_position').removeClass("text-danger");
+                    $('#aquisition_position').removeClass("text-secondary");
+                    $('#aquisition_position').removeClass("text-info");
+                    $('#aquisition_position').removeClass("text-success");
+                    $('#aquisition_position').addClass("text-"+color);
+                    $('#aquisition_position').removeClass('d-none');
+                    $('#aquisition_position').text(text);
+                    $('#aquisition_position').show();
+                }
+
                 function success(pos) {
-                  var crd = pos.coords;
-                  if(debug){
+                    updatePositionStatus("La position a été récupéré", false, "success")
+                    var crd = pos.coords;
+                    if(debug){
                       console.log('Votre position actuelle est :');
                       console.log(`Latitude : ${crd.latitude}`);
                       console.log(`Longitude: ${crd.longitude}`);
                       console.log(`Plus ou moins ${crd.accuracy} mètres.`);
-                  }
+                    }
 
-                  if(crd.latitude+crd.longitude){
-                      window.location = window.location.origin + $('#geolocation').data('url').replace("lat",crd.latitude).replace("lon",crd.longitude);
-                  }
+                    if(crd.latitude+crd.longitude){
+                        window.location = window.location.origin + $('#geolocation').data('url').replace("lat",crd.latitude).replace("lon",crd.longitude);
+                     }
                 };
 
                 function error(err) {
-                  console.warn(`ERROR(${err.code}): ${err.message}`);
+                    updatePositionStatus("La position n'a pas pu être récupérée", true, "secondary");
+                    console.warn(`ERROR(${err.code}): ${err.message}`);
                 };
 
                 navigator.geolocation.getCurrentPosition(success, error, options);
-
+                updatePositionStatus("Récupération de la position en cours ...", false, "info");
                 $('#demander_position').on('click', function() {
-                	navigator.geolocation.getCurrentPosition(success, error, options);
-                	return false;
+                    updatePositionStatus("Récupération de la position en cours ...", false, "info");
+                    navigator.geolocation.getCurrentPosition(success, error, options);
+
+                    return false;
                 });
 
             }
@@ -115,6 +135,9 @@
                 		}
         			}
             );
+            if($('#addrSearch .typeahead').attr('autofocus') == "autofocus") {
+                $('#addrSearch .typeahead').focus();
+            }
 
 
         	$('#addrSearch .typeahead').bind('typeahead:asyncreceive', function (event, suggestion) {

@@ -2,22 +2,17 @@
 
 {% block body %}
 <h2>Mon ascenseur</h2>
-{% if not coordinates %}
-<div id="geolocation" data-url="{{ path('nearby',{ "coordinates" : "lon,lat","photo": photoid}) }}"></div>
-{% endif %}
+
 <div class="row my-3">
     <div class="col-sm-12" id="addrSearch" data-target="{{ path('nearby', {coordinates: '_coordinates_', photo: photoid}) }}">
-		<input class="typeahead form-control" type="text" placeholder="{% if address %}{{ address }}{% else %}Indiquer ici l'adresse de l'ascenseur{% endif %}">
+        <p>Veuillez indiquer l'adresse de votre ascenseur :</p>
+		<input {% if(not coordinates) %}autofocus="autofocus"{% endif %} class="typeahead form-control" type="text" placeholder="{% if address %}{{ address }}{% else %}Saisissez l'adresse de votre ascenseur{% endif %}">
     </div>
 </div>
 
-<p class="text-center">
-	<a id="demander_position" class="btn btn-info btn-sm" href="">Demander la position</a>
-</p>
-
 {% if coordinates %}
 
-<h3>Résultats</h3>
+<h3>Ascenseurs trouvés à proximité</h3>
 
 <table class="table table-striped table-hover table-sm">
 	<tbody>
