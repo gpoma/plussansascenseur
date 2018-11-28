@@ -256,10 +256,12 @@ class Signalement {
     }
 
     public function createEnPanne() {
+        if(!$this->getAscenseur()->getId()) {
+            $this->getAscenseur()->createVersion($this->getPseudo(), "Création de l'ascenseur");
+        }
         $this->createFollower();
         $this->createEvenement("Signalé en panne");
     }
-
 
     public function createFollower() {
         $this->createEvenement("Un nouvel utilisateur à rejoint la communauté", false);

@@ -86,9 +86,13 @@ class AscenseurTest extends KernelTestCase
 
         $this->assertTrue(count($photos) >= $nbPhotos);
 
+        $ascenseur->createVersion("vincent");
         $ascenseur->addEvenement(new \DateTime(), "Signalé en panne", "Otis redding");
 
-        $this->assertCount(1, $ascenseur->getHistorique());
+        $this->odm->flush();
+
+        $this->assertCount(2, $ascenseur->getHistorique());
+        $this->assertEquals($ascenseur->getHistorique()->first()->getCommentaire(), "Des informations sur l'ascenseur ont été complétées");
 
         $this->odm->flush();
     }

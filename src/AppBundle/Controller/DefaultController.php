@@ -236,6 +236,8 @@ class DefaultController extends Controller
            return $this->render('default/ascenseur_edition.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
        }
 
+       $ascenseur->createVersion(null);
+
        $dm->flush();
 
        return $this->redirect($this->generateUrl('ascenseur', array('id' => $ascenseur->getId())));

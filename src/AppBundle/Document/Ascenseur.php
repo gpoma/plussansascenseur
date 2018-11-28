@@ -646,4 +646,11 @@ class Ascenseur {
     {
         return $this->dateStatut;
     }
+
+    public function createVersion($auteur, $message = null) {
+        if(!$message) {
+            $message = "Des informations sur l'ascenseur ont été complétées";
+        }
+        $this->addEvenement(new \DateTime(), $message, $auteur);
+    }
 }
