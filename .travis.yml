@@ -10,6 +10,7 @@ php:
   - 7.2
 
 before_install:
+  - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then echo "extension = mongodb.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi
   - if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then composer config "platform.ext-mongo" "1.6.16" && composer require alcaeus/mongo-php-adapter; fi
