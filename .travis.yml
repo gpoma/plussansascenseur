@@ -7,7 +7,7 @@ php:
   - '7.0'
 
 before-install:
-  - sudo apt-get install php-mongo
+  - echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer self-update
 
 
