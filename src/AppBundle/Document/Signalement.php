@@ -257,12 +257,12 @@ class Signalement {
 
     public function createEnPanne() {
         $this->createFollower();
-        $this->createEvenement("Signalé en panne");
+        $this->createEvenement("Ascenseur signalé en panne");
     }
 
 
     public function createFollower() {
-        $this->createEvenement("Un nouvel utilisateur à rejoint la communauté");
+        $this->createEvenement("Une nouvelle personne a rejoint la communauté");
     }
 
     /**
