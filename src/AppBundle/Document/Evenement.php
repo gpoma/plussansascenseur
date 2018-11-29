@@ -29,6 +29,12 @@ class Evenement
     protected $commentaire;
 
     /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $version;
+
+    /**
      * Set date
      *
      * @param date $date
@@ -92,5 +98,28 @@ class Evenement
     public function getCommentaire()
     {
         return $this->commentaire;
+    }
+
+    /**
+     * Set version
+     *
+     * @param string $version
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+        return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+
+        return $this->version;
     }
 }

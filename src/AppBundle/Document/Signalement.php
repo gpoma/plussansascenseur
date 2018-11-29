@@ -257,9 +257,6 @@ class Signalement {
     }
 
     public function createEnPanne() {
-        if(!$this->getAscenseur()->getId()) {
-            $this->getAscenseur()->createVersion($this->getPseudo(), "Création de l'ascenseur");
-        }
         $this->createFollower();
         $this->createEvenement("Ascenseur signalé en panne");
     }

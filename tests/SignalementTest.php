@@ -30,7 +30,6 @@ class SignalementTest extends KernelTestCase
         $datePanne = new \DateTime();
         $datePanne->modify('-3 days');
 
-
         $signalement->setDate(new \DateTime());
         $signalement->setDatePanne($datePanne);
         $signalement->setEtage("8");
@@ -43,9 +42,13 @@ class SignalementTest extends KernelTestCase
         $signalement->setEmail("contact@24eme.fr");
         $signalement->setTelephone("0102030405");
 
+        $this->odm->persist($ascenseur);
+        $this->odm->flush();
+
+        $this->odm->getRepository('AppBundle:Ascenseur')->saveVersion($ascenseur, new \DateTime(), "Création de l'ascenseur", $signalement->getPseudo());
+
         $signalement->createEnPanne();
 
-        $this->odm->persist($ascenseur);
         $this->odm->persist($signalement);
         $this->odm->flush();
 

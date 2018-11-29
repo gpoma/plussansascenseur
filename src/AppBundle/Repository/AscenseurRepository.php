@@ -25,4 +25,12 @@ class AscenseurRepository extends DocumentRepository {
 		$query = $this->createQueryBuilder()->field('localisation.coordinates')->near($point)->maxDistance($distance)->getQuery();
 		return $query->execute();
 	}
+
+	public function saveVersion($ascenseur, $date, $infos, $pseudo) {
+        $data = $this->getDocumentManager()->getDocumentCollection(get_class($ascenseur))->findOne(array('_id' => new \MongoId($ascenseur->getId())));
+        unset($data['historique']);
+
+		$ascenseur->addEvenement($date, $infos, $pseudo)->setVersion(json_encode($data));
+		$this->getDocumentManager()->flush();
+	}
 }

@@ -43,9 +43,15 @@ class AscenseurTest extends KernelTestCase
         $ascenseur->setTelephoneDepannage("0102030405");
         $ascenseur->setDateConstruction("1980-11-08");
         $ascenseur->setDateRenovation("2011-08-11");
-
+        $ascenseur->setDateStatut("2014-08-11");
         $this->odm->persist($ascenseur);
         $this->odm->flush();
+
+        $this->odm->getRepository('AppBundle:Ascenseur')->saveVersion($ascenseur, new \DateTime(), "Création de l'ascenseur", null);
+
+        $this->odm->clear();
+
+        $ascenseur = $this->odm->find('AppBundle\Document\Ascenseur', $ascenseur->getId());
 
         $this->assertNotNull($ascenseur->getId());
         $this->assertEquals($ascenseur->getStatut(), Ascenseur::STATUT_ENPANNE);
@@ -64,12 +70,14 @@ class AscenseurTest extends KernelTestCase
         $this->assertEquals($ascenseur->getEtageMin(), -2);
         $this->assertEquals($ascenseur->getEtageMax(), 9);
         $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
-        $this->assertEquals($ascenseur->getDateConstruction(), "1980-11-08");
-        $this->assertEquals($ascenseur->getDateRenovation(), "2011-08-11");
+        $this->assertEquals($ascenseur->getDateConstruction()->format('Y-m-d'), "1980-11-08");
+        $this->assertEquals($ascenseur->getDateRenovation()->format('Y-m-d'), "2011-08-11");
         $this->assertEquals($ascenseur->getTelephoneDepannage(), "0102030405");
         $this->assertEquals($ascenseur->getUpdatedAt()->format('Y-m-d'), date('Y-m-d'));
+        $this->assertEquals($ascenseur->getDateStatut()->format('Y-m-d'), "2014-08-11");
+        $this->assertEquals($ascenseur->getHistorique()[0]->getCommentaire(), "Création de l'ascenseur");
+        $this->assertNotNull($ascenseur->getHistorique()[0]->getVersion());
 
-        $ascenseur = $this->odm->find('AppBundle\Document\Ascenseur', $ascenseur->getId());
         $nbPhotos = 5;
         for ($i=0; $i < $nbPhotos; $i++) {
             $photo = new Photo();
@@ -82,19 +90,22 @@ class AscenseurTest extends KernelTestCase
         $this->odm->flush();
 
         $photos = $this->odm->getRepository('AppBundle:Photo')->findAll();
-        $ascenseur = $this->odm->getRepository('AppBundle:Ascenseur')->find($ascenseur->getId());
 
         $this->assertTrue(count($photos) >= $nbPhotos);
 
-        $ascenseur->createVersion("vincent");
-        $ascenseur->addEvenement(new \DateTime(), "Signalé en panne", "Otis redding");
+        $ascenseur->setEmplacement("À Gauche");
 
         $this->odm->flush();
 
+        $this->odm->getRepository('AppBundle:Ascenseur')->saveVersion($ascenseur, new \DateTime(), "Des informations sur l'ascenseur ont été complétées", null);
+
+        $this->assertEquals($ascenseur->getHistorique()[0]->getCommentaire(), "Des informations sur l'ascenseur ont été complétées");
+        $this->assertEquals(json_decode($ascenseur->getHistorique()[0]->getVersion())->emplacement, "À Gauche");
+        $this->assertEquals(json_decode($ascenseur->getHistorique()[1]->getVersion())->emplacement, "Batiment A Ascenseur de droite");
         $this->assertCount(2, $ascenseur->getHistorique());
-        $this->assertEquals($ascenseur->getHistorique()[1]->getCommentaire(), "Des informations sur l'ascenseur ont été complétées");
 
         $this->odm->flush();
+
     }
 
 }

@@ -170,7 +170,6 @@ class Ascenseur {
     public function __construct()
     {
         $this->photos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->signalements = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setStatut(self::STATUT_ENPANNE);
         $this->localisation = new GeoJson();
     }
@@ -412,6 +411,8 @@ class Ascenseur {
         $this->historique[] = $evenement;
 
         $this->setNombreFollowers($this->getSignalements()->count());
+
+        return $evenement;
     }
 
     /**
@@ -662,13 +663,6 @@ class Ascenseur {
         return $this->dateStatut;
     }
 
-    public function createVersion($auteur, $message = null) {
-        if(!$message) {
-            $message = "Des informations sur l'ascenseur ont été complétées";
-        }
-        $this->addEvenement(new \DateTime(), $message, $auteur);
-    }
-    
     /**
      * Set nombreFollowers
      *
@@ -698,6 +692,10 @@ class Ascenseur {
      */
     public function getSignalements()
     {
+        if(is_null($this->signalements)) {
+
+            return new \Doctrine\Common\Collections\ArrayCollection();
+        }
         return $this->signalements;
     }
 }

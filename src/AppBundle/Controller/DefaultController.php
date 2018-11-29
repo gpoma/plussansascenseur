@@ -159,12 +159,13 @@ class DefaultController extends Controller
             return $this->render('default/signalement.html.twig', array("form" => $form->createView()));
         }
 
-        $signalement->createEnPanne();
-
-        $dm = $this->get('doctrine_mongodb')->getManager();
         $dm->persist($signalement->getAscenseur());
-        $dm->persist($signalement);
+        $dm->flush();
 
+        $dm->getRepository('AppBundle:Ascenseur')->saveVersion($signalement->getAscenseur(), new \DateTime(), "Création de l'ascenseur", $signalement->getPseudo());
+
+        $signalement->createEnPanne();
+        $dm->persist($signalement);
         $dm->flush();
 
         return $this->redirect($this->generateUrl('ascenseur', array('id' => $signalement->getAscenseur()->getId())));
@@ -236,9 +237,9 @@ class DefaultController extends Controller
            return $this->render('default/ascenseur_edition.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
        }
 
-       $ascenseur->createVersion(null);
-
        $dm->flush();
+
+       $dm->getRepository('AppBundle:Ascenseur')->saveVersion($ascenseur, new \DateTime(), "Des informations sur l'ascenseur ont été complétées", null);
 
        return $this->redirect($this->generateUrl('ascenseur', array('id' => $ascenseur->getId())));
    }
