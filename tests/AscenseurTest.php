@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Yaml\Yaml;
 use AppBundle\Document\Ascenseur;
 use AppBundle\Document\Photo;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class AscenseurTest extends KernelTestCase
 {
@@ -85,16 +88,16 @@ class AscenseurTest extends KernelTestCase
             $photo->setBase64(base64_encode(file_get_contents(realpath("web/psa_logo_300x300.png"))));
             $this->odm->persist($photo);
             $this->assertEquals($photo->getUpdatedAt()->format('Y-m-d'), date('Y-m-d'));
-            $photo->setAscenseur($ascenseur);
+            $this->odm->flush();
+            $ascenseur->addPhoto($photo);
         }
         $this->odm->flush();
 
-        $photos = $this->odm->getRepository('AppBundle:Photo')->findAll();
+        $ascenseur = $this->odm->find('AppBundle\Document\Ascenseur', $ascenseur->getId());
 
-        $this->assertTrue(count($photos) >= $nbPhotos);
+        $this->assertCount($nbPhotos, $ascenseur->getPhotos());
 
         $ascenseur->setEmplacement("À Gauche");
-
         $this->odm->flush();
 
         $this->odm->getRepository('AppBundle:Ascenseur')->saveVersion($ascenseur, new \DateTime(), "Des informations sur l'ascenseur ont été complétées", null);

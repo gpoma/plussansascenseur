@@ -63,11 +63,6 @@ class Photo
     */
    protected $updatedAt;
 
-   /**
-    * @MongoDB\ReferenceOne(targetDocument="Ascenseur", inversedBy="photos", storeAs="id")
-    */
-   protected $ascenseur;
-
 
    /** @MongoDB\EmbedOne(targetDocument="GeoJson") */
    public $localisation;
@@ -313,28 +308,6 @@ class Photo
         }
 
         return $resultImg;
-    }
-
-    /**
-     * Set ascenseur
-     *
-     * @param AppBundle\Document\Ascenseur $ascenseur
-     * @return self
-     */
-    public function setAscenseur(\AppBundle\Document\Ascenseur $ascenseur)
-    {
-        $this->ascenseur = $ascenseur;
-        return $this;
-    }
-
-    /**
-     * Get ascenseur
-     *
-     * @return AppBundle\Document\Ascenseur $ascenseur
-     */
-    public function getAscenseur()
-    {
-        return $this->ascenseur;
     }
 
     /**

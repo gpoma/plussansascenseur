@@ -25,7 +25,7 @@ class Ascenseur {
     protected $localisation;
 
      /**
-     *  @MongoDB\ReferenceMany(targetDocument="Photo", mappedBy="ascenseur")
+     *  @MongoDB\ReferenceMany(targetDocument="Photo")
      */
     protected $photos;
 
