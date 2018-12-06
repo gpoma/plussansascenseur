@@ -93,9 +93,11 @@ class AscenseurTest extends KernelTestCase
         }
         $this->odm->flush();
 
+        $this->odm->clear();
+
         $ascenseur = $this->odm->find('AppBundle\Document\Ascenseur', $ascenseur->getId());
 
-        $this->assertCount($nbPhotos, $ascenseur->getPhotos());
+        $this->assertCount($nbPhotos, $ascenseur->getPhotosId());
 
         $ascenseur->setEmplacement("À Gauche");
         $this->odm->flush();
