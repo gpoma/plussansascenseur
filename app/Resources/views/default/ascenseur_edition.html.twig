@@ -13,11 +13,11 @@ col-sm-6 col-md-8
 {% block body %}
 <h2>Compléter les informations de l'ascenseur</h2>
 <p><a href="{{  path('ascenseur', {'id': ascenseur.id}) }}">Retour à l'ascenseur</a></p>
-{% if ascenseur.photos|length > 0 %}
+{% if ascenseur.photosId|length > 0 %}
 <p>N'hésitez pas à vous appuyer sur les photos ci-dessous</p>
 <hr />
-{% for photo in ascenseur.photos|slice(0, 4) %}
-    <a href=""><img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="max-height: 150px;"/></a>
+{% for idPhoto in ascenseur.photosId %}
+    <a href=""><img src="{{ path('photo', { id: idPhoto }) }}" class="img-fluid" style="max-height: 150px;"/></a>
 {% endfor %}
 {% endif %}
 <hr />

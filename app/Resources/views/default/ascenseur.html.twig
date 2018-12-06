@@ -24,9 +24,9 @@
     </div>
     <div class="col-md-6">
         <div class="row">
-        {% for photo in ascenseur.photos|slice(0, 2) %}
+        {% for idPhoto in ascenseur.photosId|slice(0, 2) %}
         <div class="col-md-6 mb-3 text-center">
-            <img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="margin-bottom:0; max-height : 200px;"/>
+            <img src="{{ path('photo', { id: idPhoto }) }}" alt="" class="img-fluid" style="margin-bottom:0; max-height : 200px;"/>
          </div>
         {% endfor %}
         </div>

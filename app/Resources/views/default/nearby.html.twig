@@ -17,11 +17,10 @@
 <table class="table table-striped table-hover table-sm">
 	<tbody>
 		{% for elevator in elevators %}
-		{% set photo = elevator.photos.first() %}
-        <tr class="clickable-row row mx-0" data-href="{{ path('signalement', {ascenseur: elevator.id, photo: photoid}) }}">
+        <tr class="clickable-row row mx-0" data-href="{{ path('signalement', {ascenseur: elevator.id, photo: photoid }) }}">
 			<td class="col-2 text-center">
-				{% if photo %}
-            	<img src="{{ photo.getBase64Src() }}" alt="{{ photo.updatedAt |date("m/d/Y") }}" class="img-fluid" style="max-height : 80px;"/>
+				{% if elevator.firstPhotoId %}
+                    <img src="{{ path('photo', { id: elevator.firstPhotoId }) }}" class="img-fluid" style="max-height : 80px;"/>
             	{% endif %}
 			</td>
 			<td class="col-10">

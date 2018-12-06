@@ -14,7 +14,7 @@ use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
 use AppBundle\Lib\AdresseDataGouvApi;
 use AppBundle\Repository\AscenseurRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -143,7 +143,6 @@ class DefaultController extends Controller
         $signalement = new Signalement($ascenseur);
         if($request->get('photo')) {
            $photo = $dm->getRepository('AppBundle:Photo')->find($request->get('photo'));
-           $photo->setAscenseur($signalement->getAscenseur());
            $signalement->getAscenseur()->addPhoto($photo);
         }
         $form = $this->createForm(SignalementType::class, $signalement, array('method' => Request::METHOD_POST));
@@ -180,6 +179,28 @@ class DefaultController extends Controller
        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($id);
 
        return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
+   }
+
+   /**
+    * @Route("/photo/{id}", name="photo")
+    */
+   public function photoAction(Request $request, $id)
+   {
+       $dm = $this->get('doctrine_mongodb')->getManager();
+       $photo = $dm->getRepository('AppBundle:Photo')->find($id);
+
+       $response = new Response();
+
+        if($photo->getImageSize()) {
+           $response->headers->set('Content-Length', $photo->getImageSize());
+        }
+       $response->headers->set('Content-Type', ($photo->getExt()) ? $photo->getExt() : "image");
+
+       $response->setContent(base64_decode($photo->getBase64()));
+
+
+
+       return $response;
    }
 
    /**

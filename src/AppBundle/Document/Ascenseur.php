@@ -204,14 +204,25 @@ class Ascenseur {
         $this->photos->removeElement($photo);
     }
 
-    /**
-     * Get photos
-     *
-     * @return \Doctrine\Common\Collections\Collection $photos
-     */
-    public function getPhotos()
+    public function getPhotosId()
     {
-        return $this->photos;
+        $ids = array();
+
+        foreach($this->photos->getMongoData() as $item) {
+
+            $ids[] = $item['$id'];
+        }
+
+        return $ids;
+    }
+
+    public function getFirstPhotoId() {
+        foreach($this->getPhotosId() as $id) {
+
+            return $id;
+        }
+
+        return null;
     }
 
     /**
