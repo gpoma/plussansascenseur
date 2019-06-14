@@ -60,7 +60,7 @@ class DefaultController extends Controller
 
         $dm->persist($photo);
         $dm->flush();
-        $photo->convertBase64AndRemove();
+        $photo->operate();
         $dm->flush();
 
         return $this->redirect($this->generateUrl('localisation', array('photo' => $photo->getId(), 'coordinates' => $photo->getLocalisation())));

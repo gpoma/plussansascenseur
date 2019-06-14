@@ -9,6 +9,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations\HasLifecycleCallbacks;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\PreUpdate;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\PrePersist;
 use Symfony\Component\HttpFoundation\File\File;
+use AppBundle\Document\Exif;
 
 
 /**
@@ -66,6 +67,9 @@ class Photo
 
    /** @MongoDB\EmbedOne(targetDocument="GeoJson") */
    public $localisation;
+
+    /** @MongoDB\EmbedOne(targetDocument="Exif") */
+    protected $exif;
 
     /**
      * Get updatedAt
@@ -255,18 +259,60 @@ class Photo
         return $this->ext;
     }
 
-    public function convertBase64AndRemove($resizeWidth = false){
-        $file = self::image_path.$this->getImageName();
+    /**
+     * Enregistre les données exif
+     */
+    public function storeExif($file)
+    {
+        $this->setExif(exif_read_data($file));
+    }
+
+    public function fixOrientation($file)
+    {
+        $rotation = $this->getExif()->getRotation();
+        switch ($rotation) {
+            case Exif::ROT_180:
+                $file = imagerotate($file, 180, 0);
+                break;
+            case Exif::ROT_M90:
+                $file = imagerotate($file, -90, 0);
+                break;
+            case Exif::ROT_90:
+                $file = imagerotate($file, 90, 0);
+                break;
+        }
+
+        return $file;
+    }
+
+    public function convertBase64AndRemove($file){
+        $this->setBase64(base64_encode(file_get_contents($file)));
+        $this->removeFile();
+    }
+
+    /**
+     * On fait les opération sur le fichier,
+     * puis on le converti et on le supprime
+     *
+     * @param int $resizeWidth La nouvelle largeur
+     */
+    public function operate($resizeWidth = 0)
+    {
+        $file = self::image_path . $this->getImageName();
         $this->setExt(mime_content_type($file));
-        list($width, $height, $type, $attr) = getimagesize(realpath($file));
+
+        $file = realpath($file);
+
+        $this->storeExif($file);
+
+        list($width, $height, $type, $attr) = getimagesize($file);
         $attent_width = ($resizeWidth)? $resizeWidth : $width;
         $attent_height = ($attent_width * $height) / $attent_width;
-        $dstImg = $this->resize_image(realpath($file), $attent_width, $attent_height);
-        $pathfile = realpath($file);
-        $this->setBase64(base64_encode(file_get_contents($pathfile)));
-        $this->extractGeolocFromFile($pathfile);
+        $dstImg = $this->resize_image($file, $attent_width, $attent_height);
 
-        $this->removeFile();
+        $this->extractGeolocFromFile($file);
+
+        $this->convertBase64AndRemove($file);
     }
 
     public function getBase64Src(){
@@ -290,21 +336,27 @@ class Photo
             $dst = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
-            $resultImg = imagejpeg($dst,realpath($file));
+            $this->fixOrientation($dst);
+
+            $resultImg = imagejpeg($dst, $file);
         }
         if($this->isPng()){
             $src = imagecreatefrompng($file);
             $dst = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
-            $resultImg = imagepng($dst,realpath($file));
+            $this->fixOrientation($dst);
+
+            $resultImg = imagepng($dst, $file);
         }
         if($this->isGif()){
             $src = imagecreatefromgif($file);
             $dst = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresampled($dst, $src, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
 
-            $resultImg = imagegif($dst,realpath($file));
+            $this->fixOrientation($dst);
+
+            $resultImg = imagegif($dst, $file);
         }
 
         return $resultImg;
@@ -410,5 +462,26 @@ class Photo
             'lat' => $lat,
             'lng' => $lng
         );
+    }
+
+    /**
+     * On enregistre les données Exif
+     *
+     * @param array $exif Les données exif
+     * @return $this
+     */
+    public function setExif(array $exif)
+    {
+        $this->exif = new Exif($exif);
+    }
+
+    /**
+     * Retourne les données Exif
+     *
+     * @return Exif Les données Exif
+     */
+    public function getExif()
+    {
+        return $this->exif;
     }
 }
