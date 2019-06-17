@@ -15,5 +15,4 @@
 .settings/
 var/logs
 var/cache
-composer.lock
 *~
