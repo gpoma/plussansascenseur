@@ -7,7 +7,18 @@
 </div>
 <div class="col-md-6 my-3">
 <h2><small>
-{{ ascenseur.adresse }} {{ ascenseur.codePostal }} {{ ascenseur.commune }}<br />
+{% if ascenseur.adresse %}
+    {{ ascenseur.adresse }}
+{% endif %}
+{% if ascenseur.codePostal %}
+    {{ ascenseur.codePostal }}
+{% endif %}
+{% if ascenseur.commune %}
+    {{ ascenseur.commune }}
+{% endif %}
+
+{% if not ascenseur.adresse and not ascenseur.codePostal and not ascenseur.commune %}<em class="text-muted">Adresse non renseignée</em>{% endif %}
+<br />
 {{ ascenseur.emplacement }} {% if ascenseur.etageMin or ascenseur.etageMax %}(du {{ ascenseur.etageMin }} au {{ ascenseur.etageMax }}){% endif %}
 </small></h2>
 </div>
