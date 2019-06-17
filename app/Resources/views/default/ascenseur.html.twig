@@ -26,7 +26,9 @@
         <div class="row">
         {% for idPhoto in ascenseur.photosId|slice(0, 2) %}
         <div class="col-md-6 mb-3 text-center">
-            <img src="{{ path('photo', { id: idPhoto }) }}" alt="" class="img-fluid" style="margin-bottom:0; max-height : 200px;"/>
+            <a href="{{ path('photo', { id: idPhoto }) }}" title="Photo">
+                <img src="{{ path('photo', { id: idPhoto }) }}" alt="Photo de l'ascenseur" class="img-fluid" style="margin-bottom:0; max-height : 200px;"/>
+            </a>
          </div>
         {% endfor %}
         </div>
