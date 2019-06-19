@@ -57,4 +57,51 @@ class AscenseurController extends Controller
             'ascenseurs', 'page', 'pages', 'query_string'
         ));
     }
+
+    /**
+     * On affiche les informations d'un ascenseur
+     *
+     * @Route("/ascenseur/{id}", name="ascenseur", requirements={"id"="\w{24}"})
+     *
+     * @param Request $request La requête
+     * @param string $id L'id de l'ascenseur
+     * @return Response La réponse
+     */
+    public function ascenseurAction(Request $request, $id)
+    {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = $dm->getRepository(Ascenseur::class)->find($id);
+
+        $geojson = $this->buildGeoJson($ascenseur);
+
+        return $this->render('default/ascenseur.html.twig', compact(
+            'ascenseur', 'geojson'
+        ));
+    }
+
+    /**
+     * Retourne les informations de localisation de l'ascenseur
+     *
+     * @param Ascenseur $ascenseur L'ascenseur
+     * @return stdClass Les données geojson
+     */
+    private function buildGeoJson(Ascenseur $ascenseur)
+    {
+        $geojson = new \stdClass();
+        $geojson->type = "FeatureCollection";
+        $geojson->features = [];
+
+        $feature = new \stdClass();
+        $feature->type = "Feature";
+        $feature->properties = new \stdClass();
+        $feature->properties->_id = $ascenseur->getId();
+        $feature->properties->icon = 'ascenseur';
+
+        $feature->geometry = new \stdClass();
+        $feature->geometry->type = "Point";
+        $feature->geometry->coordinates = [$ascenseur->getLon(), $ascenseur->getLat()];
+
+        $geojson->features[] = $feature;
+        return $geojson;
+    }
 }

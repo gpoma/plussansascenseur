@@ -160,17 +160,6 @@ class DefaultController extends Controller
    }
 
    /**
-    * @Route("/ascenseur/{id}", name="ascenseur")
-    */
-   public function ascenseurAction(Request $request, $id)
-   {
-       $dm = $this->get('doctrine_mongodb')->getManager();
-       $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($id);
-
-       return $this->render('default/ascenseur.html.twig',array("ascenseur" => $ascenseur,"geojson" => $this->buildGeoJson($ascenseur)));
-   }
-
-   /**
     * @Route("/photo/{id}", name="photo")
     */
    public function photoAction(Request $request, $id)
@@ -295,24 +284,6 @@ class DefaultController extends Controller
         return $this->render('default/ascenseur_photo.html.twig', ['ascenseur' => $ascenseur, 'form' => $form->createView()]);
     }
 
-   private function buildGeoJson($ascenseur) {
-        $geojson = new \stdClass();
-        $geojson->type = "FeatureCollection";
-        $geojson->features = array();
-
-        $feature = new \stdClass();
-        $feature->type = "Feature";
-        $feature->properties = new \stdClass();
-        $feature->properties->_id = $ascenseur->getId();
-        $feature->properties->icon = 'ascenseur';
-
-        $feature->geometry = new \stdClass();
-        $feature->geometry->type = "Point";
-        $feature->geometry->coordinates = array($ascenseur->getLon(), $ascenseur->getLat());
-
-        $geojson->features[] = $feature;
-        return $geojson;
-    }
 
 
 }
