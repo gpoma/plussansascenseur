@@ -22,6 +22,8 @@ class AscenseurController extends Controller
     const PERPAGE = 5;
 
     /**
+     * On liste les derniers ascenseurs mis à jours
+     *
      * @Route("/listing", name="listing")
      *
      * @param Request $request La requête
