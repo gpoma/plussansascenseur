@@ -30,6 +30,10 @@ class Photo
    /**
     * @MongoDB\File
     * @Vich\UploadableField(mapping="attachement_image", fileNameProperty="imageName", size="imageSize")
+    * @Assert\Image(
+    *   maxSizeMessage="Le fichier est trop lourd {{ size }} {{ suffix }}. Le maximum est de {{ limit }} {{ suffix }}.",
+    *   mimeTypesMessage="Le fichier n'est pas une image."
+    * )
     *
     */
    protected $imageFile;
