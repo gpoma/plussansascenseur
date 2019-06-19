@@ -288,6 +288,22 @@ class DefaultController extends Controller
         if (! $request->isMethod('POST')) {
             return $this->render('default/ascenseur_photo.html.twig', ['ascenseur' => $ascenseur, 'form' => $form->createView()]);
         }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $photo = $form->getData();
+            $dm->persist($photo);
+            $photo->operate();
+
+            $ascenseur->addPhoto($photo);
+
+            $dm->flush();
+
+            return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
+        }
+
+        return $this->render('default/ascenseur_photo.html.twig', ['ascenseur' => $ascenseur, 'form' => $form->createView()]);
     }
 
    private function buildGeoJson($ascenseur) {
