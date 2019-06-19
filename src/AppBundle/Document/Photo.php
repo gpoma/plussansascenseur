@@ -264,7 +264,8 @@ class Photo
      */
     public function storeExif($file)
     {
-        $this->setExif(exif_read_data($file));
+        $exif = @exif_read_data($file);
+        ($exif) ? $this->setExif($exif) : $this->setExif([]);
     }
 
     public function fixOrientation($file)
