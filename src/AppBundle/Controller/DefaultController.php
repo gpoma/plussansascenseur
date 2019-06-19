@@ -114,17 +114,6 @@ class DefaultController extends Controller
    }
 
    /**
-    * @Route("/listing", name="listing")
-    */
-   public function listingAction(Request $request)
-   {
-       $dm = $this->get('doctrine_mongodb')->getManager();
-       $elevators = $dm->getRepository('AppBundle:Ascenseur')->findAll();
-
-       return $this->render('default/listing.html.twig', array('elevators' => $elevators));
-   }
-
-   /**
     * @Route("/signalement", name="signalement")
     */
    public function signalementAction(Request $request)

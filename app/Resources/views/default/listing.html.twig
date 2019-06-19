@@ -6,21 +6,31 @@
 
 <table class="table table-striped table-hover table-sm">
 	<tbody>
-		{% for elevator in elevators %}
-        <tr class="clickable-row row mx-0" data-href="{{ path('ascenseur', {id: elevator.id}) }}">
+		{% for ascenseur in ascenseurs %}
+        <tr class="clickable-row row mx-0" data-href="{{ path('ascenseur', {id: ascenseur.id}) }}">
 			<td class="col-2 text-center">
-				{% if elevator.firstPhotoId %}
-					<img src="{{ path('photo', { id: elevator.firstPhotoId }) }}" alt="" class="img-fluid" style="max-height : 80px;"/>
+				{% if ascenseur.firstPhotoId %}
+					<img src="{{ path('photo', { id: ascenseur.firstPhotoId }) }}" alt="" class="img-fluid" style="max-height : 80px;"/>
 				{% endif %}
 			</td>
 			<td valign="middle" class="col-10">
-				{% if elevator.constructeurNom %}Ascenseur <strong>{{ elevator.constructeurNom }}</strong> {% endif %}{% if elevator.reference %}Ref. <strong>{{ elevator.reference }}</strong>{% endif %}
-				{% if elevator.constructeurNom and elevator.reference %}<br />{% endif %}
-				{{ elevator.getAdresseLibelle() }}
+				{% if ascenseur.constructeurNom %}Ascenseur <strong>{{ ascenseur.constructeurNom }}</strong> {% endif %}{% if ascenseur.reference %}Ref. <strong>{{ ascenseur.reference }}</strong>{% endif %}
+				{% if ascenseur.constructeurNom and ascenseur.reference %}<br />{% endif %}
+				{{ ascenseur.getAdresseLibelle() }}
 			</td>
 		</tr>
 		{% endfor %}
 	</tbody>
 </table>
+
+<nav aria-label="Pagination d'ascenseurs">
+	<ul class="pagination justify-content-center">
+		{% for i in 1..pages %}
+		<li class="page-item {% if page == i %} active {% endif %}">
+			<a class="page-link" href="?{{ query_string }}page={{ i }}">{{ i }}</a>
+		</li>
+		{% endfor %}
+	</ul>
+</nav>
 
 {% endblock %}

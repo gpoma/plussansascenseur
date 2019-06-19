@@ -33,4 +33,34 @@ class AscenseurRepository extends DocumentRepository {
 		$ascenseur->addEvenement($date, $infos, $pseudo)->setVersion(json_encode($data));
 		$this->getDocumentManager()->flush();
 	}
+
+    /**
+     * Retourne une liste paginée d'ascenseur
+     *
+     * @param int $limit Le nombre de résultat à retourner
+     * @param int $skip Le nombre de résultat à omitter
+     */
+    public function paginate($limit = 10, $skip = 0)
+    {
+        return $this->createQueryBuilder()
+                      ->readOnly()
+                      ->limit($limit)
+                      ->skip($skip)
+                      ->sort('updatedAt', 'DESC')
+                      ->getQuery()
+                      ->execute();
+    }
+
+    /**
+     * Retourne le nombre de documents
+     *
+     */
+    public function count()
+    {
+        return count($this->createQueryBuilder()
+                          ->hydrate(false)
+                          ->getQuery()
+                          ->execute()
+                  );
+    }
 }
