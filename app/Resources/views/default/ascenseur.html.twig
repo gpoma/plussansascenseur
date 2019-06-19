@@ -26,7 +26,7 @@
 <p>{{ ascenseur.nombreFollowers }} personnes suivent cet ascenseur</p>
 <p>
     <a href="{{ path('ascenseur_photo', { ascenseur: ascenseur.id })}}" class="btn btn-info">Ajouter une photo</a>
-    <a href="{{ path('ascenseur_follower', { ascenseur: ascenseur.id })}}" class="btn btn-success">Rejoindre la communauté</a>
+    <a href="{{ path('ascenseur_follower', { id: ascenseur.id })}}" class="btn btn-success">Rejoindre la communauté</a>
 </p>
 </div>
 </div>
@@ -112,7 +112,7 @@
 
 <div class="row my-3">
     <div class="col-6">
-        <a href="{{ path('ascenseur_follower', { ascenseur: ascenseur.id })}}" class="btn btn-block btn-primary">Rejoindre cet ascenseur</a>
+        <a href="{{ path('ascenseur_follower', { id: ascenseur.id })}}" class="btn btn-block btn-primary">Rejoindre cet ascenseur</a>
     </div>
     <div class="col-6">
         <a href="{{ path('ascenseur_edition', { ascenseur: ascenseur.id })}}" class="btn btn-block btn-outline-secondary">Compléter les informations</a>

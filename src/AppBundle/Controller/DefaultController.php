@@ -182,39 +182,6 @@ class DefaultController extends Controller
    }
 
    /**
-    * @Route("/ascenseur/{ascenseur}/join", name="ascenseur_follower")
-    */
-   public function followerAction(Request $request, $ascenseur)
-   {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($ascenseur);
-        $signalement = new Signalement($ascenseur);
-        $form = $this->createForm(FollowerType::class, $signalement, array('method' => Request::METHOD_POST));
-
-        if($request->getMethod() != Request::METHOD_POST) {
-
-            return $this->render('default/follower.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
-        }
-
-        $form->handleRequest($request);
-
-        if(!$form->isSubmitted() || !$form->isValid()) {
-            return $this->render('default/follower.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
-        }
-
-        if ($signalement->getPseudo() || $signalement->getEmail() || $signalement->getTelephone()) {
-          $signalement->createFollower();
-          $dm = $this->get('doctrine_mongodb')->getManager();
-          $dm->persist($signalement);
-
-          $dm->flush();
-        }
-
-        return $this->redirect($this->generateUrl('ascenseur', array('id' => $signalement->getAscenseur()->getId())));
-
-   }
-
-   /**
     * @Route("/ascenseur/{ascenseur}/edition", name="ascenseur_edition")
     */
    public function ascenseurEditionAction(Request $request, $ascenseur)

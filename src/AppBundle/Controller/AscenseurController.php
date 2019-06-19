@@ -10,9 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use AppBundle\Document\Ascenseur;
 use AppBundle\Document\Photo;
+use AppBundle\Document\Signalement;
 
 use AppBundle\Type\PhotoType;
 use AppBundle\Type\AscenseurType;
+use AppBundle\Type\FollowerType;
 
 use AppBundle\Repository\AscenseurRepository;
 
@@ -79,6 +81,46 @@ class AscenseurController extends Controller
         return $this->render('default/ascenseur.html.twig', compact(
             'ascenseur', 'geojson'
         ));
+    }
+
+    /**
+     * Un nouveau follower suit l'ascenseur
+     * GET: On affiche un formulaire d'informations à remplir
+     * POST: On enregistre les infos
+     *
+     * @Route("/ascenseur/{id}/join", name="ascenseur_follower")
+     */
+    public function followerAction(Request $request, $id)
+    {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = $dm->getRepository(Ascenseur::class)->find($id);
+        $signalement = new Signalement($ascenseur);
+
+        $form = $this->createForm(FollowerType::class, $signalement, [
+            'method' => Request::METHOD_POST
+        ]);
+
+        if(! $request->isMethod(Request::METHOD_POST)) {
+            $form = $form->createView();
+            return $this->render('default/follower.html.twig', compact('form', 'ascenseur'));
+        }
+
+        $form->handleRequest($request);
+
+        if(! $form->isSubmitted() || ! $form->isValid()) {
+            $form = $form->createView();
+            return $this->render('default/follower.html.twig', compact('form', 'ascenseur'));
+        }
+
+        if ($signalement->getPseudo() || $signalement->getEmail() || $signalement->getTelephone()) {
+            $signalement->createFollower();
+            $dm->persist($signalement);
+
+            $dm->flush();
+        }
+
+        return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
+
     }
 
     /**
