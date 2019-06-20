@@ -125,7 +125,10 @@ class DefaultController extends Controller
 
         if ($coordinatesArr && count($coordinatesArr) === 2) {
             $ascenseur->setLatLon($coordinatesArr[1], $coordinatesArr[0]);
-            $ascenseur->setAdresse(AdresseDataGouvApi::getAddrByCoordinates(urldecode($coordinates)));
+            $adresse = AdresseDataGouvApi::getAddrByCoordinates(urldecode($coordinates));
+            $ascenseur->setAdresse($adresse['name']);
+            $ascenseur->setCodePostal($adresse['postcode']);
+            $ascenseur->setCommune($adresse['city']);
         }
 
         $signalement = new Signalement($ascenseur);
