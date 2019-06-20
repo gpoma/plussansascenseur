@@ -37,7 +37,7 @@ class PhotoType extends AbstractType {
     /**
      * @return string
      */
-    public function getName() {
+    public function getBlockPrefix() {
         return 'photos';
     }
 

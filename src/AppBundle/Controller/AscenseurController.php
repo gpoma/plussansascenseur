@@ -9,9 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use AppBundle\Document\Ascenseur;
+use AppBundle\Document\Photo;
 use AppBundle\Document\Signalement;
 
 use AppBundle\Type\AscenseurType;
+use AppBundle\Type\PhotoType;
 use AppBundle\Type\FollowerType;
 
 class AscenseurController extends Controller
@@ -117,6 +119,48 @@ class AscenseurController extends Controller
            ->saveVersion($ascenseur, new \DateTime(), "Des informations sur l'ascenseur ont été complétées", null);
 
         return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
+    }
+
+    /**
+     * Ajoute une photo dans un ascenceur
+     *
+     * @Route("/ascenseur/{id}/ajout-photo", name="ascenseur_photo", requirements={"id"="\w{24}"})
+     *
+     * @param Request $request L'objet request
+     * @param string $id L'id de l'ascenseur
+     * @return Response La réponse
+     */
+    public function ascenseurAjoutPhotoAction(Request $request, $id)
+    {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = $dm->getRepository(Ascenseur::class)->find($id);
+        $photo = new Photo();
+
+        $form = $this->createForm(PhotoType::class, $photo, [
+            'method' => 'POST'
+        ]);
+
+        if (! $request->isMethod(Request::METHOD_POST)) {
+            $form = $form->createView();
+            return $this->render('default/ascenseur_photo.html.twig', compact('form', 'ascenseur'));
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $photo = $form->getData();
+            $dm->persist($photo);
+            $photo->operate();
+
+            $ascenseur->addPhoto($photo);
+
+            $dm->flush();
+
+            return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
+        }
+
+        $form = $form->createView();
+        return $this->render('default/ascenseur_photo.html.twig', compact('ascenseur', 'form'));
     }
 
     /**

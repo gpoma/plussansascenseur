@@ -180,48 +180,4 @@ class DefaultController extends Controller
 
        return $response;
    }
-
-    /**
-     * Ajoute une photo dans un ascenceur
-     *
-     * @Route("/ascenseur/{ascenseur}/ajout-photo", name="ascenseur_photo")
-     *
-     * @param Request $request L'objet request
-     * @param $string ascenseur L'id de l'ascenseur
-     * @return Response La réponse
-     */
-    public function ascenseurAjoutPhotoAction(Request $request, $ascenseur)
-    {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($ascenseur);
-        $photo = new Photo();
-
-        $form = $this->createForm(PhotoType::class, $photo, [
-            'action' => $this->generateUrl('ascenseur_photo', ['ascenseur' => $ascenseur->getId()]),
-            'method' => 'POST'
-        ]);
-
-        if (! $request->isMethod('POST')) {
-            return $this->render('default/ascenseur_photo.html.twig', ['ascenseur' => $ascenseur, 'form' => $form->createView()]);
-        }
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $photo = $form->getData();
-            $dm->persist($photo);
-            $photo->operate();
-
-            $ascenseur->addPhoto($photo);
-
-            $dm->flush();
-
-            return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
-        }
-
-        return $this->render('default/ascenseur_photo.html.twig', ['ascenseur' => $ascenseur, 'form' => $form->createView()]);
-    }
-
-
-
 }
