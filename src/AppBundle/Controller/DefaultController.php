@@ -8,12 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Document\Photo;
 use AppBundle\Type\PhotoType;
 use AppBundle\Type\SignalementType;
-use AppBundle\Type\FollowerType;
-use AppBundle\Type\AscenseurType;
 use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
 use AppBundle\Lib\AdresseDataGouvApi;
-use AppBundle\Repository\AscenseurRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
