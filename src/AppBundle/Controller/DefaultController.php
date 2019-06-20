@@ -181,35 +181,6 @@ class DefaultController extends Controller
        return $response;
    }
 
-   /**
-    * @Route("/ascenseur/{ascenseur}/edition", name="ascenseur_edition")
-    */
-   public function ascenseurEditionAction(Request $request, $ascenseur)
-   {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $ascenseur = $dm->getRepository('AppBundle:Ascenseur')->find($ascenseur);
-
-        $form = $this->createForm(AscenseurType::class, $ascenseur, array('method' => Request::METHOD_POST));
-
-        if($request->getMethod() != Request::METHOD_POST) {
-
-           return $this->render('default/ascenseur_edition.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
-        }
-
-       $form->handleRequest($request);
-
-       if(!$form->isSubmitted() || !$form->isValid()) {
-
-           return $this->render('default/ascenseur_edition.html.twig', array("form" => $form->createView(), 'ascenseur' => $ascenseur));
-       }
-
-       $dm->flush();
-
-       $dm->getRepository('AppBundle:Ascenseur')->saveVersion($ascenseur, new \DateTime(), "Des informations sur l'ascenseur ont été complétées", null);
-
-       return $this->redirect($this->generateUrl('ascenseur', array('id' => $ascenseur->getId())));
-   }
-
     /**
      * Ajoute une photo dans un ascenceur
      *

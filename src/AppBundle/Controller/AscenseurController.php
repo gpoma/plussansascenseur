@@ -9,14 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use AppBundle\Document\Ascenseur;
-use AppBundle\Document\Photo;
 use AppBundle\Document\Signalement;
 
-use AppBundle\Type\PhotoType;
 use AppBundle\Type\AscenseurType;
 use AppBundle\Type\FollowerType;
-
-use AppBundle\Repository\AscenseurRepository;
 
 class AscenseurController extends Controller
 {
@@ -84,11 +80,51 @@ class AscenseurController extends Controller
     }
 
     /**
+     * On édite les informations de l'ascenseur
+     * GET: On affiche le formulaire
+     * POST: On enregistre les informations
+     *
+     * @Route("/ascenseur/{id}/edition", name="ascenseur_edition", requirements={"id"="\w{24}"})
+     *
+     * @param Request $request La requête
+     * @param string $id L'id de l'ascenseur
+     * @return Response La réponse
+     */
+    public function ascenseurEditionAction(Request $request, $id)
+    {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = $dm->getRepository(Ascenseur::class)->find($id);
+
+        $form = $this->createForm(AscenseurType::class, $ascenseur, [
+            'method' => Request::METHOD_POST
+        ]);
+
+        if(! $request->isMethod(Request::METHOD_POST)) {
+            $form = $form->createView();
+            return $this->render('default/ascenseur_edition.html.twig', compact('form', 'ascenseur'));
+        }
+
+        $form->handleRequest($request);
+
+        if(! $form->isSubmitted() || ! $form->isValid()) {
+            $form = $form->createView();
+            return $this->render('default/ascenseur_edition.html.twig', compact('form', 'ascenseur'));
+        }
+
+        $dm->flush();
+
+        $dm->getRepository(Ascenseur::class)
+           ->saveVersion($ascenseur, new \DateTime(), "Des informations sur l'ascenseur ont été complétées", null);
+
+        return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
+    }
+
+    /**
      * Un nouveau follower suit l'ascenseur
      * GET: On affiche un formulaire d'informations à remplir
      * POST: On enregistre les infos
      *
-     * @Route("/ascenseur/{id}/join", name="ascenseur_follower")
+     * @Route("/ascenseur/{id}/join", name="ascenseur_follower", requirements={"id"="\w{24}"})
      */
     public function followerAction(Request $request, $id)
     {

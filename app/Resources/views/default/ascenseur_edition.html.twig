@@ -11,65 +11,67 @@ col-sm-6 col-md-8
 {%- endblock form_group_class %}
 
 {% block body %}
-<h2>Compléter les informations de l'ascenseur</h2>
-<p><a href="{{  path('ascenseur', {'id': ascenseur.id}) }}">Retour à l'ascenseur</a></p>
-{% if ascenseur.photosId|length > 0 %}
-<p>N'hésitez pas à vous appuyer sur les photos ci-dessous</p>
-<hr />
-{% for idPhoto in ascenseur.photosId %}
-    <a href=""><img src="{{ path('photo', { id: idPhoto }) }}" class="img-fluid" style="max-height: 150px;"/></a>
-{% endfor %}
-{% endif %}
-<hr />
-{{ form_start(form) }}
-<div class="card my-3">
-  <div class="card-header">
-    <h3 class="card-title">Localisation de l'ascenseur</h3>
-  </div>
-  <div class="card-body">
-  {{ form_row(form.adresse) }}
-  {{ form_row(form.commune) }}
-  {{ form_row(form.codePostal) }}
-  {{ form_row(form.emplacement) }}
-  </div>
-</div>
+	<h2>Compléter les informations de l'ascenseur</h2>
+	<p>
+		<a href="{{  path('ascenseur', {'id': ascenseur.id}) }}">Retour à l'ascenseur</a>
+	</p>
+	{% if ascenseur.photosId|length > 0 %}
+		<p>N'hésitez pas à vous appuyer sur les photos ci-dessous</p>
+		<hr />
+		{% for idPhoto in ascenseur.photosId %}
+			<img src="{{ path('photo', { id: idPhoto }) }}" class="img-fluid" style="max-height: 150px;"/>
+		{% endfor %}
+	{% endif %}
+	<hr />
+	{{ form_start(form) }}
+	<div class="card my-3">
+		<div class="card-header">
+			<h3 class="card-title">Localisation de l'ascenseur</h3>
+		</div>
+		<div class="card-body">
+			{{ form_row(form.adresse) }}
+			{{ form_row(form.commune) }}
+			{{ form_row(form.codePostal) }}
+			{{ form_row(form.emplacement) }}
+		</div>
+	</div>
 
-<div class="card my-3">
-  <div class="card-header">
-    <h3 class="card-title">Informations techniques</h3>
-  </div>
-  <div class="card-body">
-  {{ form_row(form.constructeurNom) }}
-  {{ form_row(form.reference) }}
-  {{ form_row(form.dateConstruction) }}
-  {{ form_row(form.dateRenovation) }}
-  {{ form_row(form.etageMin) }}
-  {{ form_row(form.etageMax) }}
-  </div>
-</div>
+	<div class="card my-3">
+		<div class="card-header">
+			<h3 class="card-title">Informations techniques</h3>
+		</div>
+		<div class="card-body">
+			{{ form_row(form.constructeurNom) }}
+			{{ form_row(form.reference) }}
+			{{ form_row(form.dateConstruction) }}
+			{{ form_row(form.dateRenovation) }}
+			{{ form_row(form.etageMin) }}
+			{{ form_row(form.etageMax) }}
+		</div>
+	</div>
 
-<div class="card my-3">
-  <div class="card-header">
-    <h3 class="card-title">Contact des responsables</h3>
-  </div>
-  <div class="card-body">
-  {{ form_row(form.bailleurNom) }}
-  {{ form_row(form.bailleurContact) }}
-  {{ form_row(form.syndicNom) }}
-  {{ form_row(form.syndicContact) }}
-  {{ form_row(form.ascensoristeNom) }}
-  {{ form_row(form.ascensoristeContact) }}
-  {{ form_row(form.telephoneDepannage) }}
-  </div>
-</div>
+	<div class="card my-3">
+		<div class="card-header">
+			<h3 class="card-title">Contact des responsables</h3>
+		</div>
+		<div class="card-body">
+			{{ form_row(form.bailleurNom) }}
+			{{ form_row(form.bailleurContact) }}
+			{{ form_row(form.syndicNom) }}
+			{{ form_row(form.syndicContact) }}
+			{{ form_row(form.ascensoristeNom) }}
+			{{ form_row(form.ascensoristeContact) }}
+			{{ form_row(form.telephoneDepannage) }}
+		</div>
+	</div>
 
-<div class="row">
-    <div class="col-6">
-        <a href="{{ path('ascenseur', {'id': ascenseur.id}) }}" class="btn btn-block btn-outline-secondary">Annuler</a>
-    </div>
-    <div class="col-6">
-        <button type="submit" class="btn btn-block btn-success">Enregistrer</button>
-    </div>
-</div>
-{{ form_end(form) }}
+	<div class="row">
+		<div class="col-6">
+			<a href="{{ path('ascenseur', {'id': ascenseur.id}) }}" class="btn btn-block btn-outline-secondary">Annuler</a>
+		</div>
+		<div class="col-6">
+			<button type="submit" class="btn btn-block btn-success">Enregistrer</button>
+		</div>
+	</div>
+	{{ form_end(form) }}
 {% endblock %}
