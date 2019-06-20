@@ -11,7 +11,7 @@ class AdresseDataGouvApi {
 		return ($q)? str_replace('_query_', $q, SEARCH_URI.SEARCH_PARAM) : SEARCH_URI.SEARCH_PARAM;
 	}
 
-	public function getAddrByCoordinates($coordinates) {
+	public static function getAddrByCoordinates($coordinates) {
 
 		$coordinates = explode(',', $coordinates);
 		if (count($coordinates) != 2) {
