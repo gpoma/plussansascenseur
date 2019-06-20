@@ -57,10 +57,9 @@ class AscenseurRepository extends DocumentRepository {
      */
     public function count()
     {
-        return count($this->createQueryBuilder()
-                          ->hydrate(false)
-                          ->getQuery()
-                          ->execute()
-                  );
+        return $this->createQueryBuilder()
+                    ->count()
+                    ->getQuery()
+                    ->execute();
     }
 }
