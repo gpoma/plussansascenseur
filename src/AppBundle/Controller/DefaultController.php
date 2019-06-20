@@ -6,9 +6,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use AppBundle\Document\Photo;
 use AppBundle\Type\PhotoType;
 use AppBundle\Type\SignalementType;
+use AppBundle\Document\Photo;
 use AppBundle\Document\Signalement;
 use AppBundle\Document\Ascenseur;
 use AppBundle\Lib\AdresseDataGouvApi;
@@ -100,6 +100,10 @@ class DefaultController extends Controller
 
     /**
      * Affiche un formulaire à remplir sur les problèmes rencontrés avec l'ascenseur
+     * Possibles paramètres GET:
+     * * coordinates : Des coordonnées GPS
+     * * ascenseur : Un id d'ascenseur
+     * * photo : Un id de photo
      *
      * @Route("/signalement", name="signalement")
      *
@@ -112,7 +116,7 @@ class DefaultController extends Controller
         $coordinates = $request->get('coordinates', null);
         $coordinatesArr = null;
 
-        if ($coordinates) $coordinatesArr = explode(",",urldecode($coordinates));
+        if ($coordinates) $coordinatesArr = explode(",", urldecode($coordinates));
 
         $ascenseur = new Ascenseur();
         if ($request->get('ascenseur')) {
@@ -121,6 +125,7 @@ class DefaultController extends Controller
 
         if ($coordinatesArr && count($coordinatesArr) === 2) {
             $ascenseur->setLatLon($coordinatesArr[1], $coordinatesArr[0]);
+            $ascenseur->setAdresse(AdresseDataGouvApi::getAddrByCoordinates(urldecode($coordinates)));
         }
 
         $signalement = new Signalement($ascenseur);
