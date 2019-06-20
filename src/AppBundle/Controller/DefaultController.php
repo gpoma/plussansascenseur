@@ -33,39 +33,6 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView()));
     }
 
-    /**
-     * @Route("/photo/upload", name="photo_upload")
-     */
-    public function photoUploadAction(Request $request) {
-        if (!$request->isMethod('POST')) {
-
-            return $this->redirect($this->generateUrl('homepage'));
-        }
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $photo = new Photo();
-
-        $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, array(
-           'action' => $this->generateUrl('photo_upload'),
-           'method' => 'POST',
-        ));
-
-        $uploadPhotoForm->handleRequest($request);
-
-        if(!$uploadPhotoForm->isValid()) {
-
-            return $this->render('default/index.html.twig',array("uploadPhotoForm" => $uploadPhotoForm->createView()));
-        }
-
-        $data = $request->request->get('photos');
-
-        $dm->persist($photo);
-        $dm->flush();
-        $photo->operate();
-        $dm->flush();
-
-        return $this->redirect($this->generateUrl('localisation', array('photo' => $photo->getId(), 'coordinates' => $photo->getLocalisation())));
-   }
-
 
    /**
     * @Route("/localisation", name="localisation")
@@ -157,27 +124,5 @@ class DefaultController extends Controller
         $dm->flush();
 
         return $this->redirect($this->generateUrl('ascenseur', array('id' => $signalement->getAscenseur()->getId())));
-   }
-
-   /**
-    * @Route("/photo/{id}", name="photo")
-    */
-   public function photoAction(Request $request, $id)
-   {
-       $dm = $this->get('doctrine_mongodb')->getManager();
-       $photo = $dm->getRepository('AppBundle:Photo')->find($id);
-
-       $response = new Response();
-
-        if($photo->getImageSize()) {
-           $response->headers->set('Content-Length', $photo->getImageSize());
-        }
-       $response->headers->set('Content-Type', ($photo->getExt()) ? $photo->getExt() : "image");
-
-       $response->setContent(base64_decode($photo->getBase64()));
-
-
-
-       return $response;
    }
 }
