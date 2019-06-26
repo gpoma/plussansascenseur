@@ -22,6 +22,22 @@ class Signalement {
         "PROFESSIONNEL" => "Je livre ou j'interviens chez quelqu'un",
         "AUTRE" => "Autre"
     );
+    
+    public static $connaissanceList = array(
+        "FACEBOOK" => "via Facebook",
+        "INSTAGRAM" => "via Instagram",
+        "AMIS" => "par des amis",
+        "SOIREE_LANCEMENT" => "suite à la soirée du lancement de la démarche nationale du 22 mars dernier",
+        "MOBILISATIONS" => "en participant à une ou plusieurs mobilisations",
+        "MEDIAS" => "par les médias (télé, journaux, ...)"
+    );
+    
+    public static $complementsList = array(
+        "HANDICAP" => "Personne avec un handicap moteur",
+        "MEDICAL" => "Personne avec un suivi médical lourd",
+        "FAMILLE" => "Famille avec enfants en bas âge",
+        "TRAVAIL_DOMICILE" => "Vous travaillez à domicile (assistante maternelle, ...)"
+    );
 
     /**
       * @MongoDB\Id(strategy="AUTO")
@@ -106,8 +122,106 @@ class Signalement {
      */
     protected $updatedAt;
 
+    /**
+     * @MongoDB\Field(type="boolean")
+     *
+     */
+    protected $intervention;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $nom;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $prenom;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $codeInterphone;
+
+    /**
+     * @MongoDB\Field(type="boolean")
+     *
+     */
+    protected $proprietaire;
+
+    /**
+     * @MongoDB\Field(type="collection")
+     */
+    protected $complements;
+
+    /**
+     * @MongoDB\Field(type="string")
+     *
+     */
+    protected $connaissance;
+    
+
+
+    public function setNom($nom) {
+        $this->nom = $nom;
+        return $this;
+    }
+    
+    public function getNom() {
+        return $this->nom;
+    }
+    
+    public function setPrenom($prenom) {
+        $this->prenom = $prenom;
+        return $this;
+    }
+    
+    public function getPrenom() {
+        return $this->prenom;
+    }
+    
+    public function setCodeInterphone($codeInterphone) {
+        $this->codeInterphone = $codeInterphone;
+        return $this;
+    }
+    
+    public function getCodeInterphone() {
+        return $this->codeInterphone;
+    }
+    
+    public function setProprietaire($proprietaire) {
+        $this->proprietaire = $proprietaire;
+        return $this;
+    }
+    
+    public function getProprietaire() {
+        return $this->proprietaire;
+    }
+    
+    public function setComplements($complements) {
+        $this->complements = $complements;
+        return $this;
+    }
+    
+    public function getComplements() {
+        return $this->complements;
+    }
+    
+    public function setConnaissance($connaissance) {
+        $this->connaissance = $connaissance;
+        return $this;
+    }
+    
+    public function getConnaissance() {
+        return $this->connaissance;
+    }
+
     public function __construct(Ascenseur $ascenseur) {
         $this->abonnement = false;
+        $this->intervention = false;
         $this->date = new \DateTime();
         $this->datePanne = new \DateTime();
         $this->ascenseur = $ascenseur;
@@ -237,6 +351,17 @@ class Signalement {
     public function getTelephone() {
 
         return $this->telephone;
+    }
+
+    public function getIntervention() {
+    
+        return $this->intervention;
+    }
+    
+    public function setIntervention($intervention) {
+        $this->intervention = $intervention;
+    
+        return $this;
     }
 
     /**

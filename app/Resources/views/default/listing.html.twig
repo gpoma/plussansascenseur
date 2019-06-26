@@ -11,6 +11,8 @@
 			<td class="col-2 text-center">
 				{% if ascenseur.firstPhotoId %}
 					<img src="{{ path('photo', { id: ascenseur.firstPhotoId }) }}" alt="" class="img-fluid" style="max-height : 80px;"/>
+				{% else %}
+					<img src="{{ asset('img/no-photos.svg') }}" alt="Icons made by Freepik from Flaticon is licensed by CC 3.0 BY" class="img-fluid" style="max-height : 80px;"/>
 				{% endif %}
 			</td>
 			<td valign="middle" class="col-10">

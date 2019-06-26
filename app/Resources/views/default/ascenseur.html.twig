@@ -23,7 +23,7 @@
 </small></h2>
 </div>
 <div class="col-md-6 text-right my-3">
-<p>{{ ascenseur.nombreFollowers }} personnes suivent cet ascenseur</p>
+<p>{{ ascenseur.nombreFollowers + 1 }} {% if ascenseur.nombreFollowers > 0 %}personnes suivent{% else %}personne suit{% endif %} cet ascenseur</p>
 <p>
     <a href="{{ path('ascenseur_photo', { id: ascenseur.id })}}" class="btn btn-info">Ajouter une photo</a>
     <a href="{{ path('ascenseur_follower', { id: ascenseur.id })}}" class="btn btn-success">Rejoindre la communauté</a>

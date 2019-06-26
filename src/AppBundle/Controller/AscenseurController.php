@@ -19,7 +19,7 @@ use AppBundle\Type\FollowerType;
 class AscenseurController extends Controller
 {
     /** @var int $perpage Le nombre par page */
-    const PERPAGE = 5;
+    const PERPAGE = 20;
 
     /**
      * On liste les derniers ascenseurs mis à jours

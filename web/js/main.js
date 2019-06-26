@@ -167,6 +167,12 @@
                     $('#signalement_infos_abonnement').removeClass('d-none');
                 }
             });
+            $('#signalement_intervention').on('change', function() {
+                $('#signalement_infos_intervention').addClass('d-none');
+                if($(this).prop('checked') == true) {
+                    $('#signalement_infos_intervention').removeClass('d-none');
+                }
+            });
             $('#follower_abonnement').on('change', function() {
                 $('#signalement_infos_abonnement').addClass('d-none');
                 if($(this).prop('checked') == true) {
@@ -175,6 +181,7 @@
             });
             $('#signalement_etageAtteint').change();
             $('#signalement_abonnement').change();
+            $('#signalement_intervention').change();
             $('#follower_abonnement').change();
         };
 

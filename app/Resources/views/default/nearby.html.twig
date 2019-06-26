@@ -21,7 +21,9 @@
 			<td class="col-2 text-center">
 				{% if elevator.firstPhotoId %}
                     <img src="{{ path('photo', { id: elevator.firstPhotoId }) }}" class="img-fluid" style="max-height : 80px;"/>
-            	{% endif %}
+                {% else %}
+					<img src="{{ asset('img/no-photos.svg') }}" alt="Icons made by Freepik from Flaticon is licensed by CC 3.0 BY" class="img-fluid" style="max-height : 80px; fill:#6c757d;" />
+				{% endif %}
 			</td>
 			<td class="col-10">
 				{% if elevator.constructeurNom %}Ascenseur <strong>{{ elevator.constructeurNom }}</strong> {% endif %}{% if elevator.reference %}Ref. <strong>{{ elevator.reference }}</strong>{% endif %}
@@ -32,7 +34,7 @@
 		{% endfor %}
 		<tr class="clickable-row row mx-0" data-href="{{ path('signalement', {coordinates: coordinates, photo: photoid}) }}" style="border: 1px solid #dee2e6;">
 			<td class="col-2 text-center"><img src="{{ asset('img/no-elevator.svg') }}" alt="Inspired by Adnen Kadri and Ali Riza Saçan from Noun Project" class="img-fluid" style="max-height : 80px;"/></td>
-			<td class="col-10"><i>Mon ascenseur n'est pas listé ici.</i> <a href="javascript:void(0)">Cliquez pour le créer</a></td>
+			<td class="col-10"><i><strong>Mon ascenseur n'est pas listé ici.</strong></i><br /><a href="javascript:void(0)">Cliquez pour le créer</a></td>
 		</tr>
 	</tbody>
 </table>
