@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use AppBundle\Document\Ascenseur;
 use AppBundle\Document\Photo;
+use AppBundle\Document\Thumbnail;
 use AppBundle\Document\Signalement;
 
 use AppBundle\Type\AscenseurType;
@@ -136,31 +137,13 @@ class AscenseurController extends Controller
         $ascenseur = $dm->getRepository(Ascenseur::class)->find($id);
         $photo = new Photo();
 
-        $form = $this->createForm(PhotoType::class, $photo, [
-            'method' => 'POST'
+        $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('photo_upload', ['ascenseur' => $id])
         ]);
 
-        if (! $request->isMethod(Request::METHOD_POST)) {
-            $form = $form->createView();
-            return $this->render('default/ascenseur_photo.html.twig', compact('form', 'ascenseur'));
-        }
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $photo = $form->getData();
-            $dm->persist($photo);
-            $photo->operate();
-
-            $ascenseur->addPhoto($photo);
-
-            $dm->flush();
-
-            return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
-        }
-
-        $form = $form->createView();
-        return $this->render('default/ascenseur_photo.html.twig', compact('ascenseur', 'form'));
+        $uploadPhotoForm = $uploadPhotoForm->createView();
+        return $this->render('default/ascenseur_photo.html.twig', compact('ascenseur', 'uploadPhotoForm'));
     }
 
     /**

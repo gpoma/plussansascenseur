@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use AppBundle\Document\Photo;
+use AppBundle\Document\Ascenseur;
+use AppBundle\Document\Thumbnail;
 use AppBundle\Type\PhotoType;
 
 class PhotoController extends Controller
@@ -15,7 +17,11 @@ class PhotoController extends Controller
     /**
      * On upload une photo depuis la page d'accueil
      *
-     * @Route("/photo/upload", name="photo_upload")
+     * @Route("/photo/upload/{ascenseur}",
+     *          name="photo_upload",
+     *          defaults={"ascenseur": null},
+     *          requirements={"ascenseur": "\w{24}"}
+     * )
      *
      * @param Request $request La requête
      * @return Response La réponse
@@ -29,6 +35,12 @@ class PhotoController extends Controller
         $dm = $this->get('doctrine_mongodb')->getManager();
         $photo = new Photo();
 
+        $ascenseur = $request->get('ascenseur');
+        if ($ascenseur) {
+            $ascenseur = $dm->getRepository(Ascenseur::class)
+                            ->find($ascenseur);
+        }
+
         $uploadPhotoForm = $this->createForm(PhotoType::class, $photo, [
             'method' => 'POST'
         ]);
@@ -37,6 +49,13 @@ class PhotoController extends Controller
 
         if(! $uploadPhotoForm->isValid()) {
             $uploadPhotoForm = $uploadPhotoForm->createView();
+
+            if ($ascenseur) {
+                return $this->render(
+                    'default/ascenseur_photo.html.twig',
+                    compact('ascenseur', 'uploadPhotoForm')
+                );
+            }
             return $this->render('default/index.html.twig', compact('uploadPhotoForm'));
         }
 
@@ -44,7 +63,23 @@ class PhotoController extends Controller
 
         $dm->persist($photo);
         $photo->operate();
+
+        $thumbnail = new Thumbnail($photo->getImageFile());
+        $thumbnail->thumbnalize();
+        $dm->persist($thumbnail);
+
+        $photo->setThumbnail($thumbnail);
+
+        if ($ascenseur) {
+            $ascenseur->addPhoto($photo);
+        }
+
+        $dm->persist($photo);
         $dm->flush();
+
+        if ($ascenseur) {
+            return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
+        }
 
         return $this->redirect($this->generateUrl('localisation', [
             'photo' => $photo->getId(),
@@ -55,7 +90,13 @@ class PhotoController extends Controller
     /**
      * On affiche la photo
      *
-     * @Route("/photo/{id}", name="photo", requirements={"id"="\w{24}"})
+     * @Route("/photo/{id}/{size}", name="photo",
+     *                       requirements={
+     *                          "id"="\w{24}",
+     *                          "size"="original|thumbnail"
+     *                       },
+     *                       defaults={"size"="original"}
+     * )
      *
      * @param Request $request La requête
      * @param string $id L'id de la Photo
@@ -63,18 +104,24 @@ class PhotoController extends Controller
      */
     public function photoAction(Request $request, $id)
     {
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $photo = $dm->getRepository(Photo::class)->find($id);
+        $size = $request->get('size');
 
+        $dm = $this->get('doctrine_mongodb')->getManager();
         $response = new Response();
 
-        if($photo->getImageSize()) {
+        if ($size === 'original') {
+            $photo = $dm->getRepository(Photo::class)->find($id);
             $response->headers->set('Content-Length', $photo->getImageSize());
+            $response->headers->set('Content-Type', ($photo->getExt()) ? $photo->getExt() : "image");
+            $response->setContent(base64_decode($photo->getBase64()));
+        } elseif ($size === 'thumbnail') {
+            $photo = $dm->getRepository(Photo::class)
+                        ->getThumbnail($id);
+
+            $response->headers->set('Content-Length', $photo->getThumbnail()->getFile()->getSize());
+            $response->headers->set('Content-Type', ($photo->getExt()) ? $photo->getExt() : "image");
+            $response->setContent($photo->getThumbnail()->getFile()->getBytes());
         }
-
-        $response->headers->set('Content-Type', ($photo->getExt()) ? $photo->getExt() : "image");
-
-        $response->setContent(base64_decode($photo->getBase64()));
 
         return $response;
     }

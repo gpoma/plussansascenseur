@@ -10,7 +10,7 @@
         <tr class="clickable-row row mx-0" data-href="{{ path('ascenseur', {id: ascenseur.id}) }}">
 			<td class="col-2 text-center">
 				{% if ascenseur.firstPhotoId %}
-					<img src="{{ path('photo', { id: ascenseur.firstPhotoId }) }}" alt="" class="img-fluid" style="max-height : 80px;"/>
+					<img src="{{ path('photo', { id: ascenseur.firstPhotoId, size: 'thumbnail' }) }}" alt="" class="img-fluid" style="max-height : 80px;"/>
 				{% endif %}
 			</td>
 			<td valign="middle" class="col-10">
