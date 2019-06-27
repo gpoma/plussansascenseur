@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 
 use AppBundle\Document\Photo;
 use AppBundle\Document\Ascenseur;
@@ -109,14 +110,28 @@ class PhotoController extends Controller
         $dm = $this->get('doctrine_mongodb')->getManager();
         $response = new Response();
 
+        $photo = $dm->getRepository(Photo::class)->find($id);
+
         if ($size === 'original') {
-            $photo = $dm->getRepository(Photo::class)->find($id);
             $response->headers->set('Content-Length', $photo->getImageSize());
             $response->headers->set('Content-Type', ($photo->getExt()) ? $photo->getExt() : "image");
             $response->setContent(base64_decode($photo->getBase64()));
         } elseif ($size === 'thumbnail') {
-            $photo = $dm->getRepository(Photo::class)
-                        ->getThumbnail($id);
+            if (! $photo->getThumbnail()) {
+                $tmpfile = tempnam(sys_get_temp_dir(), 'thumb');
+                $im = imagecreatefromstring(base64_decode($photo->getBase64()));
+                imagejpeg($im, $tmpfile);
+
+                $thumbnail = new Thumbnail(new File($tmpfile));
+                $thumbnail->thumbnalize();
+                $dm->persist($thumbnail);
+
+                $photo->setThumbnail($thumbnail);
+                $dm->persist($photo);
+
+                $dm->flush();
+                unlink($tmpfile);
+            }
 
             $response->headers->set('Content-Length', $photo->getThumbnail()->getFile()->getSize());
             $response->headers->set('Content-Type', ($photo->getExt()) ? $photo->getExt() : "image");
