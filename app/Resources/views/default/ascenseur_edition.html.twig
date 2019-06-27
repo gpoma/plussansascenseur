@@ -19,7 +19,7 @@ col-sm-6 col-md-8
 		<p>N'hésitez pas à vous appuyer sur les photos ci-dessous</p>
 		<hr />
 		{% for idPhoto in ascenseur.photosId %}
-			<img src="{{ path('photo', { id: idPhoto, size: 'thumbnail' }) }}" class="img-fluid" style="max-height: 150px;"/>
+			<img src="{{ path('photo', { id: idPhoto }) }}" class="img-fluid" style="max-height: 150px;"/>
 		{% endfor %}
 	{% endif %}
 	<hr />

@@ -96,7 +96,7 @@ class PhotoController extends Controller
      *                          "id"="\w{24}",
      *                          "size"="original|thumbnail"
      *                       },
-     *                       defaults={"size"="original"}
+     *                       defaults={"size"="thumbnail"}
      * )
      *
      * @param Request $request La requête
