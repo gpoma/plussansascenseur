@@ -16,6 +16,9 @@ use AppBundle\Document\Signalement;
 use AppBundle\Type\AscenseurType;
 use AppBundle\Type\PhotoType;
 use AppBundle\Type\FollowerType;
+use AppBundle\Type\SignalementType;
+
+use AppBundle\Lib\AdresseDataGouvApi;
 
 class AscenseurController extends Controller
 {
@@ -59,6 +62,71 @@ class AscenseurController extends Controller
         return $this->render('default/listing.html.twig', compact(
             'ascenseurs', 'page', 'pages', 'query_string'
         ));
+    }
+
+    /**
+     * Signale un nouvel ascenseur en panne.
+     *
+     * Paramètre GET:
+     * * coordinates: Des coordonnées GPS
+     * * photo: Un id de photo (optionnel)
+     *
+     * @Route("/ascenseur/new", name="signalement")
+     *
+     * @return Response La response
+     */
+    public function newAction (Request $request)
+    {
+        $ascenseur = new Ascenseur();
+        $signalement = new Signalement($ascenseur);
+
+        $form = $this->createForm(SignalementType::class, $signalement, [
+            'method' => Request::METHOD_POST
+        ]);
+
+        if (! $request->isMethod(Request::METHOD_POST)) {
+            return $this->render('default/signalement.html.twig', ["form" => $form->createView()]);
+        }
+
+        $form->handleRequest($request);
+
+        if (! $form->isSubmitted() || ! $form->isValid()) {
+            return $this->render('default/signalement.html.twig', ["form" => $form->createView()]);
+        }
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $coordinates = $request->get('coordinates', null);
+        $photoid = $request->get('photo', null);
+
+        $coordinatesArr = ($coordinates)
+            ? explode(',', urldecode($coordinates))
+            : null;
+
+        if ($coordinatesArr && count($coordinatesArr) === 2) {
+            $ascenseur->setLatLon($coordinatesArr[1], $coordinatesArr[0]);
+            $adresse = AdresseDataGouvApi::getAddrByCoordinates(urldecode($coordinates));
+            $ascenseur->setAdresse($adresse['name']);
+            $ascenseur->setCodePostal($adresse['postcode']);
+            $ascenseur->setCommune($adresse['city']);
+        }
+
+        if ($photoid) {
+            $photo = $dm->getRepository(Photo::class)->find($photoid);
+            $ascenseur->addPhoto($photo);
+        }
+
+        $dm->persist($ascenseur);
+        $dm->getRepository(Ascenseur::class)
+           ->saveVersion(
+               $ascenseur,
+               new \DateTime(),
+               "Création de l'ascenseur",
+               $signalement->getPseudo()
+           );
+        $dm->persist($signalement);
+        $dm->flush();
+
+        return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
     }
 
     /**
