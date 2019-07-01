@@ -7,7 +7,7 @@
         <p>Cet ascenseur est actuellement {{ ascenseur.statut }}.</p>
         <p>
             {% if ascenseur.firstPhotoId %}
-                <img class="img-fluid my-2" src="{{ path('photo', { id: ascenseur.firstPhotoId }) }}">
+                <img alt="Photo de l'ascenseur" class="img-fluid my-2" src="{{ path('photo', { id: ascenseur.firstPhotoId }) }}">
             {% else %}
                 <em>Pas de photo disponible</em>
             {% endif %}
