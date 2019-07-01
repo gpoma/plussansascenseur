@@ -19,9 +19,9 @@ class SignalementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('usage', ChoiceType::class, array('choices' => array_flip(Signalement::$usageList), 'required' => false, 'label' => "Pourquoi comptiez-vous utiliser cet ascenseur :"))
+            ->add('usage', ChoiceType::class, array('choices' => array_flip(Signalement::$usageList), 'choices_as_values' => true, 'required' => false, 'label' => "Pourquoi comptiez-vous utiliser cet ascenseur :"))
             ->add('etage', IntegerType::class, array('required' => false, 'label' => "Quelle étage souhaitez-vous atteindre :", "attr" => array("placeholder" => "", "type" => "number" )))
-            ->add('etageAtteint', ChoiceType::class, array('choices' => $this->getChoicesEtageAtteint(), 'required' => false, 'label' => "Avez-vous pu rejoindre votre étage :"))
+            ->add('etageAtteint', ChoiceType::class, array('choices' => $this->getChoicesEtageAtteint(), 'choices_as_values' => true, 'required' => false, 'label' => "Avez-vous pu rejoindre votre étage :"))
             ->add('duree', TextType::class, array('required' => false, 'label' => 'Combien de temps avez-vous mis :', "attr" => array("placeholder" => "")))
             ->add('commentaire', TextareaType::class, array('required' => false, 'label' => "Expliquez la situation :"))
             ->add('pseudo', TextType::class, array('required' => false, 'label' => "Votre nom / pseudo :"))
@@ -32,7 +32,7 @@ class SignalementType extends AbstractType
             ->add('nom', TextType::class, array('required' => false, 'label' => "Votre nom :"))
             ->add('prenom', TextType::class, array('required' => false, 'label' => "Votre prénom :"))
             ->add('codeInterphone', TextType::class, array('required' => false, 'label' => "Code / Interphone :"))
-            ->add('proprietaire', ChoiceType::class, array('choices' => $this->getChoicesProprietaire(), 'required' => false, 'label' => "Vous êtes :"))
+            ->add('proprietaire', ChoiceType::class, array('choices' => $this->getChoicesProprietaire(), 'choices_as_values' => true, 'required' => false, 'label' => "Vous êtes :"))
             ->add('complements', ChoiceType::class, array(
                 'choices' => Signalement::$complementsList,
                 'expanded' => true,
@@ -41,7 +41,7 @@ class SignalementType extends AbstractType
                 'empty_data' => null,
                 'label' => 'Etes vous les cas suivants ?'
             ))
-            ->add('connaissance', ChoiceType::class, array('choices' => array_flip(Signalement::$connaissanceList), 'required' => false, 'label' => "Comment avez vous connu notre collectif :"))
+            ->add('connaissance', ChoiceType::class, array('choices' => array_flip(Signalement::$connaissanceList), 'choices_as_values' => true, 'required' => false, 'label' => "Comment avez vous connu notre collectif :"))
             ->add('datePanne', DateType::class, array('required' => false, 'label' => "Date de panne :", 'widget' => 'single_text', 'html5' => true))
         ;
     }
