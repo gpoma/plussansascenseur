@@ -3,7 +3,7 @@
 {% block body %}
 <div class="row">
 <div class="col-md-12">
-<h2>Ascenseur {{ ascenseur.constructeurNom }} <small><span class="badge badge-{% if ascenseur.statut is constant('AppBundle\\Document\\Ascenseur::STATUT_ENPANNE') %}danger{% else %}success{% endif %}">{% if ascenseur.statut is constant('AppBundle\\Document\\Ascenseur::STATUT_ENPANNE') %}En panne{% else %}En fonction{% endif %}</span></small></h2>
+<h2>Ascenseur {{ ascenseur.constructeurNom }} <small><span class="badge badge-{% if ascenseur.statut is constant('STATUT_ENPANNE', ascenseur) %}danger{% else %}success{% endif %}">{% if ascenseur.statut is constant('STATUT_ENPANNE', ascenseur) %}En panne{% else %}En fonction{% endif %}</span></small></h2>
 </div>
 <div class="col-md-6 my-3">
 <h2><small>
@@ -121,8 +121,8 @@
 
 <h3>Historique de l'ascenseur</h3>
 
-<div class="clearfix alert alert-{% if ascenseur.statut is constant('AppBundle\\Document\\Ascenseur::STATUT_ENPANNE') %}danger{% else %}success{% endif %}" role="alert">
-    Cet ascenseur est en {% if ascenseur.statut is constant('AppBundle\\Document\\Ascenseur::STATUT_ENPANNE') %}panne{% else %}fonction{% endif %} depuis le {{ ascenseur.dateStatut | date("d/m/Y") }}.
+<div class="clearfix alert alert-{% if ascenseur.statut is constant('STATUT_ENPANNE', ascenseur) %}danger{% else %}success{% endif %}" role="alert">
+    Cet ascenseur est en {% if ascenseur.statut is constant('STATUT_ENPANNE', ascenseur) %}panne{% else %}fonction{% endif %} depuis le {{ ascenseur.dateStatut | date("d/m/Y") }}.
     <a href="{{ path('switch_status', {id: ascenseur.id}) }}"
        class="btn btn-outline-info btn-sm float-right py-0">
         Signaler un changement
