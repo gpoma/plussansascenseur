@@ -242,21 +242,29 @@ class AscenseurController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($ascenseur->getStatut()) {
                 case Ascenseur::STATUT_ENPANNE:
-                    $new_statut = Ascenseur::FONCTIONNEL;
+                    $new_statut = Ascenseur::STATUT_FONCTIONNEL;
                     break;
-                case Ascenseur::FONCTIONNEL:
-                    $new_statut = Ascenseur::EN_PANNE;
+                case Ascenseur::STATUT_FONCTIONNEL:
+                    $new_statut = Ascenseur::STATUT_ENPANNE;
                     break;
                 default:
-                    $new_statut = Ascenseur::EN_PANNE;
+                    $new_statut = Ascenseur::STATUT_ENPANNE;
                     break;
             }
 
             $ascenseur->setStatut($new_statut);
             $dm->persist($ascenseur);
+
+            $dm->getRepository(Ascenseur::class)->saveVersion(
+                $ascenseur,
+                new \DateTime(),
+                "Le statut a été mis à jour → $new_statut",
+                null
+            );
+
             $dm->flush();
 
-            return $this->redirect('ascenseur', $id);
+            return $this->redirect($this->generateUrl('ascenseur', ['id' => $ascenseur->getId()]));
         }
 
         $form = $form->createView();
