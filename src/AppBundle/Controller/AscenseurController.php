@@ -233,7 +233,7 @@ class AscenseurController extends Controller
         $form = $this->createFormBuilder()
                      ->add('confirm', SubmitType::class, [
                          'label' => 'Confirmer',
-                         'attr' => ['class' => 'btn btn-success']
+                         'attr' => ['class' => 'btn btn-block btn-success']
                      ])
                      ->getForm();
 
@@ -259,7 +259,8 @@ class AscenseurController extends Controller
             return $this->redirect('ascenseur', $id);
         }
 
-        return $this->render('default/ascenseur_change.html.twig', compact('ascenseur'));
+        $form = $form->createView();
+        return $this->render('default/ascenseur_change.html.twig', compact('ascenseur', 'form'));
     }
 
     /**
