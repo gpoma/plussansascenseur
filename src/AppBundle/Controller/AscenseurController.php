@@ -18,6 +18,8 @@ use AppBundle\Type\PhotoType;
 use AppBundle\Type\FollowerType;
 use AppBundle\Type\SignalementType;
 
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 use AppBundle\Lib\AdresseDataGouvApi;
 
 class AscenseurController extends Controller
@@ -212,6 +214,51 @@ class AscenseurController extends Controller
 
         $uploadPhotoForm = $uploadPhotoForm->createView();
         return $this->render('default/ascenseur_photo.html.twig', compact('ascenseur', 'uploadPhotoForm'));
+    }
+
+    /**
+     * Signale un changment de status de l'ascenseur
+     *
+     * @Route("/ascenseur/{id}/changement", name="switch_status", requirements={"id"="\w{24}"})
+     *
+     * @param Request $request La requête
+     * @param string $id L'id de l'ascenseur
+     * @return Response La réponse
+     */
+    public function switchStatusAction(Request $request, $id)
+    {
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $ascenseur = $dm->getRepository(Ascenseur::class)->find($id);
+
+        $form = $this->createFormBuilder()
+                     ->add('confirm', SubmitType::class, [
+                         'label' => 'Confirmer',
+                         'attr' => ['class' => 'btn btn-success']
+                     ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            switch ($ascenseur->getStatut()) {
+                case Ascenseur::STATUT_ENPANNE:
+                    $new_statut = Ascenseur::FONCTIONNEL;
+                    break;
+                case Ascenseur::FONCTIONNEL:
+                    $new_statut = Ascenseur::EN_PANNE;
+                    break;
+                default:
+                    $new_statut = Ascenseur::EN_PANNE;
+                    break;
+            }
+
+            $ascenseur->setStatut($new_statut);
+            $dm->persist($ascenseur);
+            $dm->flush();
+
+            return $this->redirect('ascenseur', $id);
+        }
+
+        return $this->render('default/ascenseur_change.html.twig');
     }
 
     /**
