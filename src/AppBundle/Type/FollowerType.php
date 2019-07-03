@@ -26,16 +26,16 @@ class FollowerType extends AbstractType
             ->add('nom', TextType::class, array('required' => false, 'label' => "Votre nom :"))
             ->add('prenom', TextType::class, array('required' => false, 'label' => "Votre prénom :"))
             ->add('codeInterphone', TextType::class, array('required' => false, 'label' => "Code / Interphone :"))
-            ->add('proprietaire', ChoiceType::class, array('choices' => $this->getChoicesProprietaire(), 'choices_as_values' => true, 'required' => false, 'label' => "Vous êtes :"))
+            ->add('proprietaire', ChoiceType::class, array('choices' => $this->getChoicesProprietaire(), 'required' => false, 'label' => "Vous êtes :"))
             ->add('complements', ChoiceType::class, array(
-                'choices' => Signalement::$complementsList,
+                'choices' => array_flip(Signalement::$complementsList),
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false,
                 'empty_data' => null,
-                'label' => 'Etes vous les cas suivants ?'
+                'label' => 'Êtes vous les cas suivants ?'
             ))
-            ->add('connaissance', ChoiceType::class, array('choices' => array_flip(Signalement::$connaissanceList), 'choices_as_values' => true, 'required' => false, 'label' => "Comment avez vous connu notre collectif :"))
+            ->add('connaissance', ChoiceType::class, array('choices' => array_flip(Signalement::$connaissanceList), 'required' => false, 'label' => "Comment avez vous connu notre collectif :"))
         ;
     }
 

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,7 +82,7 @@ class DefaultController extends Controller
         $elevators = array();
 
         if ($photoid && !$coordinates) {
-            if ($photo = $dm->getRepository(Photo::class)->findOneById($photoid)) {
+            if ($photo = $dm->getRepository(Photo::class)->find($photoid)) {
                 if ($localisation = $photo->getLocalisation()) {
                     $coordinates = $localisation->getCoordinatesLibelle();
                 }
