@@ -29,8 +29,8 @@
         "symfony/symfony": "^3.4",
         "twig/twig": "^1.0||^2.0",
         "sensio/generator-bundle": "^3.0",
-        "vich/uploader-bundle": "^1",
-	"jmikola/geojson": "^1.0"
+        "vich/uploader-bundle": "~1.4.0",
+        "jmikola/geojson": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
