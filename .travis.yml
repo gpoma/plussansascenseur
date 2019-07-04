@@ -25,6 +25,10 @@ install:
 cache:
   directories:
     - $HOME/.composer/cache
+    - .phpunit
+
+script:
+    - ./vendor/bin/simple-phpunit
 
 notifications:
   irc:
